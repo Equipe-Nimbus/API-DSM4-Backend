@@ -42,6 +42,8 @@ jobs:
         github-token: ${{ secrets.ADM_TOKEN }}
         number: ${{ github.event.pull_request.number }}
         method: squash
-        repo: juliangruber/octokit-action
+        repo: ${{ github.event.pull_request.head.repo.name }}
+
+    - run: echo "HEAD:${{github.event.pull_request.head.repo.name}}, BASE:${{github.event.pull_request.base.repo.name}}"
 
     
