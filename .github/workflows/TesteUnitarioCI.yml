@@ -42,7 +42,6 @@ jobs:
         github-token: ${{ secrets.ADM_TOKEN }}
         number: ${{ github.event.pull_request.number }}
         method: squash
-        repo: ${{ github.event.pull_request.head.repo.name }}/develop
 
     - run: echo "HEAD:${{github.event.pull_request.head.repo.name}}, BASE:${{github.event.pull_request.base.repo.name}}"
 
