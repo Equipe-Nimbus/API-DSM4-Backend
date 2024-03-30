@@ -28,7 +28,7 @@ jobs:
       run: npm run test
 
     - name: Aprovando se os testes passarem
-      if: steps.test.outcome == success()
+      if: steps.test.outcome == 'success'
       uses: juliangruber/approve-pull-request-action@v2 
       with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
