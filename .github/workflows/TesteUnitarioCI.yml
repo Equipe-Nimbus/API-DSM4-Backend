@@ -1,14 +1,11 @@
 
 name: Teste unitário
 
-on:
-  push:
-    branches: [ "main", "develop" ]
-  pull_request:
-    types: [opened, reopened, synchronize]
+on: pull_request
+    
 
 jobs:
-  build:
+  buildETeste:
 
     runs-on: windows-2019
 
@@ -27,4 +24,14 @@ jobs:
       run: npm install
 
     - name: rodando testes
+      id: test
       run: npm run test
+
+    - name: Aprovando se os testes passarem
+      if: steps.test.outcome == success()
+      uses: juliangruber/approve-pull-request-action@v2 
+      with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          number: ${{ github.event.pull_request.number }}
+
+    
