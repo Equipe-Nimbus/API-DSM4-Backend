@@ -3,13 +3,9 @@ name: Teste unitário
 
 on:
   push:
-    branches: 
-      - "main"
-      - "devolop"
+    branches: [ "main", "develop" ]
   pull_request:
-    branches:
-      - "main"
-      - "devolop"
+    branches: [ "main", "devolop"]
 
 jobs:
   build:
