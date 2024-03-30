@@ -28,12 +28,20 @@ jobs:
       run: npm run test
 
     - name: Aprovando pull_request se os testes passarem
+      id: aprovado
       if: steps.test.outcome == 'success'
       uses: juliangruber/approve-pull-request-action@v2 
       with:
           github-token: ${{ secrets.ADM_TOKEN }}
           number: ${{ github.event.pull_request.number }}
 
-
+    - name: Merge Pull Request
+      if: steps.test.outcome == 'success' && steps.aprovado.outcome == 'success'
+      uses: juliangruber/merge-pull-request-action@v1
+      with:
+        github-token: ${{ secrets.ADM_TOKEN }}
+        number: ${{ github.event.pull_request.number }}
+        method: squash
+        repo: juliangruber/octokit-action
 
     
