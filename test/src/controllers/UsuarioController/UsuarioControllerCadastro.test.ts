@@ -91,7 +91,7 @@ describe("Testes do UsuarioController CADASTRO", ()=>{
             expect("Não pode ser permitido o cadastro de usuário com campos nulos").toBe("Foi permitido")
         } catch(error){
             const mockStatus = MockResponse.resSemLocals.status(400).send as jest.Mock
-            expect(mockStatus.mock.calls[0][0]).toBe("nenhum valor pode ser nulo")
+            expect(mockStatus.mock.calls[1][0]).toBe("nenhum valor pode ser nulo")
             mockStatus.mockClear();
         }
     })
