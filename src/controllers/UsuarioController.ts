@@ -7,7 +7,6 @@ import InsereAlteraAtributosUsuario from "../services/Usuario/InsereAlteraAtribu
 
 class UsuarioController {
     
-
     async cadastrar(req: Request, res: Response):Promise<void>{
         const repositorioUsuario = PgDataSource.getRepository(Usuario);
         try{
@@ -20,7 +19,8 @@ class UsuarioController {
                 res.status(400).send("nenhum valor pode ser nulo");
             else if(error.message.includes("duplicate key value"))
                 res.status(400).send("email ou cpf já cadastrado");
-            throw error
+            else
+                throw error
         }
     }
 
@@ -32,6 +32,33 @@ class UsuarioController {
             res.status(400).send("Usuário não encontrado")
         else
             res.status(200).send(usuario);
+    }
+
+    async listarPaginada(req: Request, res: Response) {
+        const repositorioUsuario = PgDataSource.getRepository(Usuario);
+        const pagina = req.query.pagina ?
+            parseInt(req.query.pagina as string) : 1;
+        const tamanhoPagina = req.query.tamanhoPagina ?
+            parseInt(req.query.tamanhoPagina as string) : 10;
+        const quantidadeLinhas = await repositorioUsuario.count();
+        const quantidadePaginas = Math.ceil(quantidadeLinhas/tamanhoPagina)
+        try{
+            const usuarios = await repositorioUsuario
+                .createQueryBuilder("usuario") // Nome da entidade (tabela) no TypeORM
+                .orderBy("usuario.nomeUsuario", 'ASC') // Ordena pelo atributo "nomeUsuario"
+                .skip((pagina - 1) * tamanhoPagina) // Pula os registros para a paginação
+                .take(tamanhoPagina) // Define o tamanho da página
+                .getMany(); // Executa a consulta e obtém os resultados paginados
+
+            const resposta = { usuarios:usuarios, pagina:pagina, tamanhoPagina:tamanhoPagina, quantidadePaginas:quantidadePaginas }
+            res.status(200).send(resposta)
+        } catch(error){
+            if(pagina == 0)
+                res.status(400).send("Não é permitido requisitar a página 0")
+            else
+                res.send(400).send(error)
+        }
+        
     }
 }
 
