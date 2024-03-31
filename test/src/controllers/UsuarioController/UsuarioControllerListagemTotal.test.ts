@@ -76,8 +76,6 @@ describe("Teste de listagem páginada de usuários", ()=>{
         const mockResStatus = (MockResponse.resSemLocals.status as jest.Mock).mockClear()
         await UsuarioController.listarPaginada(MocksRequests.reqNullLimit10, MockResponse.resSemLocals)
         const mockRes = MockResponse.resSemLocals.status(400).send as jest.Mock;
-        
-        console.log(mockRes.mock.calls[0][0])
         expect(mockRes.mock.calls[0][0]).toBe("Não é permitido requisitar a página 0")
         expect(mockResStatus.mock.calls[0][0]).toBe(400)
         mockRes.mockClear();

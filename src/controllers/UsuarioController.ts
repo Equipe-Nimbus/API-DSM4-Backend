@@ -7,7 +7,9 @@ import InsereAlteraAtributosUsuario from "../services/Usuario/InsereAlteraAtribu
 
 class UsuarioController {
     
-    async cadastrar(req: Request, res: Response):Promise<void>{
+    
+    
+    async cadastrar(req: Request, res: Response){
         const repositorioUsuario = PgDataSource.getRepository(Usuario);
         try{
             var novoUsuario = new Usuario();
@@ -58,7 +60,18 @@ class UsuarioController {
             else
                 res.send(400).send(error)
         }
-        
+    }
+
+    async deletar(req: Request, res: Response) {
+        const repositorioUsuario = PgDataSource.getRepository(Usuario);
+        const id = parseInt(req.params.id);
+        try{
+            await repositorioUsuario.delete(id);
+            res.status(200).send("Usuário deletado com sucesso");
+        } catch(error){
+            res.status(400).send("Usuário não encontrado")
+            console.log(error)
+        }
     }
 }
 
