@@ -7,8 +7,6 @@ import InsereAlteraAtributosUsuario from "../services/Usuario/InsereAlteraAtribu
 
 class UsuarioController {
     
-    
-    
     async cadastrar(req: Request, res: Response){
         const repositorioUsuario = PgDataSource.getRepository(Usuario);
         try{
@@ -23,6 +21,7 @@ class UsuarioController {
                 res.status(400).send("email ou cpf já cadastrado");
             else
                 throw error
+
         }
     }
 
