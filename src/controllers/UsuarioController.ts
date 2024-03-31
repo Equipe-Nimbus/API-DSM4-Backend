@@ -6,9 +6,9 @@ import InsereAlteraAtributosUsuario from "../services/Usuario/InsereAlteraAtribu
 
 
 class UsuarioController {
+    
 
-
-    async cadastroUsuario(req: Request, res: Response):Promise<void>{
+    async cadastrar(req: Request, res: Response):Promise<void>{
         const repositorioUsuario = PgDataSource.getRepository(Usuario);
         try{
             var novoUsuario = new Usuario();
@@ -24,7 +24,15 @@ class UsuarioController {
         }
     }
 
-    
+    async listarEspecifico(req: Request, res:Response) {
+        const repositorioUsuario = PgDataSource.getRepository(Usuario);
+        const id = parseInt(req.params.id)
+        const usuario = await repositorioUsuario.findOne({where:{idUsuario:id}});
+        if(usuario == undefined)
+            res.status(400).send("Usuário não encontrado")
+        else
+            res.status(200).send(usuario);
+    }
 }
 
 export default new UsuarioController();
