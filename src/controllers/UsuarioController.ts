@@ -7,6 +7,7 @@ import InsereAlteraAtributosUsuario from "../services/Usuario/InsereAlteraAtribu
 
 class UsuarioController {
     
+
     async cadastrar(req: Request, res: Response):Promise<void>{
         const repositorioUsuario = PgDataSource.getRepository(Usuario);
         try{
@@ -34,6 +35,7 @@ class UsuarioController {
             res.status(200).send(usuario);
     }
 
+
     async listarPaginada(req: Request, res: Response) {
         const repositorioUsuario = PgDataSource.getRepository(Usuario);
         const pagina = req.query.pagina ?
@@ -60,6 +62,7 @@ class UsuarioController {
         }
         
     }
+
 }
 
 export default new UsuarioController();
