@@ -82,12 +82,6 @@ class MocksUsuarioControllerCadastro{
         }
     } as unknown as Request
 
-    res = {
-        send: jest.fn(),
-        status: jest.fn().mockReturnValue({
-            send: jest.fn().mockImplementation()
-        })
-    } as unknown as Response;
 }
 
 export default new MocksUsuarioControllerCadastro()
