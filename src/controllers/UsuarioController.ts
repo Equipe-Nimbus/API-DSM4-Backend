@@ -70,7 +70,6 @@ class UsuarioController {
             res.status(200).send("Usuário deletado com sucesso");
         } catch(error){
             res.status(400).send("Usuário não encontrado")
-            console.log(error)
         }
     }
 }

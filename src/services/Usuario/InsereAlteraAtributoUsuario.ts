@@ -24,6 +24,8 @@ class InsereAlteraAtributosUsuario{
             novoUsuario.ruaAvenidaUsuario = corpoRequisicao.ruaAvenidaUsuario;
         if(corpoRequisicao.senhaUsuario)
             novoUsuario.senhaUsuario = corpoRequisicao.senhaUsuario;
+        if(corpoRequisicao.estadoUsuario)
+            novoUsuario.senhaUsuario = corpoRequisicao.senhaUsuario;
         return novoUsuario;
     }
 }
