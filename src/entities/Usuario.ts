@@ -34,6 +34,9 @@ export class Usuario {
   ruaAvenidaUsuario: string;
 
   @Column({ nullable: false })
+  estadoUsuario: string;
+  
+  @Column({ nullable: false })
   numeroCasaUsuario: string;
 
   @Column({ nullable: false })
