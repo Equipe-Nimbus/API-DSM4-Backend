@@ -15,7 +15,7 @@ export class Usuario {
   @Column({ nullable: false })
   senhaUsuario: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: true })
   perfilUsuario: string;
   
   @Column({ nullable: false })
