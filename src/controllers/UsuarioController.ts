@@ -2,6 +2,7 @@ import { Response, Request } from "express";
 import { Usuario } from "../entities/Usuario";
 import PgDataSource from "../data-source";
 import InsereAlteraAtributosUsuario from "../services/Usuario/InsereAlteraAtributoUsuario";
+import { Repository } from "typeorm";
 
 
 
@@ -42,25 +43,40 @@ class UsuarioController {
             parseInt(req.query.pagina as string) : 1;
         const tamanhoPagina = req.query.tamanhoPagina ?
             parseInt(req.query.tamanhoPagina as string) : 10;
+        const nomeUsuario = req.query.nome ?
+            req.query.nome : ""
+        const emailUsuario = req.query.email ?
+            req.query.email : ""
         const quantidadeLinhas = await repositorioUsuario.count();
         const quantidadePaginas = Math.ceil(quantidadeLinhas/tamanhoPagina)
         try{
-            const usuarios = await repositorioUsuario
+            let usuarios = await repositorioUsuario
                 .createQueryBuilder("usuario") // Nome da entidade (tabela) no TypeORM
                 .select(["usuario.idUsuario", "usuario.nomeUsuario", "usuario.emailUsuario"]) // Seleciona apenas os atributos desejados
+                .where("usuario.nomeUsuario LIKE :nome AND usuario.emailUsuario LIKE :email", { nome: `%${nomeUsuario}%`, email: `%${emailUsuario}%`})
                 .orderBy("usuario.nomeUsuario", 'ASC') // Ordena pelo atributo "nomeUsuario"
                 .skip((pagina - 1) * tamanhoPagina) // Pula os registros para a paginação
                 .take(tamanhoPagina) // Define o tamanho da página
                 .getMany(); // Executa a consulta e obtém os resultados paginados
-
+            
+            
             const resposta = { usuarios:usuarios, pagina:pagina, tamanhoPagina:tamanhoPagina, quantidadePaginas:quantidadePaginas }
             res.status(200).send(resposta)
         } catch(error){
             if(pagina == 0)
                 res.status(400).send("Não é permitido requisitar a página 0")
-            else
-                res.send(400).send(error)
+            else{
+                res.status(400).send(error)
+                console.log(error)
+            }
         }
+    }
+
+    private geraQueryUsuarioPaginado(query, nomeUsuario, emailUsuario, repositorioUsuario:Repository<Usuario>){
+        if(nomeUsuario)
+            query = query.where("usuario.nomeUsuario LIKE :nome OR usuario.emailUsuario LIKE :email", { nome: nomeUsuario, email: emailUsuario })
+        else if (emailUsuario)
+            query = query.where("usuario.nomeUsuario LIKE :nome OR usuario.emailUsuario LIKE :email", { nome: nomeUsuario, email: emailUsuario })    
     }
 
     async deletar(req: Request, res: Response) {
