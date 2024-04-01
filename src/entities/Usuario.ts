@@ -1,40 +1,46 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, Check, Unique } from 'typeorm';
+
 
 @Entity()
 export class Usuario {
   @PrimaryGeneratedColumn()
   idUsuario: number;
 
-  @Column()
+  @Column({ nullable: false })
   nomeUsuario: string;
 
-  @Column()
+  @Column({ nullable: false, unique: true })
   emailUsuario: string;
 
-  @Column()
+  @Column({ nullable: false })
   senhaUsuario: string;
 
-  @Column()
-  tipoUsuario: string;
+  @Column({ nullable: true })
+  perfilUsuario: string;
   
-  @Column()
+  @Column({ nullable: false })
   dataNascimentoUsuario: Date;
 
-  @Column()
+  @Column({ nullable: false, unique: true })
   cpfUsuario: string;
   
-  @Column()
+  @Column({ nullable: false })
   cidadeUsuario: string;
 
-  @Column()
+  @Column({ nullable: false })
   bairroUsuario: string;
 
-  @Column()
+  @Column({ nullable: false })
   ruaAvenidaUsuario: string;
 
-  @Column()
+  @Column({ nullable: false })
+  estadoUsuario: string;
+  
+  @Column({ nullable: false })
   numeroCasaUsuario: string;
 
-  @Column()
+  @Column({ nullable: false })
   cepUsuario: string;
+
+
 }
