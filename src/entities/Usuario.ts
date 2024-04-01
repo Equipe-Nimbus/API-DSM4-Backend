@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, Check, Unique } from 'typeorm';
 
 
 @Entity()
@@ -21,7 +21,7 @@ export class Usuario {
   @Column({ nullable: false })
   dataNascimentoUsuario: Date;
 
-  @Column({ nullable: false, unique: true })
+  @Column({ nullable: false})
   cpfUsuario: string;
   
   @Column({ nullable: false })
@@ -34,9 +34,13 @@ export class Usuario {
   ruaAvenidaUsuario: string;
 
   @Column({ nullable: false })
+  estadoUsuario: string;
+  
+  @Column({ nullable: false })
   numeroCasaUsuario: string;
 
   @Column({ nullable: false })
   cepUsuario: string;
+
 
 }
