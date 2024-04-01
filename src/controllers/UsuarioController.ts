@@ -15,9 +15,10 @@ class UsuarioController {
             await repositorioUsuario.save(novoUsuario);
             res.send("Usuário cadastrado com sucesso")
         } catch(error){
-            if(error.message.includes("null value in column"))
+            console.log(error)
+            if(error.message.includes("null value in column" || "nulo"))
                 res.status(400).send("nenhum valor pode ser nulo");
-            else if(error.message.includes("duplicate key value"))
+            else if(error.message.includes("duplicate key value" || "duplicado"))
                 res.status(400).send("email ou cpf já cadastrado");
             else
                 throw error
