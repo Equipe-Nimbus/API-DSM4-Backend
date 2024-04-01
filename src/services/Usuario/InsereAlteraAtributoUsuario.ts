@@ -25,7 +25,7 @@ class InsereAlteraAtributosUsuario{
         if(corpoRequisicao.senhaUsuario)
             novoUsuario.senhaUsuario = corpoRequisicao.senhaUsuario;
         if(corpoRequisicao.estadoUsuario)
-            novoUsuario.senhaUsuario = corpoRequisicao.senhaUsuario;
+            novoUsuario.estadoUsuario = corpoRequisicao.estadoUsuario;
         return novoUsuario;
     }
 }
