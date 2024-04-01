@@ -21,7 +21,7 @@ export class Usuario {
   @Column({ nullable: false })
   dataNascimentoUsuario: Date;
 
-  @Column({ nullable: false, unique: true })
+  @Column({ nullable: false})
   cpfUsuario: string;
   
   @Column({ nullable: false })
