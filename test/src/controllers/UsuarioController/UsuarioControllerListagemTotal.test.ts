@@ -11,20 +11,22 @@ jest.mock("../../../../src/data-source", ()=>{
 
     const mockRepository = {
         createQueryBuilder:jest.fn().mockReturnValue({
-            orderBy:jest.fn().mockReturnValue({
-                skip:jest.fn().mockReturnValue({
-                    take:jest.fn().mockReturnValue({
-                        getMany:jest.fn(() => {
-                            let listaUsuariosListados: Usuario[] = [];
-                            let contador = 1
-                            if(take==0)
-                                throw new Error();
-                            usuariosCadastrados.forEach(usuario => {
-                                if (contador > skip && listaUsuariosListados.length < take)
-                                    listaUsuariosListados.push(usuario)
-                                contador++
-                            });
-                            return listaUsuariosListados
+            select:jest.fn().mockReturnValue({
+                orderBy:jest.fn().mockReturnValue({
+                    skip:jest.fn().mockReturnValue({
+                        take:jest.fn().mockReturnValue({
+                            getMany:jest.fn(() => {
+                                let listaUsuariosListados: Usuario[] = [];
+                                let contador = 1
+                                if(take==0)
+                                    throw new Error();
+                                usuariosCadastrados.forEach(usuario => {
+                                    if (contador > skip && listaUsuariosListados.length < take)
+                                        listaUsuariosListados.push(usuario)
+                                    contador++
+                                });
+                                return listaUsuariosListados
+                            })
                         })
                     })
                 })

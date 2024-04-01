@@ -46,6 +46,7 @@ class UsuarioController {
         try{
             const usuarios = await repositorioUsuario
                 .createQueryBuilder("usuario") // Nome da entidade (tabela) no TypeORM
+                .select(["usuario.idUsuario", "usuario.nomeUsuario", "usuario.emailUsuario"]) // Seleciona apenas os atributos desejados
                 .orderBy("usuario.nomeUsuario", 'ASC') // Ordena pelo atributo "nomeUsuario"
                 .skip((pagina - 1) * tamanhoPagina) // Pula os registros para a paginação
                 .take(tamanhoPagina) // Define o tamanho da página
