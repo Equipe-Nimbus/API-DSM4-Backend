@@ -14,7 +14,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 
-app.get('/', (req, res) => {
+app.get('/', (req, res) => {  
   res.json({ mensagem: 'Dados da API' });
 });
 

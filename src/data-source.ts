@@ -12,8 +12,9 @@ const PgDataSource = new DataSource({
     //DB Local
     database: "nimbusDB",
     host: "localhost",
+    username: "postgres",
     port: 5432,
-    password: "SeuPassword",
+    password: "Sua senha",
     
     type: "postgres", // se for SQLite, então use sqlite
     synchronize: false,
