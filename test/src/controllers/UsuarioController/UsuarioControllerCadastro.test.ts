@@ -1,7 +1,7 @@
 import UsuarioController from "../../../../src/controllers/UsuarioController";
 import { Usuario } from "../../../../src/entities/Usuario";
 import MocksCadastro from "./MocksUsuarioControllerCadastro";
-import MockResponse from "./MockResponse";
+import MockResponse from "../MockResponse";
 
 
 let listaUsuarios:Usuario[]=[]

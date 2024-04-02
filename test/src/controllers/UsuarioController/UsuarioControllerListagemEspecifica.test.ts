@@ -1,7 +1,7 @@
 import { Usuario } from "../../../../src/entities/Usuario";
 import UsuarioController from "../../../../src/controllers/UsuarioController";
 import { Request } from "express";
-import MockResponse from "./MockResponse";
+import MockResponse from "../MockResponse";
 
 
 let listaUsuarios:Usuario[]=[]

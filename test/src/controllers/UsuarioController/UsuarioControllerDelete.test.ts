@@ -1,7 +1,7 @@
 import { Request } from "express";
 import { Usuario } from "../../../../src/entities/Usuario";
 import UsuarioController from "../../../../src/controllers/UsuarioController";
-import MockResponse from "./MockResponse";
+import MockResponse from "../MockResponse";
 
 let req = {
     params: {
