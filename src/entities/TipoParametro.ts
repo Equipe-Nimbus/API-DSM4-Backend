@@ -1,4 +1,8 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Parametro } from "./Parametro";
+import { Estacao } from "./Estacao";
+import { Alerta } from "./Alerta";
+
 
 @Entity()
 export class TipoParametro {
@@ -23,6 +27,13 @@ export class TipoParametro {
     @Column({type: "boolean", default: true})
     statusTipoParametro: boolean;
 
-    @Column()
-    idAlerta: number
+    @OneToMany(()=>Parametro, parametro=>parametro.tiposParametro)
+    parametros:Parametro[]
+
+    @ManyToMany(()=>Estacao, estacoes=>estacoes.tipoParametros)
+    estacoes:Estacao[]
+
+    @OneToMany(()=>Alerta, alerta=>alerta.tipoParametro)
+    alertas:Alerta[]
+
 }
