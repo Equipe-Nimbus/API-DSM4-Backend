@@ -14,13 +14,16 @@ jest.mock("../../../../src/data-source", ()=>{
             listaUsuarios.forEach(usuarioCadastrado => {
                 for (const chave in usuarioCadastrado) {
                     if((chave == "emailUsuario" || chave == "cpfUsuario") && usuarioCadastrado[chave] === usuario[chave]){
-                        throw new Error("duplicate key value")
+                        const error = {code:"23505"}
+                        throw error
                     }
                 }
             });
             listaAtributos.forEach(chave => {
-                if(usuario[chave] == null || usuario[chave] == "")
-                    throw new Error("null value in column")
+                if(usuario[chave] == null || usuario[chave] == ""){
+                    const error = {code:"23502"}
+                    throw error
+                }
             });
             listaUsuarios.push(usuario);
         }
