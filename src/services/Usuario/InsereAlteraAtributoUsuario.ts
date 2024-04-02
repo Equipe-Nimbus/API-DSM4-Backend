@@ -32,6 +32,8 @@ class InsereAlteraAtributosUsuario{
     alterar(usuarioAlterando: Usuario, corpoRequisicao):Usuario{
         if(corpoRequisicao.bairroUsuario && corpoRequisicao.bairroUsuario !=usuarioAlterando.bairroUsuario)
             usuarioAlterando.bairroUsuario = corpoRequisicao.bairroUsuario;
+        if(corpoRequisicao.perfilUsuario && corpoRequisicao.perfilUsuario !=usuarioAlterando.perfilUsuario)
+            usuarioAlterando.perfilUsuario = corpoRequisicao.perfilUsuario;
         if(corpoRequisicao.cepUsuario && corpoRequisicao.cepUsuario!=usuarioAlterando.cepUsuario)
             usuarioAlterando.cepUsuario = corpoRequisicao.cepUsuario;
         if(corpoRequisicao.cidadeUsuario && corpoRequisicao.cidadeUsuario!=usuarioAlterando.cidadeUsuario)
