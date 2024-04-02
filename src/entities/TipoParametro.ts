@@ -3,6 +3,7 @@ import { Parametro } from "./Parametro";
 import { Estacao } from "./Estacao";
 import { Alerta } from "./Alerta";
 
+
 @Entity()
 export class TipoParametro {
     @PrimaryGeneratedColumn()
@@ -34,4 +35,5 @@ export class TipoParametro {
 
     @OneToMany(()=>Alerta, alerta=>alerta.tipoParametro)
     alertas:Alerta[]
+
 }
