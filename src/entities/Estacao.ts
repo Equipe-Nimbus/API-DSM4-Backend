@@ -1,7 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinColumn, JoinTable, OneToMany } from 'typeorm';
+import { TipoParametro } from './TipoParametro';
+import { Parametro } from './Parametro';
 
 @Entity()
-export class Estacoes {
+export class Estacao {
   @PrimaryGeneratedColumn()
   idEstacao: number;
 
@@ -34,4 +36,10 @@ export class Estacoes {
 
   @Column({nullable:false, default:true})
   statusEstacao: boolean;
+
+  @ManyToMany(()=>TipoParametro, tipoParametros=>tipoParametros.estacoes)
+  tipoParametros:TipoParametro[]
+
+  @OneToMany(()=>Parametro, parametro=>parametro.estacoes)
+  parametros:Parametro[]
 }
