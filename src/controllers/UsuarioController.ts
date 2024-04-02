@@ -10,14 +10,13 @@ class UsuarioController {
     
     
     async cadastrar(req: Request, res: Response){
-        const repositorioUsuario = PgDataSource.getRepository(Usuario);
+        const repositorioUsuario = PgDataSource.getRepository(Usuario)
         try{
             var novoUsuario = new Usuario();
             novoUsuario = InsereAlteraAtributosUsuario.inserir(novoUsuario, req.body);
             await repositorioUsuario.save(novoUsuario);
             res.send("Usuário cadastrado com sucesso")
         } catch(error){
-            console.log(error)
             if(error.code == "23502")
                 res.status(400).send("nenhum valor pode ser nulo");
             else if(error.code == "23505")
@@ -29,7 +28,7 @@ class UsuarioController {
     }
 
     async listarEspecifico(req: Request, res:Response) {
-        const repositorioUsuario = PgDataSource.getRepository(Usuario);
+        const repositorioUsuario = PgDataSource.getRepository(Usuario)
         const id = parseInt(req.params.id)
         const usuario = await repositorioUsuario.findOne({where:{idUsuario:id}});
         if(usuario == undefined)
@@ -39,7 +38,7 @@ class UsuarioController {
     }
 
     async listarPaginada(req: Request, res: Response) {
-        const repositorioUsuario = PgDataSource.getRepository(Usuario);
+        const repositorioUsuario = PgDataSource.getRepository(Usuario)
         const pagina = req.query.pagina ?
             parseInt(req.query.pagina as string) : 1;
         const tamanhoPagina = req.query.tamanhoPagina ?
@@ -71,12 +70,7 @@ class UsuarioController {
         }
     }
 
-    private geraQueryUsuarioPaginado(query, nomeUsuario, emailUsuario, repositorioUsuario:Repository<Usuario>){
-        if(nomeUsuario)
-            query = query.where("usuario.nomeUsuario LIKE :nome OR usuario.emailUsuario LIKE :email", { nome: nomeUsuario, email: emailUsuario })
-        else if (emailUsuario)
-            query = query.where("usuario.nomeUsuario LIKE :nome OR usuario.emailUsuario LIKE :email", { nome: nomeUsuario, email: emailUsuario })    
-    }
+
 
     async atualizar(req: Request, res: Response) {
         const id = parseInt(req.body.idUsuario)
@@ -101,7 +95,7 @@ class UsuarioController {
 
 
     async deletar(req: Request, res: Response) {
-        const repositorioUsuario = PgDataSource.getRepository(Usuario);
+        const repositorioUsuario = PgDataSource.getRepository(Usuario)
         const id = parseInt(req.params.id);
         try{
             await repositorioUsuario.delete(id);
