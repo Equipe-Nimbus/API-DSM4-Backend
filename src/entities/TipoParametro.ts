@@ -1,6 +1,7 @@
 import { Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Parametro } from "./Parametro";
 import { Estacao } from "./Estacao";
+import { Alerta } from "./Alerta";
 
 @Entity()
 export class TipoParametro {
@@ -31,6 +32,6 @@ export class TipoParametro {
     @ManyToMany(()=>Estacao, estacoes=>estacoes.tipoParametros)
     estacoes:Estacao[]
 
-    @Column()
-    idAlerta: number
+    @OneToMany(()=>Alerta, alerta=>alerta.tipoParametro)
+    alertas:Alerta[]
 }
