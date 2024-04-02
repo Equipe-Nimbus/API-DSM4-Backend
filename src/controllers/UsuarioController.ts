@@ -70,26 +70,6 @@ class UsuarioController {
         }
     }
 
-    async atualizar(req: Request, res: Response) {
-        const repositorioUsuario = PgDataSource.getRepository(Usuario)
-        const id = parseInt(req.body.idUsuario)
-        let usuarioAtualizando = await repositorioUsuario.findOne({where:{idUsuario:id}})
-        if(usuarioAtualizando == undefined){
-            res.status(400).send("Id do usuário não encontrado")
-            return;
-        }
-        usuarioAtualizando = InsereAlteraAtributosUsuario.alterar(usuarioAtualizando, req.body)
-        try{
-            await repositorioUsuario.save(usuarioAtualizando)
-            res.status(200).send("Usuário atualizado com sucesso")
-        } catch(error){
-            if(error.code == "23505")
-                res.status(400).send("email ou cpf já cadastrado")
-            else
-                res.status(400).send(error)
-        }
-
-    }
 
 
     async atualizar(req: Request, res: Response) {
