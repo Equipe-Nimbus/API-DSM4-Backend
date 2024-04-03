@@ -2,6 +2,7 @@ import express, {Request, Response} from "express";
 import cors from "cors";
 import { config } from 'dotenv';
 import routesUsuario from "./routes/routesUsuario";
+import routesEstacao from "./routes/routeEstacao";
 
 config();
 const app = express();
@@ -14,6 +15,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 app.use("/usuario", routesUsuario);
+app.use("/estacao", routesEstacao)
 
 
 
