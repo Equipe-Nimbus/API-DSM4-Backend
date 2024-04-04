@@ -3,6 +3,8 @@ import { Usuario } from "../entities/Usuario";
 import PgDataSource from "../data-source";
 import InsereAlteraAtributosUsuario from "../services/Usuario/InsereAlteraAtributoUsuario";
 import { Repository } from "typeorm";
+import TrataValoresFiltroUsuario from "../services/Usuario/TrataValoresFiltroUsuario";
+import SelecaoPaginadaUsuario from "../services/Usuario/SelecaoPaginadaUsuario";
 
 
 
@@ -39,25 +41,13 @@ class UsuarioController {
 
     async listarPaginada(req: Request, res: Response) {
         const repositorioUsuario = PgDataSource.getRepository(Usuario)
-        const pagina = req.query.pagina ?
-            parseInt(req.query.pagina as string) : 1;
-        const tamanhoPagina = req.query.tamanhoPagina ?
-            parseInt(req.query.tamanhoPagina as string) : 10;
-        const nomeUsuario = req.query.nome ?
-            req.query.nome : ""
-        const emailUsuario = req.query.email ?
-            req.query.email : ""
-        const quantidadeLinhas = await repositorioUsuario.count();
+        const pagina = req.query.pagina ? parseInt(req.query.pagina as string) : 1;
+        const tamanhoPagina = req.query.tamanhoPagina ? parseInt(req.query.tamanhoPagina as string) : 10;  
+        const quantidadeLinhas = await repositorioUsuario.count(TrataValoresFiltroUsuario.tratarContagem(req))
         const quantidadePaginas = Math.ceil(quantidadeLinhas/tamanhoPagina)
         try{
-            let usuarios = await repositorioUsuario
-                .createQueryBuilder("usuario") // Nome da entidade (tabela) no TypeORM
-                .select(["usuario.idUsuario", "usuario.nomeUsuario", "usuario.emailUsuario"]) // Seleciona apenas os atributos desejados
-                .where("usuario.nomeUsuario LIKE :nome AND usuario.emailUsuario LIKE :email", { nome: `%${nomeUsuario}%`, email: `%${emailUsuario}%`})
-                .orderBy("usuario.nomeUsuario", 'ASC') // Ordena pelo atributo "nomeUsuario"
-                .skip((pagina - 1) * tamanhoPagina) // Pula os registros para a paginação
-                .take(tamanhoPagina) // Define o tamanho da página
-                .getMany(); // Executa a consulta e obtém os resultados paginados
+            const filtroSelecao = TrataValoresFiltroUsuario.tratarSelect(req)
+            let usuarios = await SelecaoPaginadaUsuario.selecionar(repositorioUsuario, pagina, tamanhoPagina, filtroSelecao)
             const resposta = { usuarios:usuarios, pagina:pagina, tamanhoPagina:tamanhoPagina, quantidadePaginas:quantidadePaginas }
             res.status(200).send(resposta)
         } catch(error){
