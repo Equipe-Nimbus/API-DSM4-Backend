@@ -5,10 +5,11 @@ import InsereAlteraAtributosUsuario from "../services/Usuario/InsereAlteraAtribu
 import { Repository } from "typeorm";
 import TrataValoresFiltroUsuario from "../services/Usuario/TrataValoresFiltroUsuario";
 import SelecaoPaginadaUsuario from "../services/Usuario/SelecaoPaginadaUsuario";
+import AbstratoController from "./AbstratoController";
 
 
 
-class UsuarioController {
+class UsuarioController extends AbstratoController{
     
     
     async cadastrar(req: Request, res: Response){

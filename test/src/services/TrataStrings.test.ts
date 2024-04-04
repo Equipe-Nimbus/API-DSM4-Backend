@@ -6,7 +6,7 @@ describe("Teste da classe que trata strings, tira acesntos e transforma em lower
 
     test("Tira acento e deixa em caixa baixa", ()=>{
         var stringSemTratamento = "cÉU"
-        const stringComTratamento = TrataStrings.tratarParaLowerSemAcento(stringSemTratamento)
+        const stringComTratamento = TrataStrings.tratarParaUpperSemAcento(stringSemTratamento)
         expect(stringComTratamento).toBe("CEU")
     })
 
