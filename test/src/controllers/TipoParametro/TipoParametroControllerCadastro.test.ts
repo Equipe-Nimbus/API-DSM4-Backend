@@ -83,5 +83,4 @@ describe("Teste de cadastro de Tipo Parametro", ()=>{
         await TipoParametroController.cadastrar(MockCadastro.reqTipoParametroJaExistente, MockResponse.resSemLocals);
         expect(mockRes.mock.calls[0][0]).toBe("TipoParametro identico já cadastrada")
     })
-    
 })
