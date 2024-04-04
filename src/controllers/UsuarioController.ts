@@ -41,10 +41,8 @@ class UsuarioController {
 
     async listarPaginada(req: Request, res: Response) {
         const repositorioUsuario = PgDataSource.getRepository(Usuario)
-        const pagina = req.query.pagina ?
-            parseInt(req.query.pagina as string) : 1;
-        const tamanhoPagina = req.query.tamanhoPagina ?
-            parseInt(req.query.tamanhoPagina as string) : 10;  
+        const pagina = req.query.pagina ? parseInt(req.query.pagina as string) : 1;
+        const tamanhoPagina = req.query.tamanhoPagina ? parseInt(req.query.tamanhoPagina as string) : 10;  
         const quantidadeLinhas = await repositorioUsuario.count(TrataValoresFiltroUsuario.tratarContagem(req))
         const quantidadePaginas = Math.ceil(quantidadeLinhas/tamanhoPagina)
         try{
