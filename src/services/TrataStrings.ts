@@ -1,6 +1,6 @@
 class TrataStrings{
 
-    tratarParaLowerSemAcento(stringSemTratamento:string){
+    tratarParaUpperSemAcento(stringSemTratamento:string){
         stringSemTratamento = this.removerAcento(stringSemTratamento)
         return stringSemTratamento.toUpperCase()
     }

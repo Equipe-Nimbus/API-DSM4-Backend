@@ -3,8 +3,14 @@ import { TipoParametro } from "../entities/TipoParametro";
 import InsereAtributoTipoParametro from "../services/TipoParametro/InsereAtributoTipoParametro";
 import ConfereIgualdadeTipoParametro from "../services/TipoParametro/ConfereIgualdadeTipoParametro";
 import { Request, Response } from "express";
+import AbstratoController from "./AbstratoController";
+import { ParamsDictionary } from "express-serve-static-core";
+import { ParsedQs } from "qs";
+import TratarValoresFiltroTipoParametro from "../services/TipoParametro/TratarValoresFiltroTipoParametro";
+import SelecaoPaginadaTipoParametro from "../services/TipoParametro/SelecaoPaginadaTipoParametro";
 
-class TipoParametroController {
+class TipoParametroController extends AbstratoController {
+    
 
     async cadastrar(req: Request, res: Response){
         const repositorioTipoParametro = PgDataSource.getRepository(TipoParametro)
@@ -24,6 +30,34 @@ class TipoParametroController {
             else
                 throw error
         }
+    }
+
+    listarEspecifico(req: Request, res: Response): void {
+        throw new Error("Method not implemented.");
+    }
+
+    async listarPaginada(req: Request, res: Response): Promise<void> {
+        const repositorioTipoParametro = PgDataSource.getRepository(TipoParametro)
+        const pagina = req.query.pagina ? parseInt(req.query.pagina as string) : 1;
+        const tamanhoPagina = req.query.tamanhoPagina ? parseInt(req.query.tamanhoPagina as string) : 10;  
+        const quantidadeLinhas = await repositorioTipoParametro.count(TratarValoresFiltroTipoParametro.tratarContagem(req))
+        const quantidadePaginas = Math.ceil(quantidadeLinhas/tamanhoPagina)
+        try{
+            const filtroSelecao = TratarValoresFiltroTipoParametro.tratarSelect(req)
+            let tiposParametros = await SelecaoPaginadaTipoParametro.selecionar(repositorioTipoParametro, pagina, tamanhoPagina, filtroSelecao)
+            const resposta = { tiposParametros:tiposParametros, pagina:pagina, tamanhoPagina:tamanhoPagina, quantidadePaginas:quantidadePaginas }
+            res.status(200).send(resposta)
+        } catch(error){
+            if(pagina == 0)
+                res.status(400).send("Não é permitido requisitar a página 0")
+            else{
+                res.status(400).send(error)
+                console.log(error)
+            }
+        }
+    }
+    atualizar(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>): void {
+        throw new Error("Method not implemented.");
     }
 
     async deletar(req: Request, res: Response) {

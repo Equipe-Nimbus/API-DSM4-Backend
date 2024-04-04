@@ -9,7 +9,7 @@ class InsereAtributosTipoParametro{
         for(const chave in novosAtributos){
             if(novosAtributos[chave])
                 if(typeof novosAtributos[chave] === "string")
-                    tipoParametro[chave] = TrataStrings.tratarParaLowerSemAcento(novosAtributos[chave])
+                    tipoParametro[chave] = TrataStrings.tratarParaUpperSemAcento(novosAtributos[chave])
                 else{
                     tipoParametro[chave] = novosAtributos[chave]
                 }
