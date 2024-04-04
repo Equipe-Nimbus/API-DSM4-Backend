@@ -2,7 +2,7 @@ class TrataStrings{
 
     tratarParaLowerSemAcento(stringSemTratamento:string){
         stringSemTratamento = this.removerAcento(stringSemTratamento)
-        return stringSemTratamento.toLowerCase()
+        return stringSemTratamento.toUpperCase()
     }
 
     private removerAcento(stringComAcento:string){
