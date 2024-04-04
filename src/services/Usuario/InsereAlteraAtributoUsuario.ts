@@ -1,7 +1,7 @@
 import { Usuario } from "../../entities/Usuario";
 
 class InsereAlteraAtributosUsuario{
-    inserirAlterar(novoUsuario: Usuario, corpoRequisicao):Usuario{
+    inserir(novoUsuario: Usuario, corpoRequisicao):Usuario{
         if(corpoRequisicao.bairroUsuario)
             novoUsuario.bairroUsuario = corpoRequisicao.bairroUsuario;
         if(corpoRequisicao.cepUsuario)
@@ -27,6 +27,33 @@ class InsereAlteraAtributosUsuario{
         if(corpoRequisicao.estadoUsuario)
             novoUsuario.estadoUsuario = corpoRequisicao.estadoUsuario;
         return novoUsuario;
+    }
+
+    alterar(usuarioAlterando: Usuario, corpoRequisicao):Usuario{
+        if(corpoRequisicao.bairroUsuario && corpoRequisicao.bairroUsuario !=usuarioAlterando.bairroUsuario)
+            usuarioAlterando.bairroUsuario = corpoRequisicao.bairroUsuario;
+        if(corpoRequisicao.perfilUsuario && corpoRequisicao.perfilUsuario !=usuarioAlterando.perfilUsuario)
+            usuarioAlterando.perfilUsuario = corpoRequisicao.perfilUsuario;
+        if(corpoRequisicao.cepUsuario && corpoRequisicao.cepUsuario!=usuarioAlterando.cepUsuario)
+            usuarioAlterando.cepUsuario = corpoRequisicao.cepUsuario;
+        if(corpoRequisicao.cidadeUsuario && corpoRequisicao.cidadeUsuario!=usuarioAlterando.cidadeUsuario)
+            usuarioAlterando.cidadeUsuario = corpoRequisicao.cidadeUsuario;
+        if(corpoRequisicao.cpfUsuario && corpoRequisicao.cpfUsuario!=usuarioAlterando.cpfUsuario)
+            usuarioAlterando.cpfUsuario = corpoRequisicao.cpfUsuario;
+        if(corpoRequisicao.emailUsuario && corpoRequisicao.emailUsuario!=usuarioAlterando.emailUsuario)
+            usuarioAlterando.emailUsuario = corpoRequisicao.emailUsuario;
+        if(corpoRequisicao.nomeUsuario && corpoRequisicao.nomeUsuario!=usuarioAlterando.nomeUsuario)
+            usuarioAlterando.nomeUsuario = corpoRequisicao.nomeUsuario;
+        if(corpoRequisicao.numeroCasaUsuario && corpoRequisicao.numeroCasaUsuario!=usuarioAlterando.numeroCasaUsuario)
+            usuarioAlterando.numeroCasaUsuario = corpoRequisicao.numeroCasaUsuario;
+        if(corpoRequisicao.ruaAvenidaUsuario && corpoRequisicao.ruaAvenidaUsuario!=usuarioAlterando.ruaAvenidaUsuario)
+            usuarioAlterando.ruaAvenidaUsuario = corpoRequisicao.ruaAvenidaUsuario;
+        if(corpoRequisicao.senhaUsuario && corpoRequisicao.senhaUsuario!=usuarioAlterando.senhaUsuario)
+            usuarioAlterando.senhaUsuario = corpoRequisicao.senhaUsuario;
+        if(corpoRequisicao.estadoUsuario && corpoRequisicao.estadoUsuario!=usuarioAlterando.estadoUsuario)
+            usuarioAlterando.estadoUsuario = corpoRequisicao.estadoUsuario;
+        
+        return usuarioAlterando
     }
 }
 

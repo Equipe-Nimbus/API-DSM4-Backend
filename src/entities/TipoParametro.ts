@@ -9,10 +9,10 @@ export class TipoParametro {
     @PrimaryGeneratedColumn()
     idTipoParametro: number;
 
-    @Column({length: 50})
+    @Column({length: 50, nullable:false})
     nomeTipoParametro: string;
 
-    @Column({unique: true, length: 10})
+    @Column({length: 10, nullable:false})
     unidadeTipoParametro: string;
 
     @Column({type: "numeric", default: 1})

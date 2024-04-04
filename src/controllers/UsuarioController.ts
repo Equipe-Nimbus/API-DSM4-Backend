@@ -8,18 +8,18 @@ import { Repository } from "typeorm";
 
 class UsuarioController {
     
+    
     async cadastrar(req: Request, res: Response){
-        const repositorioUsuario = PgDataSource.getRepository(Usuario);
+        const repositorioUsuario = PgDataSource.getRepository(Usuario)
         try{
             var novoUsuario = new Usuario();
-            novoUsuario = InsereAlteraAtributosUsuario.inserirAlterar(novoUsuario, req.body);
+            novoUsuario = InsereAlteraAtributosUsuario.inserir(novoUsuario, req.body);
             await repositorioUsuario.save(novoUsuario);
             res.send("Usuário cadastrado com sucesso")
         } catch(error){
-            console.log(error)
-            if(error.message.includes("null value in column" || "nulo"))
+            if(error.code == "23502")
                 res.status(400).send("nenhum valor pode ser nulo");
-            else if(error.message.includes("duplicate key value" || "duplicado"))
+            else if(error.code == "23505")
                 res.status(400).send("email ou cpf já cadastrado");
             else
                 throw error
@@ -28,7 +28,7 @@ class UsuarioController {
     }
 
     async listarEspecifico(req: Request, res:Response) {
-        const repositorioUsuario = PgDataSource.getRepository(Usuario);
+        const repositorioUsuario = PgDataSource.getRepository(Usuario)
         const id = parseInt(req.params.id)
         const usuario = await repositorioUsuario.findOne({where:{idUsuario:id}});
         if(usuario == undefined)
@@ -38,7 +38,7 @@ class UsuarioController {
     }
 
     async listarPaginada(req: Request, res: Response) {
-        const repositorioUsuario = PgDataSource.getRepository(Usuario);
+        const repositorioUsuario = PgDataSource.getRepository(Usuario)
         const pagina = req.query.pagina ?
             parseInt(req.query.pagina as string) : 1;
         const tamanhoPagina = req.query.tamanhoPagina ?
@@ -58,8 +58,6 @@ class UsuarioController {
                 .skip((pagina - 1) * tamanhoPagina) // Pula os registros para a paginação
                 .take(tamanhoPagina) // Define o tamanho da página
                 .getMany(); // Executa a consulta e obtém os resultados paginados
-            
-            
             const resposta = { usuarios:usuarios, pagina:pagina, tamanhoPagina:tamanhoPagina, quantidadePaginas:quantidadePaginas }
             res.status(200).send(resposta)
         } catch(error){
@@ -72,15 +70,32 @@ class UsuarioController {
         }
     }
 
-    private geraQueryUsuarioPaginado(query, nomeUsuario, emailUsuario, repositorioUsuario:Repository<Usuario>){
-        if(nomeUsuario)
-            query = query.where("usuario.nomeUsuario LIKE :nome OR usuario.emailUsuario LIKE :email", { nome: nomeUsuario, email: emailUsuario })
-        else if (emailUsuario)
-            query = query.where("usuario.nomeUsuario LIKE :nome OR usuario.emailUsuario LIKE :email", { nome: nomeUsuario, email: emailUsuario })    
+
+
+    async atualizar(req: Request, res: Response) {
+        const id = parseInt(req.body.idUsuario)
+        const repositorioUsuario = PgDataSource.getRepository(Usuario);
+        let usuarioAtualizando = await repositorioUsuario.findOne({where:{idUsuario:id}})
+        if(usuarioAtualizando == undefined){
+            res.status(400).send("Id do usuário não encontrado")
+            return;
+        }
+        usuarioAtualizando = InsereAlteraAtributosUsuario.alterar(usuarioAtualizando, req.body)
+        try{
+            await repositorioUsuario.save(usuarioAtualizando)
+            res.status(200).send("Usuário atualizado com sucesso")
+        } catch(error){
+            if(error.code == "23505")
+                res.status(400).send("email ou cpf já cadastrado")
+            else
+                res.status(400).send(error)
+        }
+
     }
 
+
     async deletar(req: Request, res: Response) {
-        const repositorioUsuario = PgDataSource.getRepository(Usuario);
+        const repositorioUsuario = PgDataSource.getRepository(Usuario)
         const id = parseInt(req.params.id);
         try{
             await repositorioUsuario.delete(id);
