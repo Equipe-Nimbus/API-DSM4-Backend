@@ -1,22 +1,22 @@
 import express, {Request, Response} from "express";
 import cors from "cors";
 import { config } from 'dotenv';
+import routesUsuario from "./routes/routesUsuario";
+import routesTipoParametro from "./routes/routesTipoParametro";
 
 config();
 const app = express();
-
-
+app.use(express.json());
 const corsOptions = {
   origin: ['http://localhost:3000'],
-  optionsSuccessStatus: 200 // Algumas versões do navegador Chrome não aceitam '*' no Access-Control-Allow-Origin
+  optionsSuccessStatus: 200 
 };
 
 app.use(cors(corsOptions));
 
+app.use("/usuario", routesUsuario);
+app.use("/tipoParametro", routesTipoParametro);
 
-app.get('/', (req, res) => {
-  res.json({ mensagem: 'Dados da API' });
-});
 
 
 const PORT = process.env.PORT;
