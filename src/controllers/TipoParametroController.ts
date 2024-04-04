@@ -23,8 +23,6 @@ class TipoParametroController {
         } catch(error){
             if(error.code == "23502")
                 res.status(400).send("nomeTipoParametro e unidadeTipoParametro não podem ser nulo");
-            else if(error.code == "23505")
-                res.status(400).send("unidadeTipoParametro já cadastrada");
             else
                 throw error
         }

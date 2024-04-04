@@ -12,7 +12,7 @@ export class TipoParametro {
     @Column({length: 50, nullable:false})
     nomeTipoParametro: string;
 
-    @Column({unique: true, length: 10, nullable:false})
+    @Column({length: 10, nullable:false})
     unidadeTipoParametro: string;
 
     @Column({type: "numeric", default: 1})
