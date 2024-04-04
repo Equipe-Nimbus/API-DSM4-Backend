@@ -17,13 +17,13 @@ export class TipoParametro {
 
     @Column({type: "numeric", default: 1})
     fatorTipoParametro: number;
-
+    
     @Column({type: "numeric", default: 1})
     offsetTipoParametro: number;
 
     @Column({type: "numeric", default: 0})
     ganhoTipoParametro: number;
-
+    
     @Column({type: "boolean", default: true})
     statusTipoParametro: boolean;
 
