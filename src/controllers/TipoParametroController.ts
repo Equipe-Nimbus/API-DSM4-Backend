@@ -10,6 +10,7 @@ import TratarValoresFiltroTipoParametro from "../services/TipoParametro/TratarVa
 import SelecaoPaginadaTipoParametro from "../services/TipoParametro/SelecaoPaginadaTipoParametro";
 import AtualizaAtrifutoTipoParametro from "../services/TipoParametro/AtualizaAtributoTipoParametro";
 
+
 class TipoParametroController extends AbstratoController {
     
 
@@ -59,6 +60,7 @@ class TipoParametroController extends AbstratoController {
     }
 
 
+
     async atualizar(req: Request, res: Response): Promise<void> {
         const repositorioTipoParametro = PgDataSource.getRepository(TipoParametro)
         const id = parseInt(req.body.idTipoParametro)
@@ -75,6 +77,7 @@ class TipoParametroController extends AbstratoController {
         }
         await repositorioTipoParametro.save(tipoParametro)
         res.status(200).send("Tipo parametro atualizado com sucesso")
+
     }
 
     async deletar(req: Request, res: Response) {
