@@ -5,8 +5,6 @@ import ConfereIgualdadeTipoParametro from "../services/TipoParametro/ConfereIgua
 import { Request, Response } from "express";
 
 class TipoParametroController {
-    
-    
 
     async cadastrar(req: Request, res: Response){
         const repositorioTipoParametro = PgDataSource.getRepository(TipoParametro)
@@ -26,6 +24,19 @@ class TipoParametroController {
             else
                 throw error
         }
+    }
+
+    async deletar(req: Request, res: Response) {
+        const repositorioTipoParametro = PgDataSource.getRepository(TipoParametro);
+        const id = parseInt(req.params.id);
+        let tipoParametro = await repositorioTipoParametro.findOne({where:{idTipoParametro:id}});
+        if(tipoParametro == undefined){
+            res.status(400).send("Tipo Parametro não pode ser deletado pois não existe")
+            return;
+        }
+        tipoParametro.statusTipoParametro = false;
+        await repositorioTipoParametro.save(tipoParametro);
+        res.status(200).send("Tipo Parametro deletado com sucesso")
     }
 
 }
