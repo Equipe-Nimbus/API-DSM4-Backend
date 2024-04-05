@@ -4,10 +4,10 @@ import InsereAtributoTipoParametro from "../services/TipoParametro/InsereAtribut
 import ConfereIgualdadeTipoParametro from "../services/TipoParametro/ConfereIgualdadeTipoParametro";
 import { Request, Response } from "express";
 import AbstratoController from "./AbstratoController";
-import { ParamsDictionary } from "express-serve-static-core";
-import { ParsedQs } from "qs";
 import TratarValoresFiltroTipoParametro from "../services/TipoParametro/TratarValoresFiltroTipoParametro";
 import SelecaoPaginadaTipoParametro from "../services/TipoParametro/SelecaoPaginadaTipoParametro";
+import AtualizaAtrifutoTipoParametro from "../services/TipoParametro/AtualizaAtributoTipoParametro";
+
 
 class TipoParametroController extends AbstratoController {
     
@@ -32,8 +32,15 @@ class TipoParametroController extends AbstratoController {
         }
     }
 
-    listarEspecifico(req: Request, res: Response): void {
-        throw new Error("Method not implemented.");
+    async listarEspecifico(req: Request, res: Response): Promise<void> {
+        const repositorioTipoParametro = PgDataSource.getRepository(TipoParametro)
+        const id = parseInt(req.params.id)
+        const tipoParametro = await repositorioTipoParametro.findOne({where:{idTipoParametro:id}})
+        if(tipoParametro){
+            res.status(200).send(tipoParametro)
+            return;
+        }
+        res.status(400).send("Tipo Parametro não encontrado")
     }
 
     async listarPaginada(req: Request, res: Response): Promise<void> {
@@ -56,8 +63,26 @@ class TipoParametroController extends AbstratoController {
             }
         }
     }
-    atualizar(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>): void {
-        throw new Error("Method not implemented.");
+
+
+
+    async atualizar(req: Request, res: Response): Promise<void> {
+        const repositorioTipoParametro = PgDataSource.getRepository(TipoParametro)
+        const id = parseInt(req.body.idTipoParametro)
+        let tipoParametro = await repositorioTipoParametro.findOne({where:{idTipoParametro:id}})
+        if(tipoParametro == undefined){
+            res.status(400).send("Id do Tipo Parametro não encontrado")
+            return;
+        }
+        tipoParametro = AtualizaAtrifutoTipoParametro.atualizar(tipoParametro, req)
+        const resultado = await ConfereIgualdadeTipoParametro.conferir(tipoParametro)
+        if(resultado == false){
+            res.status(400).send("TipoParametro identico já existe no banco de dados")
+            return;
+        }
+        await repositorioTipoParametro.save(tipoParametro)
+        res.status(200).send("Tipo parametro atualizado com sucesso")
+
     }
 
     async deletar(req: Request, res: Response) {
