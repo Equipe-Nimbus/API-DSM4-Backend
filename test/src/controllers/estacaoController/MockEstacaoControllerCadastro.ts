@@ -11,7 +11,12 @@ class MockEstacaoControllerCadastro {
             estadoEstacao: "Estado Grande",
             cepEstacao: "12345-678",
             latitudeEstacao: "-23.5505",
-            longitudeEstacao: "-46.6333"
+            longitudeEstacao: "-46.6333",
+            tipoParametros: [
+                {
+                  "idTipoParametro": 1                  
+                }
+              ]
         }
     } as unknown as Request;
 
@@ -25,7 +30,12 @@ class MockEstacaoControllerCadastro {
             estadoEstacao: "Estado Pequeno",
             cepEstacao: "54321-987",
             latitudeEstacao: "-22.9876",
-            longitudeEstacao: "-47.1234"
+            longitudeEstacao: "-47.1234",
+            tipoParametros: [
+                {
+                  "idTipoParametro": 1                  
+                }
+              ]
         }          
     } as unknown as Request;
 
@@ -39,7 +49,12 @@ class MockEstacaoControllerCadastro {
             estadoEstacao: "Estado Pequeno",
             cepEstacao: "54321-987",
             latitudeEstacao: "-23.5505",
-            longitudeEstacao: "-46.6333"
+            longitudeEstacao: "-46.6333",
+            tipoParametros: [
+                {
+                  "idTipoParametro": 1                  
+                }
+              ]
         }          
     } as unknown as Request;
 
@@ -53,8 +68,28 @@ class MockEstacaoControllerCadastro {
             estadoEstacao: "Estado Pequeno",
             cepEstacao: "54321-987",
             latitudeEstacao: "-23.5505",
-            longitudeEstacao: "-46.6333"
+            longitudeEstacao: "-46.6333",
+            tipoParametros: [
+                {
+                  "idTipoParametro": 1                  
+                }
+              ]
         }          
+    } as unknown as Request;
+
+    reqEstacaoSemTipoParametro = {
+        body: {
+            nomeEstacao: "Estação Sul",
+            ruaAvenidaEstacao: "Avenida dos Bandeirantes",
+            numeroEnderecoEstacao: "",
+            bairroEstacao: "Bairro Novo",
+            cidadeEstacao: "Cidade Pequena",
+            estadoEstacao: "Estado Pequeno",
+            cepEstacao: "54321-987",
+            latitudeEstacao: "-23.5505",
+            longitudeEstacao: "-46.6333",
+            tipoParametros: []
+        }
     } as unknown as Request;
 };
 

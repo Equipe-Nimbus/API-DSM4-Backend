@@ -1,9 +1,12 @@
 import EstacaoController from "../../../../src/controllers/EstacaoController";
 import { Estacao } from "../../../../src/entities/Estacao"
+import { Parametro } from "../../../../src/entities/Parametro";
+import { TipoParametro } from "../../../../src/entities/TipoParametro";
 import MockResponse from "../MockResponse";
 import MockEstacaoControllerCadastro from "./MockEstacaoControllerCadastro";
 
 let listaEstacao: Estacao[] = [];
+let listaParametro: Parametro[] = [];
 
 jest.mock("../../../../src/data-source.ts", () => {
 
@@ -13,7 +16,7 @@ jest.mock("../../../../src/data-source.ts", () => {
                 if (estacao.nomeEstacao == estacaoCadastrada.nomeEstacao) {
                     const error = {code: "23505"};
                     throw error;
-                };
+                }; 
             });
             const listaAtributosEstacao = ["nomeEstacao", "ruaAvenidaEstacao", "numeroEnderecoEstacao", "bairroEstacao", "cidadeEstacao", "estadoEstacao", "cepEstacao", "latitudeEstacao", "longitudeEstacao"];
             listaAtributosEstacao.forEach(atributoEstacao => {
@@ -32,7 +35,7 @@ jest.mock("../../../../src/data-source.ts", () => {
     };
 });
 
-jest.mock("../../../../src/services/estacao/CoordenadaGeograficaEstacao.ts", () => {
+jest.mock("../../../../src/services/estacao/ConsultaCoordenadaGeograficaEstacao.ts", () => {
     const mockCoordenadaGeograficaEstacao =
         (estacao: Estacao) => {
             listaEstacao.forEach(estacaoCadastrada => {
@@ -49,11 +52,44 @@ jest.mock("../../../../src/services/estacao/CoordenadaGeograficaEstacao.ts", () 
                 };
             });
             return false;
-        }
+        };
     const mockConsultaCoordenadaGeografica = jest.fn(mockCoordenadaGeograficaEstacao);
     return {
         consulta: mockConsultaCoordenadaGeografica,
     }
+});
+
+jest.mock("../../../../src/services/estacao/CriaObjetoParametro.ts", () => {
+    const mockListaObjetoParametro = (listaTipoParametro: TipoParametro[]) => {
+        for(const tipoParametro of listaTipoParametro) {
+            if (Object.keys(tipoParametro).length == 0)
+                return [];
+            const objetoTipoParametro: TipoParametro = {
+                "idTipoParametro": tipoParametro.idTipoParametro,
+                "nomeTipoParametro": "Nome do Tipo",
+                "unidadeTipoParametro": "Unidade",
+                "fatorTipoParametro": 1,
+                "offsetTipoParametro": 1,
+                "ganhoTipoParametro": 0,
+                "statusTipoParametro": true,
+                "parametros": null,
+                "estacoes": null,
+                'alertas': null                
+            };
+            const objetoParametro: Parametro = {            
+                "idParametro": 1,
+                "tiposParametro": objetoTipoParametro,
+                "estacoes": null,
+                "medicoes": null,
+            };
+            listaParametro.push(objetoParametro);
+        }
+        return listaParametro;
+    }; 
+    const mockCriaObjetoParametro = jest.fn(mockListaObjetoParametro);
+    return {
+        criarRelacionameto: mockCriaObjetoParametro,
+    };
 });
 
 describe("teste da classe EstacaoController método cadastrar", () => {
@@ -99,6 +135,17 @@ describe("teste da classe EstacaoController método cadastrar", () => {
             const mockStatus = MockResponse.resSemLocals.status(400).send as jest.Mock;
             console.log(mockStatus.mock.calls);
             expect(mockStatus.mock.calls[0][0]).toBe("Não é possível cadastrar uma estação com campos nulos!");
+            mockStatus.mockClear();
+        };
+    });
+
+    test("cadastrar estação sem tipoParametro", async () => {
+        try{
+            await EstacaoController.cadastrar(MockEstacaoControllerCadastro.reqEstacaoSemTipoParametro, MockResponse.resSemLocals);
+        } catch (error) {
+            const mockStatus = MockResponse.resSemLocals.status(400).send as jest.Mock;
+            console.log(mockStatus.mock.calls);
+            expect(mockStatus.mock.calls[0][0]).toBe("É necessário pelo menos um tipo parâmetro!");
             mockStatus.mockClear();
         };
     });
