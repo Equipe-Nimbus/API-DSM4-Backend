@@ -14,7 +14,7 @@ const PgDataSource = new DataSource({
     host: "localhost",
     username: "postgres",
     port: 5432,
-    password: "1123",
+    password: "SuaSenha",
   
     type: "postgres", // se for SQLite, então use sqlite
     synchronize: false,

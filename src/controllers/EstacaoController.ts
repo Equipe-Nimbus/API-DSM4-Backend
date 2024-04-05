@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import PgDataSource from "../data-source";
 import { Estacao } from "../entities/Estacao";
-import InsereAtributosEstacao from "../services/estacao/InsereAtributosEstacao";
-import ConsultaCoordenadaGeograficaEstacao from "../services/estacao/ConsultaCoordenadaGeograficaEstacao";
-import CriaObjetoParametro from "../services/estacao/CriaObjetoParametro";
-import AbstratoController from "./AbstratoControllers";
+import InsereAtributosEstacao from "../services/Estacao/InsereAtributosEstacao";
+import ConsultaCoordenadaGeograficaEstacao from "../services/Estacao/ConsultaCoordenadaGeograficaEstacao";
+import CriaObjetoParametro from "../services/Estacao/CriaObjetoParametro";
+import AbstratoController from "./AbstratoController";
 import { ParamsDictionary } from "express-serve-static-core";
 import { ParsedQs } from "qs";
 
