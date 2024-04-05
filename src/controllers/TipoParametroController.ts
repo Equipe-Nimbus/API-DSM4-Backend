@@ -69,6 +69,7 @@ class TipoParametroController extends AbstratoController {
         const tipoParametro = await repositorioTipoParametro
             .createQueryBuilder("tipo_parametro")
             .select(["tipo_parametro.idTipoParametro", "tipo_parametro.nomeTipoParametro", "tipo_parametro.unidadeTipoParametro", "tipo_parametro.fatorTipoParametro"])
+            .where("tipo_parametro.statusTipoParametro = :status", { status: true })
             .getMany();
         res.status(200).send(tipoParametro)
     }
