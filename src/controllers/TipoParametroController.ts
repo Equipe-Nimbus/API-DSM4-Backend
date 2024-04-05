@@ -4,8 +4,6 @@ import InsereAtributoTipoParametro from "../services/TipoParametro/InsereAtribut
 import ConfereIgualdadeTipoParametro from "../services/TipoParametro/ConfereIgualdadeTipoParametro";
 import { Request, Response } from "express";
 import AbstratoController from "./AbstratoController";
-import { ParamsDictionary } from "express-serve-static-core";
-import { ParsedQs } from "qs";
 import TratarValoresFiltroTipoParametro from "../services/TipoParametro/TratarValoresFiltroTipoParametro";
 import SelecaoPaginadaTipoParametro from "../services/TipoParametro/SelecaoPaginadaTipoParametro";
 import AtualizaAtrifutoTipoParametro from "../services/TipoParametro/AtualizaAtributoTipoParametro";
@@ -34,8 +32,15 @@ class TipoParametroController extends AbstratoController {
         }
     }
 
-    listarEspecifico(req: Request, res: Response): void {
-        throw new Error("Method not implemented.");
+    async listarEspecifico(req: Request, res: Response): Promise<void> {
+        const repositorioTipoParametro = PgDataSource.getRepository(TipoParametro)
+        const id = parseInt(req.params.id)
+        const tipoParametro = await repositorioTipoParametro.findOne({where:{idTipoParametro:id}})
+        if(tipoParametro){
+            res.status(200).send(tipoParametro)
+            return;
+        }
+        res.status(400).send("Tipo Parametro não encontrado")
     }
 
     async listarPaginada(req: Request, res: Response): Promise<void> {
