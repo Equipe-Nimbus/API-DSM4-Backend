@@ -4,8 +4,12 @@ import { Estacao } from "../entities/Estacao";
 import InsereAtributosEstacao from "../services/estacao/InsereAtributosEstacao";
 import ConsultaCoordenadaGeograficaEstacao from "../services/estacao/ConsultaCoordenadaGeograficaEstacao";
 import CriaObjetoParametro from "../services/estacao/CriaObjetoParametro";
+import AbstratoController from "./AbstratoControllers";
+import { ParamsDictionary } from "express-serve-static-core";
+import { ParsedQs } from "qs";
 
-class EstacaoController {
+class EstacaoController extends AbstratoController{
+
     async cadastrar(req: Request, res: Response) {
         const repositorioEstacao = PgDataSource.getRepository(Estacao);
         let novaEstacao = new Estacao();
@@ -38,6 +42,21 @@ class EstacaoController {
                 res.status(400).send("Nome de estação já cadastrado!");
         };
     }
+
+    listarEspecifico(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>): void {
+        throw new Error("Method not implemented.");
+    }    
+
+    listarPaginada(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>): void {
+        throw new Error("Method not implemented.");
+    }
+    atualizar(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>): void {
+        throw new Error("Method not implemented.");
+    }
+    deletar(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>): void {
+        throw new Error("Method not implemented.");
+    }
+
 }
 
 export default new EstacaoController();
