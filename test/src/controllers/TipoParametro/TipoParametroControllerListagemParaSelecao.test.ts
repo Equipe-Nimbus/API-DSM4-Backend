@@ -8,8 +8,10 @@ jest.mock("../../../../src/data-source", ()=>{
     const mockRepository = {
         createQueryBuilder:jest.fn().mockReturnValue({
             select:jest.fn().mockReturnValue({
-                getMany:jest.fn(()=>{
-                    return "FOI"
+                where:jest.fn().mockReturnValue({
+                    getMany:jest.fn(()=>{
+                        return "FOI"
+                    })
                 })     
             })                       
         }),
