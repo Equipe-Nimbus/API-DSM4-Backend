@@ -1,7 +1,7 @@
 import { QueryFailedError } from "typeorm"
 import UsuarioController from "../../../../src/controllers/UsuarioController"
 import { Usuario } from "../../../../src/entities/Usuario"
-import MockResponse from "./MockResponse"
+import MockResponse from "../MockResponse"
 import MockAtualizar from "./MockUsuarioControllerAtualizar"
  
 let usuario:Usuario
