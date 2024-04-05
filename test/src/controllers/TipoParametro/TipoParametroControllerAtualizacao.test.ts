@@ -25,8 +25,6 @@ jest.mock("../../../../src/data-source",()=>{
 jest.mock("../../../../src/services/TipoParametro/ConfereIgualdadeTipoParametro", ()=>{
     return{
         conferir:jest.fn((tipoParametro:any)=>{
-            console.log(tipoParametro)
-            console.log(tipoParametro == "Alteracoes do tipoParametros identicas a um já existente")
             if(tipoParametro.retorno == "Alteracoes do tipoParametros identicas a um já existente")
                 return false
             else

@@ -64,6 +64,15 @@ class TipoParametroController extends AbstratoController {
         }
     }
 
+    async listarParaSelecao(req:Request, res:Response){
+        const repositorioTipoParametro = PgDataSource.getRepository(TipoParametro)
+        const tipoParametro = await repositorioTipoParametro
+            .createQueryBuilder("tipo_parametro")
+            .select(["tipo_parametro.idTipoParametro", "tipo_parametro.nomeTipoParametro", "tipo_parametro.unidadeTipoParametro", "tipo_parametro.fatorTipoParametro"])
+            .getMany();
+        res.status(200).send(tipoParametro)
+    }
+
 
 
     async atualizar(req: Request, res: Response): Promise<void> {
