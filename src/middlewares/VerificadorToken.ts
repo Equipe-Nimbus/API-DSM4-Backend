@@ -17,6 +17,7 @@ class VerificadorToken{
             }
             req.headers.idUsuario = tokenDecodificado.idUsuario.toString()
             req.headers.nomeUsuario = tokenDecodificado.nomeUsuario
+            req.headers.perfilUsuario = tokenDecodificado.perfilUsuario
             next()
             return;
         }

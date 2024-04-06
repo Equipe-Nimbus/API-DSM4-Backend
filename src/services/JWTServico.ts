@@ -2,7 +2,8 @@ import * as jwt from "jsonwebtoken"
 
 interface InterfaceJWTparametros{
     idUsuario:number,
-    nomeUsuario:string
+    nomeUsuario:string,
+    perfilUsuario:string
 }
 
 
