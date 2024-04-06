@@ -10,6 +10,7 @@ import { JWTServico } from "../services/JWTServico";
 
 
 
+
 class UsuarioController extends AbstratoController{
     
     
