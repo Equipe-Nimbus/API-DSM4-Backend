@@ -101,7 +101,6 @@ describe("teste da classe EstacaoController método cadastrar", () => {
     test("cadastrar estação com sucesso", async () => {
         await EstacaoController.cadastrar(MockEstacaoControllerCadastro.reqEstacaoInicial, MockResponse.resSemLocals);
         const mockStatus = MockResponse.resSemLocals.status(200).send as jest.Mock;
-        console.log(mockStatus.mock.calls);
         expect(mockStatus.mock.calls[0][0]).toBe("Estação cadastrada com sucesso!");
         mockStatus.mockClear();
     });
