@@ -6,6 +6,8 @@ import { Repository } from "typeorm";
 import TrataValoresFiltroUsuario from "../services/Usuario/TrataValoresFiltroUsuario";
 import SelecaoPaginadaUsuario from "../services/Usuario/SelecaoPaginadaUsuario";
 import AbstratoController from "./AbstratoController";
+import { JWTServico } from "../services/JWTServico";
+
 
 
 
@@ -94,6 +96,21 @@ class UsuarioController extends AbstratoController{
         } catch(error){
             res.status(400).send("Usuário não encontrado")
         }
+    }
+
+    async logar(req:Request, res:Response){
+        const repositorioUsuario = PgDataSource.getRepository(Usuario)
+        const email = req.body.email;
+        const senha = req.body.senha;
+        const consulta = await repositorioUsuario.findOne({where:{emailUsuario:email, senhaUsuario:senha}})
+        if(consulta==undefined){
+            res.status(401).send("Senha ou email incorreto"); return;
+        }
+        const token = JWTServico.gerarToken({idUsuario:consulta.idUsuario, nomeUsuario:consulta.nomeUsuario})
+        if(token == "JWT_SECRET inexistente"){
+            res.status(500).send("Servidor incapaz de gerar o token"); return;
+        }
+        res.status(200).send({token:token})
     }
 }
 
