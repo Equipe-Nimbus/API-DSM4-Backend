@@ -7,6 +7,7 @@ import TrataValoresFiltroUsuario from "../services/Usuario/TrataValoresFiltroUsu
 import SelecaoPaginadaUsuario from "../services/Usuario/SelecaoPaginadaUsuario";
 import AbstratoController from "./AbstratoController";
 import { JWTServico } from "../services/JWTServico";
+import HashServico from "../services/HashServico";
 
 
 
@@ -19,6 +20,7 @@ class UsuarioController extends AbstratoController{
         try{
             var novoUsuario = new Usuario();
             novoUsuario = InsereAlteraAtributosUsuario.inserir(novoUsuario, req.body);
+            novoUsuario = HashServico.hashingSenhaUsuario(novoUsuario)
             await repositorioUsuario.save(novoUsuario);
             res.send("Usuário cadastrado com sucesso")
         } catch(error){
@@ -74,6 +76,8 @@ class UsuarioController extends AbstratoController{
             return;
         }
         usuarioAtualizando = InsereAlteraAtributosUsuario.alterar(usuarioAtualizando, req.body)
+        if(req.body.senhaUsuario)
+            usuarioAtualizando = HashServico.hashingSenhaUsuario(usuarioAtualizando)
         try{
             await repositorioUsuario.save(usuarioAtualizando)
             res.status(200).send("Usuário atualizado com sucesso")
@@ -102,8 +106,12 @@ class UsuarioController extends AbstratoController{
         const repositorioUsuario = PgDataSource.getRepository(Usuario)
         const email = req.body.email;
         const senha = req.body.senha;
-        const consulta = await repositorioUsuario.findOne({where:{emailUsuario:email, senhaUsuario:senha}})
+        const consulta = await repositorioUsuario.findOne({where:{emailUsuario:email}})
         if(consulta==undefined){
+            res.status(401).send("Senha ou email incorreto"); return;
+        }
+        const senhaCorreta = HashServico.conferirSenhaHash(senha, consulta)
+        if(senhaCorreta == false){
             res.status(401).send("Senha ou email incorreto"); return;
         }
         const token = JWTServico.gerarToken({idUsuario:consulta.idUsuario, nomeUsuario:consulta.nomeUsuario})
