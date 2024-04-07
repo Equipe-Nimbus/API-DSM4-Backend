@@ -3,6 +3,7 @@ import UsuarioController from "../../../../src/controllers/UsuarioController"
 import { Usuario } from "../../../../src/entities/Usuario"
 import MockResponse from "../MockResponse"
 import MockAtualizar from "./MockUsuarioControllerAtualizar"
+import HashServico from "../../../../src/services/HashServico"
  
 let usuario:Usuario
 let mockAtualizar:MockAtualizar
@@ -66,7 +67,11 @@ describe("Teste Atualização de Usuário",()=>{
     test("Atualizar usuário existente com valores iguais", async()=>{
         const mockRes = (MockResponse.resSemLocals.status(200).send as jest.Mock).mockClear();
         await UsuarioController.atualizar(mockAtualizar.reqAlteracaoSemAlteracao, MockResponse.resSemLocals)
+        const hashSenha = HashServico.conferirSenhaHash(mockAtualizar.usuario.senhaUsuario, usuario)
+        expect(hashSenha).toBe(true)
+        mockAtualizar.usuario.senhaUsuario = usuario.senhaUsuario
         expect(usuario).toEqual(mockAtualizar.usuario)
+        mockAtualizar.usuario.senhaUsuario = "A"
         expect(mockRes.mock.calls[0][0]).toBe("Usuário atualizado com sucesso")
         mockRes.mockClear()
     })
