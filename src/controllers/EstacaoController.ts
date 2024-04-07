@@ -9,6 +9,10 @@ import { ParamsDictionary } from "express-serve-static-core";
 import { ParsedQs } from "qs";
 import TrataValoresFiltroEstacao from "../services/Estacao/TrataValoresFiltroEstacao";
 import SelecaoPaginadaEstacao from "../services/Estacao/SelecaoPaginadaEstacao";
+import { Parametro } from "../entities/Parametro";
+import { TipoParametro } from "../entities/TipoParametro";
+import MontaObjetoTipoParametro from "../services/Estacao/MontaObjetoTipoParametro";
+import MontaObjetoEstacao from "../services/Estacao/MontaObjetoEstacao";
 
 class EstacaoController extends AbstratoController{
 
@@ -70,9 +74,36 @@ class EstacaoController extends AbstratoController{
         
     }
 
-    listarEspecifico(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>): void {
-        throw new Error("Method not implemented.");
-    } 
+    async listarEspecifico(req: Request, res: Response) {
+        const repositorioEstacao = PgDataSource.getRepository(Estacao);
+        const id = parseInt(req.params.id);
+        try {
+            const estacaoRecuperada = await repositorioEstacao.findOne({
+                where: {
+                    idEstacao: id
+                }
+            });
+            const listaTipoParametro =[];
+            for(const parametro of estacaoRecuperada.parametros) {
+                // descomentar esse bloco depois de alterar a entidade parametro com a propriedade statusParametro
+                /* if (parametro.statusParametro == true) {
+                    const tipoParametroRuperado = await parametro.tiposParametro;
+                    const tipoParametroMontado = MontaObjetoTipoParametro.criaTipoParametro(tipoParametroRuperado);
+                    listaTipoParametro.push(tipoParametroMontado); 
+                } */
+                // apagar esse bloco depois de alterar a entidade parametro com a propriedade statusParametro
+                const tipoParametroRuperado = await parametro.tiposParametro;
+                const tipoParametroMontado = MontaObjetoTipoParametro.criaTipoParametro(tipoParametroRuperado);
+                listaTipoParametro.push(tipoParametroMontado);                 
+            };
+            estacaoRecuperada.tipoParametros = listaTipoParametro;
+            const resposta = MontaObjetoEstacao.criaEstacao(estacaoRecuperada);
+            return res.status(200).send(resposta);
+        } catch (error) {
+            error = "Objeto estação não encontrado";
+            return res.status(400).send(error);
+        };               
+    };
     
     atualizar(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>): void {
         throw new Error("Method not implemented.");
