@@ -7,6 +7,8 @@ import CriaObjetoParametro from "../services/Estacao/CriaObjetoParametro";
 import AbstratoController from "./AbstratoController";
 import { ParamsDictionary } from "express-serve-static-core";
 import { ParsedQs } from "qs";
+import TrataValoresFiltroEstacao from "../services/Estacao/TrataValoresFiltroEstacao";
+import SelecaoPaginadaEstacao from "../services/Estacao/SelecaoPaginadaEstacao";
 
 class EstacaoController extends AbstratoController{
 
@@ -43,13 +45,35 @@ class EstacaoController extends AbstratoController{
         };
     }
 
+    async listarPaginada(req: Request, res: Response) {
+        const repositorioEstacao = PgDataSource.getRepository(Estacao);
+        const pagina = req.query.pagina ? parseInt(req.query.pagina as string) : 1;
+        const tamanhoPagina = req.query.tamanhoPagina ? parseInt(req.query.tamanhoPagina as string): 10;
+        const quantidadeLinhas = await repositorioEstacao.count(TrataValoresFiltroEstacao.tratarContagem(req));
+        const quantidadePaginas = Math.ceil(quantidadeLinhas/tamanhoPagina);
+        try {
+            const filtroSelecao = TrataValoresFiltroEstacao.tratarSelect(req);
+            const estacoesResgatadas = await SelecaoPaginadaEstacao.selecionar(repositorioEstacao, pagina, tamanhoPagina, filtroSelecao);
+            const resposta = {
+                estacoes: estacoesResgatadas, 
+                pagina: pagina,
+                tamanhoPagina: tamanhoPagina,
+                quantidadePaginas: quantidadePaginas
+            };
+            res.status(200).send(resposta);
+        } catch (error) {
+            if (pagina == 0)
+                res.status(400).send("Não é permitido requisitar a página 0!");
+            else
+                res.status(400).send(error);
+        };
+        
+    }
+
     listarEspecifico(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>): void {
         throw new Error("Method not implemented.");
-    }    
-
-    listarPaginada(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>): void {
-        throw new Error("Method not implemented.");
-    }
+    } 
+    
     atualizar(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>): void {
         throw new Error("Method not implemented.");
     }

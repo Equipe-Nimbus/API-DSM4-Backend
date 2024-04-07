@@ -35,7 +35,7 @@ jest.mock("../../../../src/data-source.ts", () => {
     };
 });
 
-jest.mock("../../../../src/services/estacao/ConsultaCoordenadaGeograficaEstacao.ts", () => {
+jest.mock("../../../../src/services/Estacao/ConsultaCoordenadaGeograficaEstacao.ts", () => {
     const mockCoordenadaGeograficaEstacao =
         (estacao: Estacao) => {
             listaEstacao.forEach(estacaoCadastrada => {
@@ -59,7 +59,7 @@ jest.mock("../../../../src/services/estacao/ConsultaCoordenadaGeograficaEstacao.
     }
 });
 
-jest.mock("../../../../src/services/estacao/CriaObjetoParametro.ts", () => {
+jest.mock("../../../../src/services/Estacao/CriaObjetoParametro.ts", () => {
     const mockListaObjetoParametro = (listaTipoParametro: TipoParametro[]) => {
         for(const tipoParametro of listaTipoParametro) {
             if (Object.keys(tipoParametro).length == 0)
@@ -101,7 +101,6 @@ describe("teste da classe EstacaoController método cadastrar", () => {
     test("cadastrar estação com sucesso", async () => {
         await EstacaoController.cadastrar(MockEstacaoControllerCadastro.reqEstacaoInicial, MockResponse.resSemLocals);
         const mockStatus = MockResponse.resSemLocals.status(200).send as jest.Mock;
-        console.log(mockStatus.mock.calls);
         expect(mockStatus.mock.calls[0][0]).toBe("Estação cadastrada com sucesso!");
         mockStatus.mockClear();
     });
@@ -133,7 +132,6 @@ describe("teste da classe EstacaoController método cadastrar", () => {
             await EstacaoController.cadastrar(MockEstacaoControllerCadastro.reqEstacaoPropriedadeNula, MockResponse.resSemLocals);
         } catch (error) {
             const mockStatus = MockResponse.resSemLocals.status(400).send as jest.Mock;
-            console.log(mockStatus.mock.calls);
             expect(mockStatus.mock.calls[0][0]).toBe("Não é possível cadastrar uma estação com campos nulos!");
             mockStatus.mockClear();
         };
@@ -144,7 +142,6 @@ describe("teste da classe EstacaoController método cadastrar", () => {
             await EstacaoController.cadastrar(MockEstacaoControllerCadastro.reqEstacaoSemTipoParametro, MockResponse.resSemLocals);
         } catch (error) {
             const mockStatus = MockResponse.resSemLocals.status(400).send as jest.Mock;
-            console.log(mockStatus.mock.calls);
             expect(mockStatus.mock.calls[0][0]).toBe("É necessário pelo menos um tipo parâmetro!");
             mockStatus.mockClear();
         };
