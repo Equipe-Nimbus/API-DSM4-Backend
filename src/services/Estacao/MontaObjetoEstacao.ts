@@ -13,7 +13,7 @@ class MontaObjetoEstacao {
             estadoEstacao: estacao.estadoEstacao,
             cepEstacao: estacao.cepEstacao,
             latitudeEstacao: estacao.latitudeEstacao,
-            longitudeEstacao: estacao.latitudeEstacao,
+            longitudeEstacao: estacao.longitudeEstacao,
             tipoParametros: estacao.tipoParametros
         };
         return objetoEstacaoMontado;        
