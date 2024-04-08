@@ -1,8 +1,9 @@
 import { Estacao } from "../../../../src/entities/Estacao";
+import { TipoParametro } from "../../../../src/entities/TipoParametro";
 
 class MocksEstacaoControllerListagemEspecifica {
 
-    estacao1TipoParametro = {
+    estacaoBusca = {
         idEstacao: 1,
         nomeEstacao: "Estação Norte",
         ruaAvenidaEstacao: "Rua das Flores",
@@ -25,8 +26,8 @@ class MocksEstacaoControllerListagemEspecifica {
         ]
     } as unknown as Estacao;
 
-    estacao2TipoParametro = {
-        idEstacao: 2,
+    estacaoResposta = {
+        idEstacao: 1,
         nomeEstacao: "Estação Norte",
         ruaAvenidaEstacao: "Rua das Flores",
         numeroEnderecoEstacao: "123",
@@ -38,12 +39,10 @@ class MocksEstacaoControllerListagemEspecifica {
         longitudeEstacao: "-46.6333",
         tipoParametros: [
             {
-                tiposParametro: {
-                    idTipoParametro: 1,
-                    nomeTipoParametro: "Temperatura",
-                    unidadeTipoParametro: "ºC",
-                    fatorTipoParametro: "1"
-                }
+                idTipoParametro: 1,
+                nomeTipoParametro: "Temperatura",
+                unidadeTipoParametro: "ºC",
+                fatorTipoParametro: "1"
             }
         ]
     } as unknown as Estacao;

@@ -3,6 +3,7 @@ import { Estacao } from "../../../../src/entities/Estacao";
 import EstacaoController from "../../../../src/controllers/EstacaoController";
 import MockEstacaoControllerListagemEspecifica from "./MockEstacaoControllerListagemEspecifica";
 import MockResponse from "../MockResponse";
+import { TipoParametro } from "../../../../src/entities/TipoParametro";
 
 let listaEstacao: Estacao[] = [];
 
@@ -37,8 +38,7 @@ let req = {
 describe ("Teste da classe EstacaoController método listarEspecifico", () => {
 
     beforeAll(() => {
-        listaEstacao.push(MockEstacaoControllerListagemEspecifica.estacao1TipoParametro);
-        listaEstacao.push(MockEstacaoControllerListagemEspecifica.estacao2TipoParametro);
+        listaEstacao.push(MockEstacaoControllerListagemEspecifica.estacaoBusca);
     });
 
     beforeEach(() => {
@@ -52,21 +52,19 @@ describe ("Teste da classe EstacaoController método listarEspecifico", () => {
         if(mockResposta.mock.calls[0][0] == "Objeto estação não encontrado")
             fail("Estação não encontrada, mesmo com idEstacao correto");
         else {
-            expect(mockResposta.mock.calls[0][0]).toBe(listaEstacao[1]);            
+            expect(mockResposta.mock.calls[0][0]).toStrictEqual(MockEstacaoControllerListagemEspecifica.estacaoResposta);            
         }
     });
 
-    /* test ("Teste listar estação com sucesso", async () => {
-        req.params.id = "1";
+    test ("Teste listar estação com falha", async () => {
+        req.params.id = "0";
         const mockRespostaStatus = MockResponse.resSemLocals.status as jest.Mock;
         mockRespostaStatus.mockClear();
         await EstacaoController.listarEspecifico(req, MockResponse.resSemLocals);
-        const mockResposta = MockResponse.resSemLocals.status(200).send as jest.Mock;
-        console.log(mockResposta);
-        if(mockResposta.mock.calls[0][0] == "Objeto estação não encontrado")
-            expect(mockRespostaStatus.mock.calls[0][0]).toBe(400);
-        else {
-            fail("Estação não encontrada, mesmo com idEstacao correto");
-        }
-    }); */
+        const mockResposta = MockResponse.resSemLocals.status(400).send as jest.Mock;
+        if(mockResposta.mock.calls[0][0] != "Objeto estação não encontrado")
+            expect(mockRespostaStatus.mock.calls[0][0]).toBe(400);            
+        mockResposta.mockClear();
+        mockRespostaStatus.mockClear();
+    });
 });
