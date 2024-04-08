@@ -17,7 +17,7 @@ class CriaObjetoParametro {
                     idTipoParametro: tipoParametro.idTipoParametro
                 }
             });    
-            novoParametro.tiposParametro = objetoTipoParametro;
+            novoParametro.tiposParametro = Promise.resolve(objetoTipoParametro);
             listaParametro.push(novoParametro);
             await repositorioParametro.save(novoParametro);                    
         }

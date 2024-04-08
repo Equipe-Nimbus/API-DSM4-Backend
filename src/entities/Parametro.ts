@@ -11,7 +11,7 @@ export class Parametro {
     idParametro: number;
 
     @ManyToOne(()=>TipoParametro, tipoParametros => tipoParametros.parametros)
-    tiposParametro:TipoParametro
+    tiposParametro:Promise<TipoParametro>
     
     @ManyToOne(()=>Estacao, estacoes => estacoes.parametros)
     estacoes:Estacao
