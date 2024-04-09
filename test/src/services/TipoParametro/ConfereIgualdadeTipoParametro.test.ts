@@ -11,7 +11,6 @@ jest.mock("../../../../src/data-source", ()=>{
             unidadeTipoParametro: string,
             fatorTipoParametro: number,
             offsetTipoParametro: number,
-            ganhoTipoParametro: number,
         }})=>{
             let resultado = undefined
             let objetoCadastrando = parametros.where
@@ -20,7 +19,7 @@ jest.mock("../../../../src/data-source", ()=>{
                 for(const chave in objetoCadastrado){
                     if(objetoCadastrado[chave] == objetoCadastrando[chave])
                         contadorIgualdade++
-                        if(contadorIgualdade == 5)
+                        if(contadorIgualdade == 4)
                             resultado = parametros.where
                 }
                 contadorIgualdade = 0
@@ -41,7 +40,6 @@ describe("Teste da Conferencia de Igualdade de linhas tipo parâmetro", ()=>{
             let tipoParametro = new TipoParametro()
             tipoParametro.fatorTipoParametro = id
             tipoParametro.idTipoParametro = id
-            tipoParametro.ganhoTipoParametro = id
             tipoParametro.nomeTipoParametro = id.toString()
             tipoParametro.offsetTipoParametro = id
             tipoParametro.unidadeTipoParametro = id.toString()
