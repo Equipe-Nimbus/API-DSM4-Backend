@@ -42,6 +42,7 @@ class AlertaController extends AbstratoController{
         throw new Error("Method not implemented.");
     }
 
+
     async deletar(req: Request, res: Response) {
         const repositorioAlerta = PgDataSource.getRepository(Alerta)
         const idAlerta = parseInt(req.params.idAlerta)
@@ -51,10 +52,6 @@ class AlertaController extends AbstratoController{
         alerta.statusAlerta = false
         await repositorioAlerta.save(alerta)
         res.status(200).send("Alerta deletado com sucesso")
-    }
-
-
-
 }
 
 export default new AlertaController()
