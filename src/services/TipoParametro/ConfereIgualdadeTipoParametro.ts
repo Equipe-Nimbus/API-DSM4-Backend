@@ -9,7 +9,6 @@ class ConfereIgualdadeTipoParametro{
         let resultado = await this.repositorioTipoParametro.findOne({where:{
             nomeTipoParametro:tipoParametroCadastrando.nomeTipoParametro,
             fatorTipoParametro:tipoParametroCadastrando.fatorTipoParametro,
-            ganhoTipoParametro:tipoParametroCadastrando.ganhoTipoParametro,
             offsetTipoParametro:tipoParametroCadastrando.offsetTipoParametro,
             unidadeTipoParametro:tipoParametroCadastrando.unidadeTipoParametro
         }})

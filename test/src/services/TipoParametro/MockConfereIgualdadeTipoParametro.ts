@@ -7,7 +7,6 @@ class MockCondereIgualdadeTipoParametro{
         unidadeTipoParametro: "1",
         fatorTipoParametro: 1,
         offsetTipoParametro: 1,
-        ganhoTipoParametro: 1,
         idTipoParametro:1
     } as TipoParametro
     
@@ -16,7 +15,6 @@ class MockCondereIgualdadeTipoParametro{
         unidadeTipoParametro: "1",
         fatorTipoParametro: 1,
         offsetTipoParametro: 2,
-        ganhoTipoParametro: 1,
         idTipoParametro:30
     } as TipoParametro
 }
