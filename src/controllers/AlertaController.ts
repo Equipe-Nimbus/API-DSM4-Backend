@@ -52,6 +52,6 @@ class AlertaController extends AbstratoController{
         alerta.statusAlerta = false
         await repositorioAlerta.save(alerta)
         res.status(200).send("Alerta deletado com sucesso")
+    }
 }
-
 export default new AlertaController()
