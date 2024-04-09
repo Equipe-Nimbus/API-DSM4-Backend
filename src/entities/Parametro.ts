@@ -15,7 +15,7 @@ export class Parametro {
     alertas:Alerta[]
 
     @ManyToOne(()=>TipoParametro, tipoParametros => tipoParametros.parametros)
-    tiposParametro:TipoParametro
+    tiposParametro:Promise<TipoParametro>
     
     @ManyToOne(()=>Estacao, estacoes => estacoes.parametros)
     estacoes:Estacao

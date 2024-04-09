@@ -40,6 +40,6 @@ export class Estacao {
   @ManyToMany(()=>TipoParametro, tipoParametros=>tipoParametros.estacoes)
   tipoParametros:TipoParametro[]
 
-  @OneToMany(()=>Parametro, parametro=>parametro.estacoes)
+  @OneToMany(()=>Parametro, parametro=>parametro.estacoes, { eager: true })
   parametros:Parametro[]
 }

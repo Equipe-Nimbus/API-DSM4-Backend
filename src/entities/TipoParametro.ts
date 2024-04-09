@@ -24,7 +24,7 @@ export class TipoParametro {
     @Column({type: "boolean", default: true})
     statusTipoParametro: boolean;
 
-    @OneToMany(()=>Parametro, parametro=>parametro.tiposParametro)
+    @OneToMany(()=>Parametro, parametro=>parametro.tiposParametro, { eager: true })
     parametros:Parametro[]
 
     @ManyToMany(()=>Estacao, estacoes=>estacoes.tipoParametros)
