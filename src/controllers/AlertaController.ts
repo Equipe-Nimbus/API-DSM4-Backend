@@ -50,7 +50,7 @@ class AlertaController extends AbstratoController{
             return res.status(400).send("Id do alerta não encontrado")
         alerta.statusAlerta = false
         await repositorioAlerta.save(alerta)
-        res.status(200).send("Alerta cadastrado com sucesso")
+        res.status(200).send("Alerta deletado com sucesso")
     }
 
 
