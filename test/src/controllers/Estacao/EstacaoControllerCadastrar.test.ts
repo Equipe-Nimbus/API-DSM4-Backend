@@ -70,17 +70,16 @@ jest.mock("../../../../src/services/Estacao/CriaObjetoParametro.ts", () => {
                 "unidadeTipoParametro": "Unidade",
                 "fatorTipoParametro": 1,
                 "offsetTipoParametro": 1,
-                "ganhoTipoParametro": 0,
                 "statusTipoParametro": true,
                 "parametros": null,
-                "estacoes": null,
-                'alertas': null                
+                "estacoes": null           
             };
-            const objetoParametro: Parametro = {            
+            const objetoParametro: Parametro = {
                 "idParametro": 1,
                 "tiposParametro": Promise.resolve(objetoTipoParametro),
                 "estacoes": null,
                 "medicoes": null,
+                alertas: []
             };
             listaParametro.push(objetoParametro);
         }
