@@ -31,7 +31,6 @@ jest.mock("../../../../src/data-source", ()=>{
         },
         save: (alerta:Alerta)=>{
             for (const key in alerta) {
-                console.log(key, alerta[key])
                 if(alerta[key]==null){
                     const error = {code:"23502"}
                     throw error
