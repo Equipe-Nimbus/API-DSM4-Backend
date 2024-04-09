@@ -29,7 +29,6 @@ class MockTipoParametroControllerCadastro{
             unidadeTipoParametro: "1",
             fatorTipoParametro: 1,
             offsetTipoParametro: 1,
-            ganhoTipoParametro: 1,
             idTipoParametro:1
         }
     } as Request

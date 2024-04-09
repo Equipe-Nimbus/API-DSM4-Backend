@@ -15,14 +15,11 @@ export class TipoParametro {
     @Column({length: 10, nullable:false})
     unidadeTipoParametro: string;
 
-    @Column({type: "numeric", default: 1})
+    @Column({type: "numeric", default: 0})
     fatorTipoParametro: number;
     
     @Column({type: "numeric", default: 1})
     offsetTipoParametro: number;
-
-    @Column({type: "numeric", default: 0})
-    ganhoTipoParametro: number;
     
     @Column({type: "boolean", default: true})
     statusTipoParametro: boolean;
@@ -32,8 +29,5 @@ export class TipoParametro {
 
     @ManyToMany(()=>Estacao, estacoes=>estacoes.tipoParametros)
     estacoes:Estacao[]
-
-    @OneToMany(()=>Alerta, alerta=>alerta.tipoParametro)
-    alertas:Alerta[]
 
 }
