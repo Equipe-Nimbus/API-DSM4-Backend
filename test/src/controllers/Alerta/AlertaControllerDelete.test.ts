@@ -59,7 +59,7 @@ describe("Testes de deleção de alertas", ()=>{
         const requisicao = req as unknown as Request
         const mockRes = (MockResponse.resSemLocals.status(200).send as jest.Mock).mockClear()
         await AlertaController.deletar(requisicao, MockResponse.resSemLocals)
-        expect(mockRes.mock.calls[0][0]).toBe("Alerta cadastrado com sucesso")
+        expect(mockRes.mock.calls[0][0]).toBe("Alerta deletado com sucesso")
     })
 
 })
