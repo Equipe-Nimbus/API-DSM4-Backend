@@ -15,10 +15,10 @@ export class TipoParametro {
     @Column({length: 10, nullable:false})
     unidadeTipoParametro: string;
 
-    @Column({type: "numeric", default: 0})
+    @Column({type: "numeric", default: 1})
     fatorTipoParametro: number;
     
-    @Column({type: "numeric", default: 1})
+    @Column({type: "numeric", default: 0})
     offsetTipoParametro: number;
     
     @Column({type: "boolean", default: true})
