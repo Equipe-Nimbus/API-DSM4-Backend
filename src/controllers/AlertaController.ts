@@ -42,8 +42,15 @@ class AlertaController extends AbstratoController{
         throw new Error("Method not implemented.");
     }
 
-    deletar(req: Request, res: Response): void {
-        throw new Error("Method not implemented.");
+    async deletar(req: Request, res: Response) {
+        const repositorioAlerta = PgDataSource.getRepository(Alerta)
+        const idAlerta = parseInt(req.params.idAlerta)
+        const alerta = await repositorioAlerta.findOne({where:{idAlerta:idAlerta}})
+        if(alerta == undefined)
+            return res.status(400).send("Id do alerta não encontrado")
+        alerta.statusAlerta = false
+        await repositorioAlerta.save(alerta)
+        res.status(200).send("Alerta cadastrado com sucesso")
     }
 
 
