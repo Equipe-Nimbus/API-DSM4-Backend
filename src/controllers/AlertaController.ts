@@ -4,11 +4,15 @@ import ConfereExistenciaRelacaoParametro from "../services/Alerta/ConfereExisten
 import PgDataSource from "../data-source";
 import { Alerta } from "../entities/Alerta";
 import InsereAtributosAlerta from "../services/Alerta/InsereAtributosAlerta";
+import TrataValoresFiltro from "../services/TrataValoresFiltro";
+import TrataValoresFiltroAlerta from "../services/Alerta/TrataValoresFiltroAlerta";
+import SelecaoPaginadaAlerta from "../services/Alerta/SelecaoPaginadaAlerta";
+import ConfereExistenciaAlertaIdentico from "../services/Alerta/ConfereExistenciaAlertaIdentico";
 
 
 class AlertaController extends AbstratoController{
 
-    async cadastrar(req: Request, res: Response): Promise<void> {
+    async cadastrar(req: Request, res: Response){
         const repositorioAlerta = PgDataSource.getRepository(Alerta)
         const {idEstacao, idTipoParametro, condicaoAlerta, valorMedicaoAlerta, nomeAlerta} = req.body
         const parametro = await ConfereExistenciaRelacaoParametro.confere(idEstacao, idTipoParametro)
@@ -17,6 +21,9 @@ class AlertaController extends AbstratoController{
             return;
         }
         const alerta = InsereAtributosAlerta.inserir(parametro, condicaoAlerta, valorMedicaoAlerta, nomeAlerta)
+        const resultado = await ConfereExistenciaAlertaIdentico.confere(repositorioAlerta, alerta)
+        if(resultado)
+            return res.status(400).send("Alerta existente já cadastrado")
         try{
             await repositorioAlerta.save(alerta)
             res.status(200).send("Alerta cadastrado com sucesso")
@@ -34,8 +41,15 @@ class AlertaController extends AbstratoController{
         throw new Error("Method not implemented.");
     }
 
-    listarPaginada(req: Request, res: Response): void {
-        throw new Error("Method not implemented.");
+    async listarPaginada(req: Request, res: Response): Promise<void> {
+        const repositorioAlerta = PgDataSource.getRepository(Alerta)
+        const pagina = req.query.pagina ? parseInt(req.query.pagina as string) : 1;
+        const tamanhoPagina = req.query.tamanhoPagina ? parseInt(req.query.tamanhoPagina as string) : 10;  
+        const quantidadeLinhas = await repositorioAlerta.count(TrataValoresFiltroAlerta.tratarContagem(req))
+        const quantidadePaginas = Math.ceil(quantidadeLinhas/tamanhoPagina)
+        const filtroSelecao = TrataValoresFiltroAlerta.tratarSelect(req)
+        const selecao = await SelecaoPaginadaAlerta.selecionar(repositorioAlerta, pagina, tamanhoPagina, filtroSelecao)
+        res.send(selecao)
     }
 
     atualizar(req: Request, res: Response): void {
