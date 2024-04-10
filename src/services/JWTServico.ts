@@ -2,7 +2,8 @@ import * as jwt from "jsonwebtoken"
 
 interface InterfaceJWTparametros{
     idUsuario:number,
-    nomeUsuario:string
+    nomeUsuario:string,
+    perfilUsuario:string
 }
 
 
@@ -15,11 +16,9 @@ const gerarToken = (dados:InterfaceJWTparametros)=>{
 
 const conferirToken = (token:string)=>{
     if(!process.env.JWT_SECRET) return "JWT_SECRET inexistente"
-    const decodificacao = jwt.verify(token, process.env.JWT_SECRET, (error, decodificado)=>{
-        if(error) return "Token invalido"
-        return decodificacao as InterfaceJWTparametros
-    })
-    return decodificacao
+    const decodificacao = jwt.verify(token, process.env.JWT_SECRET)
+    if(typeof decodificacao == "string") return "Token invalido";
+    return decodificacao as InterfaceJWTparametros
 }
 
 export const JWTServico = {

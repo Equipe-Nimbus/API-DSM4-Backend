@@ -114,7 +114,7 @@ class UsuarioController extends AbstratoController{
         if(senhaCorreta == false){
             res.status(401).send("Senha ou email incorreto"); return;
         }
-        const token = JWTServico.gerarToken({idUsuario:consulta.idUsuario, nomeUsuario:consulta.nomeUsuario})
+        const token = JWTServico.gerarToken({idUsuario:consulta.idUsuario, nomeUsuario:consulta.nomeUsuario, perfilUsuario:consulta.perfilUsuario})
         if(token == "JWT_SECRET inexistente"){
             res.status(500).send("Servidor incapaz de gerar o token"); return;
         }
