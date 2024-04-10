@@ -15,6 +15,14 @@ const listaParametrosCadastrados = [
         idTipoParametro:1
     }
 ]
+
+let mockConfereIgual = false
+
+jest.mock("../../../../src/services/Alerta/ConfereExistenciaAlertaIdentico", ()=>{
+    return {
+        confere:jest.fn(()=>mockConfereIgual)
+    }
+})
     
 
 jest.mock("../../../../src/data-source", ()=>{
