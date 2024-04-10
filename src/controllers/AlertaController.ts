@@ -8,6 +8,7 @@ import TrataValoresFiltro from "../services/TrataValoresFiltro";
 import TrataValoresFiltroAlerta from "../services/Alerta/TrataValoresFiltroAlerta";
 import SelecaoPaginadaAlerta from "../services/Alerta/SelecaoPaginadaAlerta";
 import ConfereExistenciaAlertaIdentico from "../services/Alerta/ConfereExistenciaAlertaIdentico";
+import AtualizaAtributoAlerta from "../services/Alerta/AtualizaAtributoAlerta";
 
 
 class AlertaController extends AbstratoController{
@@ -63,8 +64,22 @@ class AlertaController extends AbstratoController{
         
     }
 
-    atualizar(req: Request, res: Response): void {
-        throw new Error("Method not implemented.");
+    async atualizar(req: Request, res: Response){
+        const repositorioAlerta = PgDataSource.getRepository(Alerta)
+        const idAlerta = parseInt(req.body.idAlerta)
+        let alertaEncontrado = await repositorioAlerta.findOne({where:{idAlerta:idAlerta, statusAlerta:true}})
+        if(alertaEncontrado == undefined)
+            return res.status(400).send("idAlerta não encontrado no banco de dados")
+        alertaEncontrado = await AtualizaAtributoAlerta.atualizar(alertaEncontrado, req)
+        const resultado = await ConfereExistenciaAlertaIdentico.confere(repositorioAlerta, alertaEncontrado)
+        if(resultado == false)
+            return res.status(400).send("Alerta identico já existe no banco de dados")
+        try{
+            await repositorioAlerta.save(alertaEncontrado)
+            res.status(200).send("Alerta atualizado com sucesso")
+        } catch(error){
+            res.status(400).send(error)
+        }
     }
 
 
