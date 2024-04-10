@@ -3,14 +3,12 @@ import PgDataSource from "../data-source";
 import { Estacao } from "../entities/Estacao";
 import InsereAtributosEstacao from "../services/Estacao/InsereAtributosEstacao";
 import ConsultaCoordenadaGeograficaEstacao from "../services/Estacao/ConsultaCoordenadaGeograficaEstacao";
-import CriaObjetoParametro from "../services/Estacao/CriaObjetoParametro";
+import ManipulaObjetoParametro from "../services/Estacao/ManipulaObjetoParametro";
 import AbstratoController from "./AbstratoController";
 import { ParamsDictionary } from "express-serve-static-core";
 import { ParsedQs } from "qs";
 import TrataValoresFiltroEstacao from "../services/Estacao/TrataValoresFiltroEstacao";
 import SelecaoPaginadaEstacao from "../services/Estacao/SelecaoPaginadaEstacao";
-import { Parametro } from "../entities/Parametro";
-import { TipoParametro } from "../entities/TipoParametro";
 import MontaObjetoTipoParametro from "../services/Estacao/MontaObjetoTipoParametro";
 import MontaObjetoEstacao from "../services/Estacao/MontaObjetoEstacao";
 
@@ -19,34 +17,44 @@ class EstacaoController extends AbstratoController{
 
     async cadastrar(req: Request, res: Response) {
         const repositorioEstacao = PgDataSource.getRepository(Estacao);
-        let novaEstacao = new Estacao();
         const consultaCordenadaEstacao = await ConsultaCoordenadaGeograficaEstacao.consulta(req.body);
-        const listaParametro = await CriaObjetoParametro.criarRelacionameto(req.body.tipoParametros);
+        let contador: number = 0;
         const listaAtributosEstacao = ["nomeEstacao", "ruaAvenidaEstacao", "numeroEnderecoEstacao", "bairroEstacao", "cidadeEstacao", "estadoEstacao", "cepEstacao", "latitudeEstacao", "longitudeEstacao"];
         
         listaAtributosEstacao.forEach(atributoEstacao => {
-            if (req.body[atributoEstacao] == "" || req.body[atributoEstacao] == null) {
-                return res.status(400).send("Não é possível cadastrar uma estação com o campo vazio!")
-            };
+            if (req.body[atributoEstacao] == "" || req.body[atributoEstacao] == null)
+                contador++;         
         });
+        
+        if (contador != 0) {
+            res.status(400).send("Não é possível cadastrar uma estação com o campo vazio!");
+            return;
+        };
 
-        if (consultaCordenadaEstacao)
-            return res.status(400).send("Já existe uma estação com essa coordenada geográfica!");
+        if (consultaCordenadaEstacao) {
+            res.status(400).send("Já existe uma estação com essa coordenada geográfica!");
+            return;
+        }            
 
-        if (listaParametro.length == 0)            
-            return res.status(400).send("É necessário pelo menos um tipo parâmetro!");
+        const listaParametro = await ManipulaObjetoParametro.criarRelacionametoEstacaoParametro(req.body.tipoParametros);
 
+        if (listaParametro.length == 0){
+            res.status(400).send("É necessário pelo menos um tipo parâmetro!");
+            return;
+        }                   
+        
+        let novaEstacao = new Estacao();
         novaEstacao = InsereAtributosEstacao.inserir(novaEstacao, req.body);        
         novaEstacao.parametros = listaParametro;
 
-        try {
-            if (listaParametro.length == 0)            
-                return res.status(400).send("É necessário pelo menos um tipo parâmetro!");
+        try {            
             await repositorioEstacao.save(novaEstacao);
             res.status(200).send("Estação cadastrada com sucesso!");
         } catch (error) {
             if (error.code == "23505")
                 res.status(400).send("Nome de estação já cadastrado!");
+            else 
+                res.status(400).send(error);
         };
     }
 
@@ -99,13 +107,6 @@ class EstacaoController extends AbstratoController{
     
         const listaTipoParametro = [];
         for(const parametro of estacaoRecuperada.parametros) {
-            // descomentar esse bloco depois de alterar a entidade parametro com a propriedade statusParametro
-            /* if (parametro.statusParametro == true) {
-                const tipoParametroRuperado = await parametro.tiposParametro;
-                const tipoParametroMontado = MontaObjetoTipoParametro.criaTipoParametro(tipoParametroRuperado);
-                listaTipoParametro.push(tipoParametroMontado); 
-            } */
-            // apagar esse bloco depois de alterar a entidade parametro com a propriedade statusParametro
             const tipoParametroRuperado = await parametro.tiposParametro;
             const tipoParametroMontado = MontaObjetoTipoParametro.criaTipoParametro(tipoParametroRuperado);
             listaTipoParametro.push(tipoParametroMontado);                 
@@ -114,10 +115,6 @@ class EstacaoController extends AbstratoController{
         const resposta = MontaObjetoEstacao.criaEstacao(estacaoRecuperada);
         return res.status(200).send(resposta);                     
     };
-    
-    atualizar(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>): void {
-        throw new Error("Method not implemented.");
-    }
 
     async deletar(req: Request, res: Response){
         const repositorioEstacao = PgDataSource.getRepository(Estacao)
@@ -133,7 +130,66 @@ class EstacaoController extends AbstratoController{
             res.status(400).send(error)
         }
     }
+    
+    async atualizar(req: Request, res: Response) {
+        const repositorioEstacao = PgDataSource.getRepository(Estacao);
+        const consultaEstacaoMesmaCoordenada = await ConsultaCoordenadaGeograficaEstacao.consulta(req.body);
+        let contador: number = 0;
+        const listaAtributosEstacao = ["nomeEstacao", "ruaAvenidaEstacao", "numeroEnderecoEstacao", "bairroEstacao", "cidadeEstacao", "estadoEstacao", "cepEstacao", "latitudeEstacao", "longitudeEstacao"];
+        
+        listaAtributosEstacao.forEach(atributoEstacao => {
+            if (req.body[atributoEstacao] == "" || req.body[atributoEstacao] == null)
+                contador++;         
+        });
+        
+        if (contador != 0) {
+            res.status(400).send("Não é possível cadastrar uma estação com o campo vazio!");
+            return;
+        };
 
+        if (consultaEstacaoMesmaCoordenada) {
+            if (consultaEstacaoMesmaCoordenada != req.body.idEstacao)
+                return res.status(400).send("Já existe uma estação cadastrada com essas coordenadas geográficas!");
+        };
+    
+        const listaIdTipoParametro: number[] = [];      
+        for (const tipoParametro of req.body.tipoParametros) {
+            listaIdTipoParametro.push(tipoParametro.idTipoParametro);
+        };
+
+        if (listaIdTipoParametro.length == 0) {            
+            res.status(400).send("É necessário pelo menos um tipo parâmetro!");
+            return;
+        };
+
+        let novaEstacao = new Estacao();
+        novaEstacao = InsereAtributosEstacao.inserir(novaEstacao, req.body);
+        const estacaoAntiga = await repositorioEstacao.findOne({
+            where: {
+                idEstacao: req.body.idEstacao
+            }
+        })   
+        const listaNovosParametros = await ManipulaObjetoParametro.consultaTipoParametroEmParametro(listaIdTipoParametro, req.body.idEstacao);
+        for (const novoParametro of listaNovosParametros) {
+            await repositorioEstacao.createQueryBuilder().
+                relation(Estacao, "parametros").
+                of(estacaoAntiga).
+                add(novoParametro);
+        };
+        try {
+            await repositorioEstacao.createQueryBuilder().
+                update(Estacao).
+                set(novaEstacao).
+                where(`idEstacao = ${req.body.idEstacao}`).
+                execute();
+                res.status(200).send("Estação atualizada com sucesso");
+        } catch (error) {
+            if (error.code == "23505")
+                res.status(400).send("Nome de estação já cadastrado!");
+            else 
+                res.status(400).send(error);
+        };                
+    };
 }
 
 export default new EstacaoController();
