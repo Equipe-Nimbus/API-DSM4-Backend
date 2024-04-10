@@ -15,6 +15,7 @@ import MontaObjetoTipoParametro from "../services/Estacao/MontaObjetoTipoParamet
 import MontaObjetoEstacao from "../services/Estacao/MontaObjetoEstacao";
 
 class EstacaoController extends AbstratoController{
+    
 
     async cadastrar(req: Request, res: Response) {
         const repositorioEstacao = PgDataSource.getRepository(Estacao);
@@ -47,6 +48,17 @@ class EstacaoController extends AbstratoController{
             if (error.code == "23505")
                 res.status(400).send("Nome de estação já cadastrado!");
         };
+    }
+
+    async listarParaSelecao(req: Request, res: Response) {
+        const repositorioEstacao = PgDataSource.getRepository(Estacao)
+        const listagemParaSelecao = await repositorioEstacao
+            .createQueryBuilder("estacao")
+            .select(["estacao.idEstacao", "estacao.nomeEstacao", "estacao.cidadeEstacao"])
+            .where("estacao.statusEstacao = :status", { status: true })
+            .getMany();
+        
+        res.status(200).send(listagemParaSelecao)
     }
 
     async listarPaginada(req: Request, res: Response) {
