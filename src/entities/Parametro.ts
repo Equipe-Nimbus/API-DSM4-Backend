@@ -1,4 +1,4 @@
-import { Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { TipoParametro } from "./TipoParametro";
 import { Estacao } from "./Estacao";
 import { Medicao } from "./Medicao";
@@ -22,4 +22,7 @@ export class Parametro {
 
     @OneToMany(()=>Medicao, medicoes=>medicoes.parametro)
     medicoes:Medicao[]
+
+    @Column({type: "boolean", default: true})
+    statusParametro: Boolean;
 }
