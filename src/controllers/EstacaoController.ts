@@ -106,8 +106,20 @@ class EstacaoController extends AbstratoController{
     atualizar(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>): void {
         throw new Error("Method not implemented.");
     }
-    deletar(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>): void {
-        throw new Error("Method not implemented.");
+
+    async deletar(req: Request, res: Response){
+        const repositorioEstacao = PgDataSource.getRepository(Estacao)
+        const idEstacao = parseInt(req.params.idEstacao)
+        let estacao = await repositorioEstacao.findOne({where:{idEstacao:idEstacao}})
+        if(estacao == undefined)
+            return res.status(400).send("idEstação não encontrado no banco de dados")
+        estacao.statusEstacao = false
+        try{
+            await repositorioEstacao.save(estacao)
+            res.status(200).send("Estacao deletada com sucesso")
+        } catch(error){
+            res.status(400).send(error)
+        }
     }
 
 }
