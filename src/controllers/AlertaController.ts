@@ -48,8 +48,19 @@ class AlertaController extends AbstratoController{
         const quantidadeLinhas = await repositorioAlerta.count(TrataValoresFiltroAlerta.tratarContagem(req))
         const quantidadePaginas = Math.ceil(quantidadeLinhas/tamanhoPagina)
         const filtroSelecao = TrataValoresFiltroAlerta.tratarSelect(req)
-        const selecao = await SelecaoPaginadaAlerta.selecionar(repositorioAlerta, pagina, tamanhoPagina, filtroSelecao)
-        res.send(selecao)
+        try{
+            const selecao = await SelecaoPaginadaAlerta.selecionar(repositorioAlerta, pagina, tamanhoPagina, filtroSelecao)
+            const resposta = { alertas:selecao, pagina:pagina, tamanhoPagina:tamanhoPagina, quantidadePaginas:quantidadePaginas }
+            res.status(200).send(resposta)
+        } catch(error){
+            if(pagina == 0)
+                res.status(400).send("Não é permitido requisitar a página 0")
+            else{
+                res.status(400).send(error)
+                console.log(error)
+            }
+        }
+        
     }
 
     atualizar(req: Request, res: Response): void {

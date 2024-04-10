@@ -1,5 +1,9 @@
+import { query, Request } from "express";
+import AlertaController from "../../../../src/controllers/AlertaController";
 import { Alerta } from "../../../../src/entities/Alerta";
 import { Parametro } from "../../../../src/entities/Parametro";
+import MockResponse from "../MockResponse";
+import MocksListagem from "../UsuarioController/MocksUsuarioControllerListagemTotal";
 
 let listaAlertaCadastrados:InterfaceAlertasMockado[] = [
     {
@@ -85,7 +89,7 @@ jest.mock("../../../../src/data-source", ()=>{
                 })
             })
         }),
-        count:jest.fn().mockReturnValue(25)
+        count:jest.fn().mockReturnValue(2)
     }
     const mockGetRepository = jest.fn(() => mockRepository);
         return {
@@ -94,10 +98,33 @@ jest.mock("../../../../src/data-source", ()=>{
     }
 )
 
+let req = {
+    query:{
+        pagina:"1",
+        tamanhoPagina:10
+    }
+}
+
 describe("Testes de listagem paginada de alertas", ()=>{
 
-    test("teste de cadastro de alerta bem sucedido", async()=>{
-        
+    test("teste de listagem de alerta bem sucedido", async()=>{
+        skip = 1
+        take=1
+        const requisicao = req as unknown as Request
+        const mockRes = (MockResponse.resSemLocals.status(200).send as jest.Mock).mockClear()
+        await AlertaController.listarPaginada(requisicao, MockResponse.resSemLocals)
+        expect(mockRes.mock.calls[0][0].alertas.length).toBe(1)
+        expect(mockRes.mock.calls[0][0].alertas[0]).toBe(listaAlertaCadastrados[1])
+    })
+
+    test("teste de listagem de alerta pagina 0", async()=>{
+        skip = 1
+        take=0
+        req.query.pagina = "0"
+        const requisicao = req as unknown as Request
+        const mockRes = (MockResponse.resSemLocals.status(400).send as jest.Mock).mockClear()
+        await AlertaController.listarPaginada(requisicao, MockResponse.resSemLocals)
+        expect(mockRes.mock.calls[0][0]).toBe("Não é permitido requisitar a página 0")
     })
 
 })
