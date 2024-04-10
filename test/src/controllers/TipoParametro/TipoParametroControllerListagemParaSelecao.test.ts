@@ -7,12 +7,16 @@ jest.mock("../../../../src/data-source", ()=>{
 
     const mockRepository = {
         createQueryBuilder:jest.fn().mockReturnValue({
-            select:jest.fn().mockReturnValue({
-                where:jest.fn().mockReturnValue({
-                    getMany:jest.fn(()=>{
-                        return "FOI"
+            leftJoin:jest.fn().mockReturnValue({
+                leftJoin:jest.fn().mockReturnValue({
+                    select:jest.fn().mockReturnValue({
+                        where:jest.fn().mockReturnValue({
+                            getMany:jest.fn(()=>{
+                                return "FOI"
+                            })
+                        })     
                     })
-                })     
+                })
             })                       
         }),
     }
@@ -22,11 +26,13 @@ jest.mock("../../../../src/data-source", ()=>{
     };
 })
 
+
+
 describe("Teste de listagem para selecao", ()=>{
 
     test("Testando resposta de sucesso", async()=>{
         const mockRes = (MockResponse.resSemLocals.status as jest.Mock).mockClear()
-        const req = {} as Request
+        const req = { params: { idEstacao: 1 } } as unknown as Request
         await TipoParametroController.listarParaSelecao(req, MockResponse.resSemLocals)
         expect(mockRes.mock.calls[0][0]).toBe(200)
     })
