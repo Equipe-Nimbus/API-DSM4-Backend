@@ -1,5 +1,4 @@
 import PgDataSource from "../../data-source";
-import { Estacao } from "../../entities/Estacao";
 import { Parametro } from "../../entities/Parametro";
 import { TipoParametro } from "../../entities/TipoParametro";
 
@@ -7,8 +6,8 @@ class ManipulaObjetoParametro {
 
     async criarRelacionametoEstacaoParametro (listaTipoParametro): Promise<Parametro[]> {
         const repositorioTipoParametro = PgDataSource.getRepository(TipoParametro);
-        const repositorioParametro = PgDataSource.getRepository(Parametro);
         let listaParametro: Parametro[] = [];
+        
         for (const tipoParametro of listaTipoParametro) {
             if (Object.keys(tipoParametro).length == 0)
                 return [];            
@@ -19,21 +18,18 @@ class ManipulaObjetoParametro {
                 }
             });    
             novoParametro.tiposParametro = Promise.resolve(objetoTipoParametro);
-            listaParametro.push(novoParametro);
-            await repositorioParametro.save(novoParametro);                    
+            listaParametro.push(novoParametro);                 
         }
         return listaParametro;
     };
 
     async consultaTipoParametroEmParametro (listaTipoParametroAtualizados: number[], idEstacaoAlteracao: number) {
-        const repositorioEstacao = PgDataSource.getRepository(Estacao);
-        const repositorioTipoParametro = PgDataSource.getRepository(TipoParametro);
         const repositorioParametro = PgDataSource.getRepository(Parametro);        
-        const listaParametro = await repositorioParametro.createQueryBuilder("parametro").
+        const listaParametroAntesAtualizacao = await repositorioParametro.createQueryBuilder("parametro").
             where(`parametro.estacoes.idEstacao = ${idEstacaoAlteracao}`).
             getMany();
 
-        for (const parametro of await listaParametro) {
+        for (const parametro of listaParametroAntesAtualizacao) {
             const tipoParametro = await parametro.tiposParametro;
             if(!listaTipoParametroAtualizados.includes((tipoParametro).idTipoParametro)) {
                 repositorioParametro.createQueryBuilder().update("parametro").
@@ -42,13 +38,14 @@ class ManipulaObjetoParametro {
                     }).
                     where("idParametro = :idParametro", {idParametro: parametro.idParametro}).
                     execute();
-            }
-            repositorioParametro.createQueryBuilder().update("parametro").
+            } else {
+                repositorioParametro.createQueryBuilder().update("parametro").
                 set({
                     statusParametro: true
                 }).
                 where("idParametro = :idParametro", {idParametro: parametro.idParametro}).
                 execute();
+            }            
             const indiceIdTipoParametro = listaTipoParametroAtualizados.indexOf((tipoParametro).idTipoParametro);            
             if (indiceIdTipoParametro !== -1) {
                 listaTipoParametroAtualizados.splice(indiceIdTipoParametro, 1);
