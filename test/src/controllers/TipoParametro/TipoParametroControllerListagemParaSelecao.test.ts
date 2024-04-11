@@ -33,7 +33,7 @@ describe("Teste de listagem para selecao", ()=>{
     test("Testando resposta de sucesso", async()=>{
         const mockRes = (MockResponse.resSemLocals.status as jest.Mock).mockClear()
         const req = { params: { idEstacao: 1 } } as unknown as Request
-        await TipoParametroController.listarParaSelecao(req, MockResponse.resSemLocals)
+        await TipoParametroController.listarParaSelecaoComIdEstacao(req, MockResponse.resSemLocals)
         expect(mockRes.mock.calls[0][0]).toBe(200)
     })
 })
