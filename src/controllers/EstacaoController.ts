@@ -11,6 +11,7 @@ import TrataValoresFiltroEstacao from "../services/Estacao/TrataValoresFiltroEst
 import SelecaoPaginadaEstacao from "../services/Estacao/SelecaoPaginadaEstacao";
 import MontaObjetoTipoParametro from "../services/Estacao/MontaObjetoTipoParametro";
 import MontaObjetoEstacao from "../services/Estacao/MontaObjetoEstacao";
+import { Parametro } from "../entities/Parametro";
 
 class EstacaoController extends AbstratoController{
 
@@ -33,22 +34,22 @@ class EstacaoController extends AbstratoController{
         if (consultaCordenadaEstacao) {
             res.status(400).send("Já existe uma estação com essa coordenada geográfica!");
             return;
-        }            
+        }
 
-        const listaParametro = await ManipulaObjetoParametro.criarRelacionametoEstacaoParametro(req.body.tipoParametros);
-
-        if (listaParametro.length == 0){
+        if (Array.isArray(req.body.tipoParametros) && req.body.tipoParametros.lenght == 0){
             res.status(400).send("É necessário pelo menos um tipo parâmetro!");
             return;
-        }                   
+        }
+
+        const listaParametro = await ManipulaObjetoParametro.criarRelacionametoEstacaoParametro(req.body.tipoParametros);
         
         let novaEstacao = new Estacao();
-        novaEstacao = InsereAtributosEstacao.inserir(novaEstacao, req.body);        
+        novaEstacao = InsereAtributosEstacao.inserir(novaEstacao, req.body);
         novaEstacao.parametros = listaParametro;
 
         try {            
             await repositorioEstacao.save(novaEstacao);
-            res.status(200).send("Estação cadastrada com sucesso!");
+            res.status(200).send("Estação cadastrada com sucesso!");            
         } catch (error) {
             if (error.code == "23505")
                 res.status(400).send("Nome de estação já cadastrado!");
@@ -95,16 +96,11 @@ class EstacaoController extends AbstratoController{
     
         const listaTipoParametro = [];
         for(const parametro of estacaoRecuperada.parametros) {
-            // descomentar esse bloco depois de alterar a entidade parametro com a propriedade statusParametro
-            /* if (parametro.statusParametro == true) {
+            if (parametro.statusParametro == true) {
                 const tipoParametroRuperado = await parametro.tiposParametro;
                 const tipoParametroMontado = MontaObjetoTipoParametro.criaTipoParametro(tipoParametroRuperado);
                 listaTipoParametro.push(tipoParametroMontado); 
-            } */
-            // apagar esse bloco depois de alterar a entidade parametro com a propriedade statusParametro
-            const tipoParametroRuperado = await parametro.tiposParametro;
-            const tipoParametroMontado = MontaObjetoTipoParametro.criaTipoParametro(tipoParametroRuperado);
-            listaTipoParametro.push(tipoParametroMontado);                 
+            }                
         };
         estacaoRecuperada.tipoParametros = listaTipoParametro;
         const resposta = MontaObjetoEstacao.criaEstacao(estacaoRecuperada);
@@ -113,6 +109,7 @@ class EstacaoController extends AbstratoController{
     
     async atualizar(req: Request, res: Response) {
         const repositorioEstacao = PgDataSource.getRepository(Estacao);
+        const repositorioParametro = PgDataSource.getRepository(Parametro);
         const consultaEstacaoMesmaCoordenada = await ConsultaCoordenadaGeograficaEstacao.consulta(req.body);
         let contador: number = 0;
         const listaAtributosEstacao = ["nomeEstacao", "ruaAvenidaEstacao", "numeroEnderecoEstacao", "bairroEstacao", "cidadeEstacao", "estadoEstacao", "cepEstacao", "latitudeEstacao", "longitudeEstacao"];
@@ -148,23 +145,28 @@ class EstacaoController extends AbstratoController{
             where: {
                 idEstacao: req.body.idEstacao
             }
-        })   
-        const listaNovosParametros = await ManipulaObjetoParametro.consultaTipoParametroEmParametro(listaIdTipoParametro, req.body.idEstacao);
-        for (const novoParametro of listaNovosParametros) {
-            await repositorioEstacao.createQueryBuilder().
-                relation(Estacao, "parametros").
-                of(estacaoAntiga).
-                add(novoParametro);
-        };
+        }) 
+        
         try {
             await repositorioEstacao.createQueryBuilder().
                 update(Estacao).
                 set(novaEstacao).
                 where(`idEstacao = ${req.body.idEstacao}`).
                 execute();
-                res.status(200).send("Estação atualizada com sucesso");
+            const listaNovosParametros = await ManipulaObjetoParametro.consultaTipoParametroEmParametro(listaIdTipoParametro, req.body.idEstacao);
+            for (const novoParametro of listaNovosParametros) {
+                await repositorioEstacao.createQueryBuilder().
+                    relation(Estacao, "parametros").
+                    of(estacaoAntiga).
+                    add(novoParametro);
+            };
+            res.status(200).send("Estação atualizada com sucesso");
         } catch (error) {
-            res.status(400).send(error)
+            if (error.code == "23505")
+                res.status(400).send("Nome de estação já cadastrado!");
+            else {
+                res.status(400).send(error);
+            }
         };                
     };
     
