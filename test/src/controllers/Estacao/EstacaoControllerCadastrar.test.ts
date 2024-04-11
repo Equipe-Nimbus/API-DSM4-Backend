@@ -59,7 +59,7 @@ jest.mock("../../../../src/services/Estacao/ConsultaCoordenadaGeograficaEstacao.
     }
 });
 
-jest.mock("../../../../src/services/Estacao/CriaObjetoParametro.ts", () => {
+jest.mock("../../../../src/services/Estacao/ManipulaObjetoParametro.ts", () => {
     const mockListaObjetoParametro = (listaTipoParametro: TipoParametro[]) => {
         for(const tipoParametro of listaTipoParametro) {
             if (Object.keys(tipoParametro).length == 0)
@@ -79,6 +79,7 @@ jest.mock("../../../../src/services/Estacao/CriaObjetoParametro.ts", () => {
                 "tiposParametro": Promise.resolve(objetoTipoParametro),
                 "estacoes": null,
                 "medicoes": null,
+                "statusParametro": true,
                 alertas: []
             };
             listaParametro.push(objetoParametro);
@@ -87,7 +88,7 @@ jest.mock("../../../../src/services/Estacao/CriaObjetoParametro.ts", () => {
     }; 
     const mockCriaObjetoParametro = jest.fn(mockListaObjetoParametro);
     return {
-        criarRelacionameto: mockCriaObjetoParametro,
+        criarRelacionametoEstacaoParametro: mockCriaObjetoParametro,
     };
 });
 

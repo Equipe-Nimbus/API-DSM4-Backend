@@ -96,11 +96,9 @@ class EstacaoController extends AbstratoController{
     
         const listaTipoParametro = [];
         for(const parametro of estacaoRecuperada.parametros) {
-            if (parametro.statusParametro == true) {
-                const tipoParametroRuperado = await parametro.tiposParametro;
-                const tipoParametroMontado = MontaObjetoTipoParametro.criaTipoParametro(tipoParametroRuperado);
-                listaTipoParametro.push(tipoParametroMontado); 
-            }                
+            const tipoParametroRuperado = await parametro.tiposParametro;
+            const tipoParametroMontado = MontaObjetoTipoParametro.criaTipoParametro(tipoParametroRuperado);
+            listaTipoParametro.push(tipoParametroMontado);               
         };
         estacaoRecuperada.tipoParametros = listaTipoParametro;
         const resposta = MontaObjetoEstacao.criaEstacao(estacaoRecuperada);
