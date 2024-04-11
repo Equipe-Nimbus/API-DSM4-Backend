@@ -13,8 +13,8 @@ class ConfereExistenciaAlertaIndentico {
         }})
 
         if(resultado == undefined)
-            return true
-        return false
+            return false
+        return true
     }
 
 }
