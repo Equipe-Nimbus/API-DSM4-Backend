@@ -2,6 +2,7 @@ import { TipoParametro } from "../../entities/TipoParametro";
 import { Request } from "express";
 import TrataStrings from "../TrataStrings";
 
+
 class InsereAtributosTipoParametro{
 
     inserir(tipoParametro: TipoParametro, req: Request){
@@ -18,6 +19,5 @@ class InsereAtributosTipoParametro{
     }
 
 }
-
 
 export default new InsereAtributosTipoParametro()
