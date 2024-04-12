@@ -9,6 +9,7 @@ import TrataValoresFiltroAlerta from "../services/Alerta/TrataValoresFiltroAlert
 import SelecaoPaginadaAlerta from "../services/Alerta/SelecaoPaginadaAlerta";
 import ConfereExistenciaAlertaIdentico from "../services/Alerta/ConfereExistenciaAlertaIdentico";
 import AtualizaAtributoAlerta from "../services/Alerta/AtualizaAtributoAlerta";
+import SelecaoEspecificaAlerta from "../services/Alerta/SelecaoEspecificaAlerta";
 
 
 class AlertaController extends AbstratoController{
@@ -38,8 +39,12 @@ class AlertaController extends AbstratoController{
 
     }
 
-    listarEspecifico(req: Request, res: Response): void {
-        throw new Error("Method not implemented.");
+    async listarEspecifico(req: Request, res: Response){
+        const idAlerta = parseInt(req.params.idAlerta)
+        const alerta = await SelecaoEspecificaAlerta.selecionar(idAlerta)
+        if (alerta == undefined)
+            return res.status(400).send("Alerta não encontrado")
+        res.status(200).send(alerta)
     }
 
     async listarPaginada(req: Request, res: Response): Promise<void> {
