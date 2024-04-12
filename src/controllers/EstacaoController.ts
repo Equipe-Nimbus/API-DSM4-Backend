@@ -109,29 +109,13 @@ class EstacaoController extends AbstratoController{
         for(const parametro of estacaoRecuperada.parametros) {
             const tipoParametroRuperado = await parametro.tiposParametro;
             const tipoParametroMontado = MontaObjetoTipoParametro.criaTipoParametro(tipoParametroRuperado);
-            listaTipoParametro.push(tipoParametroMontado);                 
-
+            listaTipoParametro.push(tipoParametroMontado);               
         };
         estacaoRecuperada.tipoParametros = listaTipoParametro;
         const resposta = MontaObjetoEstacao.criaEstacao(estacaoRecuperada);
         return res.status(200).send(resposta);                     
     };
 
-    async deletar(req: Request, res: Response){
-        const repositorioEstacao = PgDataSource.getRepository(Estacao)
-        const idEstacao = parseInt(req.params.idEstacao)
-        let estacao = await repositorioEstacao.findOne({where:{idEstacao:idEstacao}})
-        if(estacao == undefined)
-            return res.status(400).send("idEstação não encontrado no banco de dados")
-        estacao.statusEstacao = false
-        try{
-            await repositorioEstacao.save(estacao)
-            res.status(200).send("Estacao deletada com sucesso")
-        } catch(error){
-            res.status(400).send(error)
-        }
-    }
-    
     async atualizar(req: Request, res: Response) {
         const repositorioEstacao = PgDataSource.getRepository(Estacao);
         const consultaEstacaoMesmaCoordenada = await ConsultaCoordenadaGeograficaEstacao.consulta(req.body);
@@ -189,10 +173,26 @@ class EstacaoController extends AbstratoController{
         } catch (error) {
             if (error.code == "23505")
                 res.status(400).send("Nome de estação já cadastrado!");
-            else 
+            else {
                 res.status(400).send(error);
+            }
         };                
     };
-}
+    
+    async deletar(req: Request, res: Response){
+        const repositorioEstacao = PgDataSource.getRepository(Estacao)
+        const idEstacao = parseInt(req.params.idEstacao)
+        let estacao = await repositorioEstacao.findOne({where:{idEstacao:idEstacao}})
+        if(estacao == undefined)
+            return res.status(400).send("idEstação não encontrado no banco de dados")
+        estacao.statusEstacao = false
+        try{
+            await repositorioEstacao.save(estacao)
+            res.status(200).send("Estacao deletada com sucesso")
+        } catch(error){
+            res.status(400).send(error)
+        }
+    }
+};
 
 export default new EstacaoController();
