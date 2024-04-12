@@ -9,7 +9,7 @@ class InsereAtributosTipoParametro{
         const novosAtributos = req.body
         for(const chave in novosAtributos){
             if(novosAtributos[chave])
-                if(typeof novosAtributos[chave] === "string")
+                if(typeof novosAtributos[chave] === "string" && chave != "unidadeTipoParametro")
                     tipoParametro[chave] = TrataStrings.tratarParaUpperSemAcento(novosAtributos[chave])
                 else{
                     tipoParametro[chave] = novosAtributos[chave]

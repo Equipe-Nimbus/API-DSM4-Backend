@@ -27,6 +27,8 @@ class TipoParametroController extends AbstratoController {
         } catch(error){
             if(error.code == "23502")
                 res.status(400).send("nomeTipoParametro e unidadeTipoParametro não podem ser nulo");
+            if(error.code == "22001")
+                res.status(400).send("tamanho da unidade ou do nome excedido");
             else
                 throw error
         }
