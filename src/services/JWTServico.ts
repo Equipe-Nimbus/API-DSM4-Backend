@@ -16,9 +16,14 @@ const gerarToken = (dados:InterfaceJWTparametros)=>{
 
 const conferirToken = (token:string)=>{
     if(!process.env.JWT_SECRET) return "JWT_SECRET inexistente"
-    const decodificacao = jwt.verify(token, process.env.JWT_SECRET)
-    if(typeof decodificacao == "string") return "Token invalido";
-    return decodificacao as InterfaceJWTparametros
+    try{
+        const decodificacao = jwt.verify(token, process.env.JWT_SECRET)
+        if(typeof decodificacao == "string") return "Token invalido";
+        return decodificacao as InterfaceJWTparametros
+    } catch(error){
+        return "Token invalido"
+    }
+    
 }
 
 export const JWTServico = {
