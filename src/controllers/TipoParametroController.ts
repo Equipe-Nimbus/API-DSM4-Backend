@@ -35,7 +35,7 @@ class TipoParametroController extends AbstratoController {
     async listarEspecifico(req: Request, res: Response): Promise<void> {
         const repositorioTipoParametro = PgDataSource.getRepository(TipoParametro)
         const id = parseInt(req.params.id)
-        const tipoParametro = await repositorioTipoParametro.findOne({where:{idTipoParametro:id}})
+        const tipoParametro = await repositorioTipoParametro.findOne({where:{idTipoParametro:id, statusTipoParametro: true}})
         if(tipoParametro){
             res.status(200).send(tipoParametro)
             return;

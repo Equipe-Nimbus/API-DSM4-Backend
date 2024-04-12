@@ -11,7 +11,6 @@ import TrataValoresFiltroEstacao from "../services/Estacao/TrataValoresFiltroEst
 import SelecaoPaginadaEstacao from "../services/Estacao/SelecaoPaginadaEstacao";
 import MontaObjetoTipoParametro from "../services/Estacao/MontaObjetoTipoParametro";
 import MontaObjetoEstacao from "../services/Estacao/MontaObjetoEstacao";
-import { Parametro } from "../entities/Parametro";
 
 class EstacaoController extends AbstratoController{
 
@@ -107,7 +106,6 @@ class EstacaoController extends AbstratoController{
     
     async atualizar(req: Request, res: Response) {
         const repositorioEstacao = PgDataSource.getRepository(Estacao);
-        const repositorioParametro = PgDataSource.getRepository(Parametro);
         const consultaEstacaoMesmaCoordenada = await ConsultaCoordenadaGeograficaEstacao.consulta(req.body);
         let contador: number = 0;
         const listaAtributosEstacao = ["nomeEstacao", "ruaAvenidaEstacao", "numeroEnderecoEstacao", "bairroEstacao", "cidadeEstacao", "estadoEstacao", "cepEstacao", "latitudeEstacao", "longitudeEstacao"];
@@ -143,7 +141,7 @@ class EstacaoController extends AbstratoController{
             where: {
                 idEstacao: req.body.idEstacao
             }
-        }) 
+        })
         
         try {
             await repositorioEstacao.createQueryBuilder().
@@ -151,8 +149,9 @@ class EstacaoController extends AbstratoController{
                 set(novaEstacao).
                 where(`idEstacao = ${req.body.idEstacao}`).
                 execute();
-            const listaNovosParametros = await ManipulaObjetoParametro.consultaTipoParametroEmParametro(listaIdTipoParametro, req.body.idEstacao);
+            const listaNovosParametros = await ManipulaObjetoParametro.consultaTipoParametroEmParametro(listaIdTipoParametro, estacaoAntiga.idEstacao);
             for (const novoParametro of listaNovosParametros) {
+                console.log(novoParametro);
                 await repositorioEstacao.createQueryBuilder().
                     relation(Estacao, "parametros").
                     of(estacaoAntiga).
