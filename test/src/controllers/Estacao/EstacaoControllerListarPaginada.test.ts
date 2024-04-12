@@ -7,18 +7,6 @@ let skip:number;
 let take:number;
 let listaEstacaoCadastrada: Estacao[] = [];
 
-/* jest.mock("../../../../src/data-source.ts", () => {
-    const mockRepositorioEstacao = {
-        count: (listaEstacaoRecuperadas: Estacao[]) => {
-            let quantidadeEstacaoRecuperada = 0;
-            for(const estacaoRecuperada of listaEstacaoRecuperadas) {
-                quantidadeEstacaoRecuperada++;
-            }
-            return quantidadeEstacaoRecuperada;
-        },
-    };
-}); */
-
 jest.mock("../../../../src/data-source", ()=>{
 
     const mockRepository = {
