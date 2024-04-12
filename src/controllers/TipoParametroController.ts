@@ -37,6 +37,7 @@ class TipoParametroController extends AbstratoController {
         const repositorioTipoParametro = PgDataSource.getRepository(TipoParametro)
         const id = parseInt(req.params.id)
         const tipoParametro = await repositorioTipoParametro.findOne({where:{idTipoParametro:id, statusTipoParametro:true}})
+
         if(tipoParametro){
             res.status(200).send(tipoParametro)
             return;
