@@ -12,7 +12,7 @@ class TrataValoresFiltroAlerta extends TrataValoresFiltro<Alerta> {
         const nomeAlerta = req.query.nome ?
             "%" + req.query.nome + "%" : "%%"
         
-        const filtro:FindManyOptions<Alerta> ={where:{nomeAlerta: Like(`${nomeAlerta}`)}}
+        const filtro:FindManyOptions<Alerta> ={where:{nomeAlerta: Like(`${nomeAlerta}`), statusAlerta:true}}
         return filtro
     
     }
