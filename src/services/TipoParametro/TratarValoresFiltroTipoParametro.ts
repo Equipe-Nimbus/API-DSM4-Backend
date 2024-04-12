@@ -22,7 +22,8 @@ class TrataValoresFiltroTipoParametro extends TrataValoresFiltro<TipoParametro>{
         const filtro:FindManyOptions<TipoParametro> = {
             where:{
                 nomeTipoParametro: Like(`${nomeTipoParametro}`),
-                unidadeTipoParametro: Like(`${unidadeTipoParametro}`)
+                unidadeTipoParametro: Like(`${unidadeTipoParametro}`),
+                statusTipoParametro: true
             }
         }
         return filtro;
@@ -45,7 +46,7 @@ class TrataValoresFiltroTipoParametro extends TrataValoresFiltro<TipoParametro>{
             query:`tipo_parametro.nomeTipoParametro LIKE :nome AND tipo_parametro.unidadeTipoParametro LIKE :unidade`,
             valores:{
                 nome:nomeTipoParametro,
-                unidade:unidadeTipoParametro
+                unidade:unidadeTipoParametro,
             }
         }
         return filtro;

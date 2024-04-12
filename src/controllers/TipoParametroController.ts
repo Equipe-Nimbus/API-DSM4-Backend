@@ -35,7 +35,7 @@ class TipoParametroController extends AbstratoController {
     async listarEspecifico(req: Request, res: Response): Promise<void> {
         const repositorioTipoParametro = PgDataSource.getRepository(TipoParametro)
         const id = parseInt(req.params.id)
-        const tipoParametro = await repositorioTipoParametro.findOne({where:{idTipoParametro:id}})
+        const tipoParametro = await repositorioTipoParametro.findOne({where:{idTipoParametro:id, statusTipoParametro:true}})
         if(tipoParametro){
             res.status(200).send(tipoParametro)
             return;
@@ -71,7 +71,7 @@ class TipoParametroController extends AbstratoController {
             .createQueryBuilder("tipo_parametro")
             .leftJoin("tipo_parametro.parametros", "parametro")
             .leftJoin("parametro.estacoes", "estacoes")
-            .select(["tipo_parametro.idTipoParametro", "tipo_parametro.nomeTipoParametro", "tipo_parametro.unidadeTipoParametro", "tipo_parametro.fatorTipoParametro"])
+            .select(["tipo_parametro.idTipoParametro", "tipo_parametro.nomeTipoParametro", "tipo_parametro.unidadeTipoParametro", "tipo_parametro.fatorTipoParametro", "tipo_parametro.offsetTipoParametro"])
             .where("tipo_parametro.statusTipoParametro = :status AND parametro.estacoesIdEstacao = estacoes.idEstacao AND parametro.estacoesIdEstacao = :idEstacao AND parametro.tiposParametroIdTipoParametro = tipo_parametro.idTipoParametro", { status: true, idEstacao:idEstacao })
             .getMany();
         res.status(200).send(tipoParametro)
@@ -81,7 +81,7 @@ class TipoParametroController extends AbstratoController {
         const repositorioTipoParametro = PgDataSource.getRepository(TipoParametro)
         const tipoParametro = await repositorioTipoParametro
             .createQueryBuilder("tipo_parametro")
-            .select(["tipo_parametro.idTipoParametro", "tipo_parametro.nomeTipoParametro", "tipo_parametro.unidadeTipoParametro", "tipo_parametro.fatorTipoParametro"])
+            .select(["tipo_parametro.idTipoParametro", "tipo_parametro.nomeTipoParametro", "tipo_parametro.unidadeTipoParametro", "tipo_parametro.fatorTipoParametro", "tipo_parametro.offsetTipoParametro"])
             .where("tipo_parametro.statusTipoParametro = :status", { status: true })
             .getMany();
         res.status(200).send(tipoParametro)
