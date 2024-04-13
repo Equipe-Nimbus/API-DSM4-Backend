@@ -77,7 +77,7 @@ class AlertaController extends AbstratoController{
             return res.status(400).send("idAlerta não encontrado no banco de dados")
         alertaEncontrado = await AtualizaAtributoAlerta.atualizar(alertaEncontrado, req)
         const resultado = await ConfereExistenciaAlertaIdentico.confere(repositorioAlerta, alertaEncontrado)
-        if(resultado == false)
+        if(resultado)
             return res.status(400).send("Alerta identico já existe no banco de dados")
         try{
             await repositorioAlerta.save(alertaEncontrado)
