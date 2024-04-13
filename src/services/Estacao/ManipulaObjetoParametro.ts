@@ -6,6 +6,7 @@ class ManipulaObjetoParametro {
 
     async criarRelacionametoEstacaoParametro (listaTipoParametro): Promise<Parametro[]> {
         const repositorioTipoParametro = PgDataSource.getRepository(TipoParametro);
+        const repositorioParametro = PgDataSource.getRepository(Parametro);
         let listaParametro: Parametro[] = [];
         
         for (const tipoParametro of listaTipoParametro) {
@@ -18,6 +19,7 @@ class ManipulaObjetoParametro {
                 }
             });    
             novoParametro.tiposParametro = Promise.resolve(objetoTipoParametro);
+            await repositorioParametro.save(novoParametro)
             listaParametro.push(novoParametro);                 
         }
         return listaParametro;
@@ -28,18 +30,17 @@ class ManipulaObjetoParametro {
         const listaParametroAntesAtualizacao = await repositorioParametro.createQueryBuilder("parametro").
             where(`parametro.estacoes.idEstacao = ${idEstacaoAlteracao}`).
             getMany();
-
         for (const parametro of listaParametroAntesAtualizacao) {
             const tipoParametro = await parametro.tiposParametro;
-            if(!listaTipoParametroAtualizados.includes((tipoParametro).idTipoParametro)) {
-                repositorioParametro.createQueryBuilder().update("parametro").
+            if(!listaTipoParametroAtualizados.includes(tipoParametro.idTipoParametro)) {
+                repositorioParametro.createQueryBuilder().update(Parametro).
                     set({
                         statusParametro: false
                     }).
                     where("idParametro = :idParametro", {idParametro: parametro.idParametro}).
                     execute();
             } else {
-                repositorioParametro.createQueryBuilder().update("parametro").
+                repositorioParametro.createQueryBuilder().update(Parametro).
                 set({
                     statusParametro: true
                 }).
@@ -49,18 +50,18 @@ class ManipulaObjetoParametro {
             const indiceIdTipoParametro = listaTipoParametroAtualizados.indexOf((tipoParametro).idTipoParametro);            
             if (indiceIdTipoParametro !== -1) {
                 listaTipoParametroAtualizados.splice(indiceIdTipoParametro, 1);
-            };        
+            };       
         };
 
         const listaTipoParametroParaCadastrar = [];
         for (const idTipoParametro of listaTipoParametroAtualizados) {
             const simulaObjetoTipoParametro = {
-                idTipoParametro: idTipoParametro 
-            };
-            listaTipoParametroParaCadastrar.push(simulaObjetoTipoParametro);
+                idTipoParametro: idTipoParametro
+            }
+            listaTipoParametroParaCadastrar.push(simulaObjetoTipoParametro);          
         };
 
-        const listaIdTipoParametroCadastrados = this.criarRelacionametoEstacaoParametro(listaTipoParametroParaCadastrar);        
+        const listaIdTipoParametroCadastrados = await this.criarRelacionametoEstacaoParametro(listaTipoParametroParaCadastrar);        
         return listaIdTipoParametroCadastrados;       
     }
 };
