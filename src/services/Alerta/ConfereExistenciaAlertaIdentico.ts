@@ -11,10 +11,9 @@ class ConfereExistenciaAlertaIndentico {
             statusAlerta:true,
             valorMedicaoAlerta: alerta.valorMedicaoAlerta
         }})
-
         if(resultado == undefined)
-            return true
-        return false
+            return false
+        return true
     }
 
 }
