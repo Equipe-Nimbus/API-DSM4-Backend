@@ -5,6 +5,12 @@ import { Request } from "express";
 
 let tipoParametrosCadastrados:TipoParametro[] = []
 
+jest.mock("../../../../src/services/Parametro/DelecaoCascataParametro", ()=>{
+    return{
+        deletar:jest.fn()
+    }
+})
+
 jest.mock("../../../../src/data-source", ()=>{
     const mockRepository = {
         findOne: (parametros:{where:{idTipoParametro:number}})=>{
