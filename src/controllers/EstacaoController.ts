@@ -35,20 +35,24 @@ class EstacaoController extends AbstratoController{
             res.status(400).send("Já existe uma estação com essa coordenada geográfica!");
             return;
         }
-
-        if (Array.isArray(req.body.tipoParametros) && req.body.tipoParametros.lenght == 0){
+        console.log(req.body.tipoParametros.lenght);
+        if (Array.isArray(req.body.tipoParametros) && req.body.tipoParametros.lenght == undefined){
             res.status(400).send("É necessário pelo menos um tipo parâmetro!");
             return;
         }
 
-        const listaParametro = await ManipulaObjetoParametro.criarRelacionametoEstacaoParametro(req.body.tipoParametros);
-        
         let novaEstacao = new Estacao();
         novaEstacao = InsereAtributosEstacao.inserir(novaEstacao, req.body);
-        novaEstacao.parametros = listaParametro;
-
+        
         try {            
             await repositorioEstacao.save(novaEstacao);
+            const listaParametro = await ManipulaObjetoParametro.criarRelacionametoEstacaoParametro(req.body.tipoParametros);        
+            for (const novoParametro of listaParametro) {
+                await repositorioEstacao.createQueryBuilder().
+                    relation(Estacao, "parametros").
+                    of(novaEstacao).
+                    add(novoParametro);
+            };
             res.status(200).send("Estação cadastrada com sucesso!");            
         } catch (error) {
             if (error.code == "23505")
@@ -153,7 +157,7 @@ class EstacaoController extends AbstratoController{
             where: {
                 idEstacao: req.body.idEstacao
             }
-        })
+        });       
         
         try {
             await repositorioEstacao.createQueryBuilder().
@@ -163,7 +167,6 @@ class EstacaoController extends AbstratoController{
                 execute();
             const listaNovosParametros = await ManipulaObjetoParametro.consultaTipoParametroEmParametro(listaIdTipoParametro, estacaoAntiga.idEstacao);
             for (const novoParametro of listaNovosParametros) {
-                console.log(novoParametro);
                 await repositorioEstacao.createQueryBuilder().
                     relation(Estacao, "parametros").
                     of(estacaoAntiga).
