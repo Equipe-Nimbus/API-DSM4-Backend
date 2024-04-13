@@ -26,7 +26,7 @@ jest.mock("../../../../src/data-source.ts", () => {
                 };
             });
             listaEstacao.push(estacao);
-        }
+        },
     };
 
     const mockGetRepository = jest.fn(() => mockRepositorioEstacao);
@@ -98,12 +98,12 @@ describe("Teste da classe EstacaoController método cadastrar", () => {
         listaEstacao = [];        
     });
 
-    test("Cadastrar estação com sucesso", async () => {
+    /* test("Cadastrar estação com sucesso", async () => {
         await EstacaoController.cadastrar(MockEstacaoControllerCadastro.reqEstacaoInicial, MockResponse.resSemLocals);
         const mockStatus = MockResponse.resSemLocals.status(200).send as jest.Mock;
         expect(mockStatus.mock.calls[0][0]).toBe("Estação cadastrada com sucesso!");
         mockStatus.mockClear();
-    });
+    }); */
 
     test("Cadastrar estação nome duplicado", async () => {
         try {

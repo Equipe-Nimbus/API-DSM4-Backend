@@ -14,7 +14,7 @@ class MockEstacaoControllerCadastro {
             longitudeEstacao: "-46.6333",
             tipoParametros: [
                 {
-                  "idTipoParametro": 1                  
+                  idTipoParametro: 1                  
                 }
               ]
         }
@@ -33,7 +33,7 @@ class MockEstacaoControllerCadastro {
             longitudeEstacao: "-47.1234",
             tipoParametros: [
                 {
-                  "idTipoParametro": 1                  
+                  idTipoParametro: 1                  
                 }
               ]
         }          
@@ -52,7 +52,7 @@ class MockEstacaoControllerCadastro {
             longitudeEstacao: "-46.6333",
             tipoParametros: [
                 {
-                  "idTipoParametro": 1                  
+                  idTipoParametro: 1                  
                 }
               ]
         }          
@@ -71,7 +71,7 @@ class MockEstacaoControllerCadastro {
             longitudeEstacao: "-46.6333",
             tipoParametros: [
                 {
-                  "idTipoParametro": 1                  
+                  idTipoParametro: 1                  
                 }
               ]
         }          
