@@ -7,6 +7,7 @@ import AbstratoController from "./AbstratoController";
 import TratarValoresFiltroTipoParametro from "../services/TipoParametro/TratarValoresFiltroTipoParametro";
 import SelecaoPaginadaTipoParametro from "../services/TipoParametro/SelecaoPaginadaTipoParametro";
 import AtualizaAtrifutoTipoParametro from "../services/TipoParametro/AtualizaAtributoTipoParametro";
+import DelecaoCascataParametro from "../services/Parametro/DelecaoCascataParametro";
 
 
 class TipoParametroController extends AbstratoController {
@@ -118,6 +119,7 @@ class TipoParametroController extends AbstratoController {
             res.status(400).send("Tipo Parametro não pode ser deletado pois não existe")
             return;
         }
+        await DelecaoCascataParametro.deletar(tipoParametro)
         tipoParametro.statusTipoParametro = false;
         await repositorioTipoParametro.save(tipoParametro);
         res.status(200).send("Tipo Parametro deletado com sucesso")
