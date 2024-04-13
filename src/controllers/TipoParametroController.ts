@@ -74,7 +74,7 @@ class TipoParametroController extends AbstratoController {
             .leftJoin("tipo_parametro.parametros", "parametro")
             .leftJoin("parametro.estacoes", "estacoes")
             .select(["tipo_parametro.idTipoParametro", "tipo_parametro.nomeTipoParametro", "tipo_parametro.unidadeTipoParametro", "tipo_parametro.fatorTipoParametro", "tipo_parametro.offsetTipoParametro"])
-            .where("tipo_parametro.statusTipoParametro = :status AND parametro.estacoesIdEstacao = estacoes.idEstacao AND parametro.estacoesIdEstacao = :idEstacao AND parametro.tiposParametroIdTipoParametro = tipo_parametro.idTipoParametro", { status: true, idEstacao:idEstacao })
+            .where("tipo_parametro.statusTipoParametro = :status AND parametro.estacoesIdEstacao = estacoes.idEstacao AND parametro.estacoesIdEstacao = :idEstacao AND parametro.tiposParametroIdTipoParametro = tipo_parametro.idTipoParametro AND parametro.statusParametro = :statusParametro", { status: true, idEstacao:idEstacao, statusParametro: true })
             .getMany();
         res.status(200).send(tipoParametro)
     }
