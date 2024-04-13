@@ -107,6 +107,11 @@ class UsuarioController extends AbstratoController{
         const email = req.body.email;
         const senha = req.body.senha;
         const consulta = await repositorioUsuario.findOne({where:{emailUsuario:email}})
+        const objetoUsario = {
+            idUsuario: consulta.idUsuario,
+            nomeUsuario: consulta.nomeUsuario,
+            perfilUsuario: consulta.perfilUsuario        
+        };
         if(consulta==undefined){
             res.status(401).send("Senha ou email incorreto"); return;
         }
@@ -118,7 +123,7 @@ class UsuarioController extends AbstratoController{
         if(token == "JWT_SECRET inexistente"){
             res.status(500).send("Servidor incapaz de gerar o token"); return;
         }
-        res.status(200).send({token:token})
+        res.status(200).send({token:token, usuario: objetoUsario})
     }
 }
 
