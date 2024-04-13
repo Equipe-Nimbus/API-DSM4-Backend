@@ -36,10 +36,10 @@ interface InterfaceAlertasMockado{
 jest.mock("../../../../src/services/Alerta/ConfereExistenciaAlertaIdentico", ()=>{
     return {
         confere:jest.fn((repositorio:Repository<Alerta>, alerta:Alerta)=>{
-            let resultado = true
+            let resultado = false
             listaAlertaCadastrados.forEach(alertaCadastrado => {
                 if(alerta.idAlerta==alertaCadastrado.idAlerta && alerta.nomeAlerta==alertaCadastrado.nomeAlerta && alerta.condicaoAlerta==alertaCadastrado.condicaoAlerta && alerta.valorMedicaoAlerta==alertaCadastrado.valorMedicaoAlerta)
-                    resultado = false
+                    resultado = true
             });
             return resultado
         })
