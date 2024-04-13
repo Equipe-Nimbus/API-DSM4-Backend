@@ -20,8 +20,10 @@ class MocksEstacaoControllerListagemEspecifica {
                     idTipoParametro: 1,
                     nomeTipoParametro: "Temperatura",
                     unidadeTipoParametro: "ºC",
-                    fatorTipoParametro: "1"
-                }
+                    fatorTipoParametro: "1",
+                    
+                },
+                statusParametro: true
             }
         ]
     } as unknown as Estacao;
