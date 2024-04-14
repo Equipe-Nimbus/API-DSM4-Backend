@@ -2,7 +2,6 @@ import MocksRequests from "./MocksUsuarioControllerListagemTotal"
 import UsuarioController from "../../../../src/controllers/UsuarioController"
 import MockResponse from "../MockResponse"
 import { Usuario } from "../../../../src/entities/Usuario";
-import { createQueryBuilder } from "typeorm";
 
 let usuariosCadastrados:Usuario[] = [];
 let skip:number

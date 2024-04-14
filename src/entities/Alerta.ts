@@ -1,8 +1,5 @@
 import { Column, Entity, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { TipoParametro } from "./TipoParametro";
-import { Estacao } from "./Estacao";
-import { Medicao } from "./Medicao";
-import { OcorrenciaAlerta } from "./OcorrenciaAlerta";
+import { Parametro } from "./Parametro";
 
 
 @Entity()
@@ -23,12 +20,6 @@ export class Alerta {
     @Column({nullable:false})
     valorMedicaoAlerta:number
 
-    @ManyToOne(()=>TipoParametro, tipoParametros=>tipoParametros.alertas)
-    tipoParametro:TipoParametro
-
-    @ManyToMany(()=>Medicao, medicao=>medicao.alertas)
-    medicoes:Medicao[]
-
-    @OneToMany(()=>OcorrenciaAlerta, ocorrenciaAlerta=>ocorrenciaAlerta.alerta)
-    ocorrenciasAlerta:OcorrenciaAlerta[]
+    @ManyToOne(()=>Parametro, parametro=>parametro.alertas)
+    parametro:Parametro
 }

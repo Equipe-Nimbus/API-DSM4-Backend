@@ -17,23 +17,16 @@ export class TipoParametro {
 
     @Column({type: "numeric", default: 1})
     fatorTipoParametro: number;
-
-    @Column({type: "numeric", default: 1})
-    offsetTipoParametro: number;
-
+    
     @Column({type: "numeric", default: 0})
-    ganhoTipoParametro: number;
-
+    offsetTipoParametro: number;
+    
     @Column({type: "boolean", default: true})
     statusTipoParametro: boolean;
 
-    @OneToMany(()=>Parametro, parametro=>parametro.tiposParametro)
+    @OneToMany(()=>Parametro, parametro=>parametro.tiposParametro, { eager: true })
     parametros:Parametro[]
 
     @ManyToMany(()=>Estacao, estacoes=>estacoes.tipoParametros)
     estacoes:Estacao[]
-
-    @OneToMany(()=>Alerta, alerta=>alerta.tipoParametro)
-    alertas:Alerta[]
-
 }
