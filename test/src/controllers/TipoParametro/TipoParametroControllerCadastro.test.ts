@@ -51,8 +51,6 @@ jest.mock("../../../../src/data-source", ()=>{
 })
 
 
-
-
 describe("Teste de cadastro de Tipo Parametro", ()=>{
 
     beforeAll(()=>{

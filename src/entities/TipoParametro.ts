@@ -29,5 +29,4 @@ export class TipoParametro {
 
     @ManyToMany(()=>Estacao, estacoes=>estacoes.tipoParametros)
     estacoes:Estacao[]
-
 }

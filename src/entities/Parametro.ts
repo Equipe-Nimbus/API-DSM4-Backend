@@ -1,9 +1,9 @@
+
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { TipoParametro } from "./TipoParametro";
 import { Estacao } from "./Estacao";
 import { Medicao } from "./Medicao";
 import { Alerta } from "./Alerta";
-
 
 @Entity()
 export class Parametro {
@@ -16,6 +16,7 @@ export class Parametro {
 
     @ManyToOne(()=>TipoParametro, tipoParametros => tipoParametros.parametros)
     tiposParametro:Promise<TipoParametro>
+
     
     @ManyToOne(()=>Estacao, estacoes => estacoes.parametros)
     estacoes:Estacao

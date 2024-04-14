@@ -12,5 +12,4 @@ routesTipoParametro.get("/listarParaSelecao/:idEstacao", VerificadorToken.verifi
 routesTipoParametro.get("/listarParaSelecao", VerificadorToken.verificar, TipoParametroController.listarParaSelecao);
 routesTipoParametro.put("/atualizar", VerificadorToken.verificar, TipoParametroController.atualizar)
 
-
 export default routesTipoParametro;

@@ -17,5 +17,4 @@ export class Medicao {
 
     @ManyToOne(()=>Parametro, parametro=>parametro.medicoes)
     parametro:Parametro
-
 }
