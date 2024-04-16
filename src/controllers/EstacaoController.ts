@@ -35,8 +35,8 @@ class EstacaoController extends AbstratoController{
             res.status(400).send("Já existe uma estação com essa coordenada geográfica!");
             return;
         }
-        console.log(req.body.tipoParametros.lenght);
-        if (Array.isArray(req.body.tipoParametros) && req.body.tipoParametros.lenght == undefined){
+        //console.log(req.body.tipoParametros.length);
+        if (Array.isArray(req.body.tipoParametros) && req.body.tipoParametros.length == undefined){
             res.status(400).send("É necessário pelo menos um tipo parâmetro!");
             return;
         }
