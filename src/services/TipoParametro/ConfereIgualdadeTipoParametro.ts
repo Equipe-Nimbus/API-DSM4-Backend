@@ -10,7 +10,8 @@ class ConfereIgualdadeTipoParametro{
             nomeTipoParametro:tipoParametroCadastrando.nomeTipoParametro,
             fatorTipoParametro:tipoParametroCadastrando.fatorTipoParametro,
             offsetTipoParametro:tipoParametroCadastrando.offsetTipoParametro,
-            unidadeTipoParametro:tipoParametroCadastrando.unidadeTipoParametro
+            unidadeTipoParametro:tipoParametroCadastrando.unidadeTipoParametro,
+            statusTipoParametro:true
         }})
         if(resultado == undefined)
             return true
