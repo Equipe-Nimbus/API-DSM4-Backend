@@ -4,7 +4,7 @@ import { Parametro } from "../../entities/Parametro";
 
 class ConfereIgualdadeTipoParametro{
 
-    async confere(idEstacao:number, idTipoParametro:number){
+    async confere(idEstacao:string, idTipoParametro:number){
         const repositorioParametro = PgDataSource.getRepository(Parametro)
         const parametro = await repositorioParametro.findOne({where:{estacoes:{idEstacao}, tiposParametro:{idTipoParametro}}})
         if(parametro)

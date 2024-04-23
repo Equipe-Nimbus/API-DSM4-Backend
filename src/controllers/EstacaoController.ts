@@ -5,8 +5,6 @@ import InsereAtributosEstacao from "../services/Estacao/InsereAtributosEstacao";
 import ConsultaCoordenadaGeograficaEstacao from "../services/Estacao/ConsultaCoordenadaGeograficaEstacao";
 import ManipulaObjetoParametro from "../services/Estacao/ManipulaObjetoParametro";
 import AbstratoController from "./AbstratoController";
-import { ParamsDictionary } from "express-serve-static-core";
-import { ParsedQs } from "qs";
 import TrataValoresFiltroEstacao from "../services/Estacao/TrataValoresFiltroEstacao";
 import SelecaoPaginadaEstacao from "../services/Estacao/SelecaoPaginadaEstacao";
 import MontaObjetoTipoParametro from "../services/Estacao/MontaObjetoTipoParametro";
@@ -100,7 +98,7 @@ class EstacaoController extends AbstratoController{
 
     async listarEspecifico(req: Request, res: Response) {
         const repositorioEstacao = PgDataSource.getRepository(Estacao);
-        const id = parseInt(req.params.id);
+        const id = req.params.id;
         const estacaoRecuperada = await repositorioEstacao.findOne({
             where: {
                 idEstacao: id
@@ -186,7 +184,7 @@ class EstacaoController extends AbstratoController{
     
     async deletar(req: Request, res: Response){
         const repositorioEstacao = PgDataSource.getRepository(Estacao)
-        const idEstacao = parseInt(req.params.idEstacao)
+        const idEstacao = req.params.idEstacao
         let estacao = await repositorioEstacao.findOne({where:{idEstacao:idEstacao}})
         if(estacao == undefined)
             return res.status(400).send("idEstação não encontrado no banco de dados")
