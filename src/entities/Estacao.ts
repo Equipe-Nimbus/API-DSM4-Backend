@@ -4,8 +4,8 @@ import { Parametro } from './Parametro';
 
 @Entity()
 export class Estacao {
-  @PrimaryGeneratedColumn()
-  idEstacao: number;
+  @PrimaryGeneratedColumn("uuid")
+  idEstacao: string;
 
   @Column({nullable:false, unique:true})
   codigoIdentificacao: string

@@ -25,7 +25,7 @@ class ManipulaObjetoParametro {
         return listaParametro;
     };
 
-    async consultaTipoParametroEmParametro (listaTipoParametroAtualizados: number[], idEstacaoAlteracao: number) {
+    async consultaTipoParametroEmParametro (listaTipoParametroAtualizados: number[], idEstacaoAlteracao: string) {
         const repositorioParametro = PgDataSource.getRepository(Parametro);        
         const listaParametroAntesAtualizacao = await repositorioParametro.createQueryBuilder("parametro").
             where(`parametro.estacoes.idEstacao = ${idEstacaoAlteracao}`).

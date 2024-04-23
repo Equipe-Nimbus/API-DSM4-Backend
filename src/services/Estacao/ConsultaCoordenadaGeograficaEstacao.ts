@@ -2,7 +2,7 @@ import PgDataSource from "../../data-source";
 import { Estacao } from "../../entities/Estacao";
 
 class ConsultaCoordenadaGeograficaEstacao {
-    async consulta(corpoRequisicao): Promise<Number> {
+    async consulta(corpoRequisicao): Promise<string> {
         const repositorioEstacao = PgDataSource.getRepository(Estacao);
         const latitudeEstacao = corpoRequisicao.latitudeEstacao;
         const longitudeEstacao = corpoRequisicao.longitudeEstacao;
