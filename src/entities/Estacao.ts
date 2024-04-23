@@ -8,6 +8,9 @@ export class Estacao {
   idEstacao: number;
 
   @Column({nullable:false, unique:true})
+  codigoIdentificacao: string
+
+  @Column({nullable:false, unique:true})
   nomeEstacao: string;
 
   @Column({nullable:false})
