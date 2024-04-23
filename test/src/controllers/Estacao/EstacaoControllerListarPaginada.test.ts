@@ -52,7 +52,7 @@ describe("Listagem paginada de estações", () => {
     beforeAll(() => {
         for(let id = 1; id <= 40; id++) {
             let estacao = new Estacao();
-            estacao.idEstacao = id;
+            estacao.idEstacao = id.toString();
             if ((id % 2) == 0 )
                 estacao.statusEstacao = true;
             else {
@@ -67,7 +67,7 @@ describe("Listagem paginada de estações", () => {
         take = 10;
         await EstacaoController.listarPaginada(MockEstacaoControllerlistagemGeral.reqPagina1Limit10, MockResponse.resSemLocals);
         const mockResponse = MockResponse.resSemLocals.status(200).send as jest.Mock;
-        expect(mockResponse.mock.calls[0][0].estacoes[9].idEstacao).toBe(20);
+        expect(mockResponse.mock.calls[0][0].estacoes[9].idEstacao).toBe("20");
         expect(mockResponse.mock.calls[0][0].estacoes.length).toBe(10);
         mockResponse.mockClear();
     });
@@ -89,7 +89,7 @@ describe("Listagem paginada de estações", () => {
         take = 10;
         await EstacaoController.listarPaginada(MockEstacaoControllerlistagemGeral.reqPagina2Limit10, MockResponse.resSemLocals);
         const mockResponse = MockResponse.resSemLocals.status(200).send as jest.Mock;
-        expect(mockResponse.mock.calls[0][0].estacoes[9].idEstacao).toBe(40);
+        expect(mockResponse.mock.calls[0][0].estacoes[9].idEstacao).toBe("40");
         expect(mockResponse.mock.calls[0][0].estacoes.length).toBe(10);
         mockResponse.mockClear();
     });

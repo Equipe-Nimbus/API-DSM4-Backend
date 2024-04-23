@@ -3,6 +3,7 @@ import { Estacao } from "../../entities/Estacao";
 class InsereAtributosEstacao {
     inserir(novaEstacao: Estacao, corpoRequisicao): Estacao {
         novaEstacao.nomeEstacao = corpoRequisicao.nomeEstacao;
+        novaEstacao.codigoIdentificacao = corpoRequisicao.codigoIdentificacao;
         novaEstacao.ruaAvenidaEstacao = corpoRequisicao.ruaAvenidaEstacao;
         novaEstacao.numeroEnderecoEstacao = corpoRequisicao.numeroEnderecoEstacao;
         novaEstacao.bairroEstacao = corpoRequisicao.bairroEstacao;

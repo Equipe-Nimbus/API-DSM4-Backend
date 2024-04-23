@@ -4,7 +4,7 @@ import { TipoParametro } from "../../../../src/entities/TipoParametro";
 class MocksEstacaoControllerListagemEspecifica {
 
     estacaoBusca = {
-        idEstacao: 1,
+        idEstacao: "1",
         nomeEstacao: "Estação Norte",
         ruaAvenidaEstacao: "Rua das Flores",
         numeroEnderecoEstacao: "123",
@@ -29,7 +29,7 @@ class MocksEstacaoControllerListagemEspecifica {
     } as unknown as Estacao;
 
     estacaoResposta = {
-        idEstacao: 1,
+        idEstacao: "1",
         nomeEstacao: "Estação Norte",
         ruaAvenidaEstacao: "Rua das Flores",
         numeroEnderecoEstacao: "123",
