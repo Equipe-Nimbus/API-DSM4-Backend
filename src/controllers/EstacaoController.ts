@@ -19,7 +19,7 @@ class EstacaoController extends AbstratoController{
         const repositorioEstacao = PgDataSource.getRepository(Estacao);
         const consultaCordenadaEstacao = await ConsultaCoordenadaGeograficaEstacao.consulta(req.body);
         let contador: number = 0;
-        const listaAtributosEstacao = ["nomeEstacao", "ruaAvenidaEstacao", "numeroEnderecoEstacao", "bairroEstacao", "cidadeEstacao", "estadoEstacao", "cepEstacao", "latitudeEstacao", "longitudeEstacao"];
+        const listaAtributosEstacao = ["nomeEstacao", "codigoIdentificacao", "ruaAvenidaEstacao", "numeroEnderecoEstacao", "bairroEstacao", "cidadeEstacao", "estadoEstacao", "cepEstacao", "latitudeEstacao", "longitudeEstacao"];
         
         listaAtributosEstacao.forEach(atributoEstacao => {
             if (req.body[atributoEstacao] == "" || req.body[atributoEstacao] == null)
@@ -56,7 +56,7 @@ class EstacaoController extends AbstratoController{
             res.status(200).send("Estação cadastrada com sucesso!");            
         } catch (error) {
             if (error.code == "23505")
-                res.status(400).send("Nome de estação já cadastrado!");
+                res.status(400).send("Nome ou código de identificação da estação já cadastrado!");
             else 
                 res.status(400).send(error);
         };
