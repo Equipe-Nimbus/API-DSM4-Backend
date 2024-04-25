@@ -17,6 +17,11 @@ class DashboardController{
 
     }
 
+
+    async geratDashboardEstacao(req:Request, res:Response){
+        res.status(500).send("não implementado")
+    }
+
 }
 
 export default new DashboardController()
