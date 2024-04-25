@@ -12,8 +12,6 @@ jest.mock("../../../../src/data-source.ts", () => {
     const mockRepositorioEstacao = {
         findOne: (idObjeto: { where: { idEstacao: string }}) => {
             let estacaoRecuperada: Estacao;
-            console.log(idObjeto)
-            console.log(listaEstacao)
             for(const estacao of listaEstacao) {
                 if (estacao.idEstacao === idObjeto.where.idEstacao) {
                     estacaoRecuperada = estacao; 
