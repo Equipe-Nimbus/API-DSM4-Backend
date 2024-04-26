@@ -195,6 +195,7 @@ class EstacaoController extends AbstratoController{
             res.status(400).send(error)
         }
     }
+
 };
 
 export default new EstacaoController();
