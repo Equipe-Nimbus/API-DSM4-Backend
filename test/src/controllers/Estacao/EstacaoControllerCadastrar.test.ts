@@ -9,6 +9,13 @@ let listaEstacao: Estacao[] = [];
 let listaParametro: Parametro[] = [];
 let parametroEscolhido = new Parametro();
 
+jest.mock("../../../../src/services/Dashboard/AtualizaEstacoesAtivas", () => {
+    return{
+        atualizar:jest.fn()
+    }
+})
+
+
 jest.mock("../../../../src/data-source.ts", () => {
 
     const mockRepositorioEstacao = {
