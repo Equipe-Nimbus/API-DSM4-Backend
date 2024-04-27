@@ -27,6 +27,7 @@
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
+    "mongodb": "^5.9.2",
     "pg": "^8.11.3",
     "typeorm": "^0.3.20"
   },
