@@ -22,6 +22,13 @@ interface InterfaceMockEstacao{
     statusEstacao:boolean
 }
 
+jest.mock("../../../../src/services/Dashboard/AtualizaEstacoesAtivas", () => {
+    return{
+        atualizar:jest.fn()
+    }
+})
+
+
 jest.mock("../../../../src/data-source", ()=>{
     
     const mockRepositorioEstacao = {
