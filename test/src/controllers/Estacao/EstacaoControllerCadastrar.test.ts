@@ -7,8 +7,14 @@ import MockEstacaoControllerCadastro from "./MockEstacaoControllerCadastro";
 
 let listaEstacao: Estacao[] = [];
 let listaParametro: Parametro[] = [];
-let parametroEscolhido = new Parametro();
 let respostaConsultaMesmoNomeUnidadeTipoParametro = new Boolean();
+
+jest.mock("../../../../src/services/Dashboard/AtualizaEstacoesAtivas", () => {
+    return{
+        atualizar:jest.fn()
+    }
+})
+
 
 jest.mock("../../../../src/data-source.ts", () => {
 
@@ -127,12 +133,10 @@ describe("Teste da classe EstacaoController método cadastrar", () => {
 
     beforeEach(() => {
         listaEstacao = [];
-        parametroEscolhido = new Parametro();
         respostaConsultaMesmoNomeUnidadeTipoParametro = new Boolean();       
     });
 
     test("Cadastrar estação com sucesso", async () => {
-        parametroEscolhido = MockEstacaoControllerCadastro.objetoEstacao;
         respostaConsultaMesmoNomeUnidadeTipoParametro = false;
         await EstacaoController.cadastrar(MockEstacaoControllerCadastro.reqEstacaoInicial, MockResponse.resSemLocals);
         const mockStatus = MockResponse.resSemLocals.status(200).send as jest.Mock;

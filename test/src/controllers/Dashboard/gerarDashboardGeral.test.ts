@@ -4,6 +4,10 @@ import DashboardController from "../../../../src/controllers/DashboardController
 
 let erro = false
 
+jest.mock("../../../../src/data-source.ts", () => {
+    return jest.fn();
+})
+
 jest.mock("../../../../src/services/Dashboard/GeraDashBoardgeral.ts", () => {
     return{
         gerar:jest.fn(()=>{

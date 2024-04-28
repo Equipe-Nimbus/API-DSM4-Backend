@@ -10,6 +10,7 @@ import SelecaoPaginadaEstacao from "../services/Estacao/SelecaoPaginadaEstacao";
 import MontaObjetoTipoParametro from "../services/Estacao/MontaObjetoTipoParametro";
 import MontaObjetoEstacao from "../services/Estacao/MontaObjetoEstacao";
 import ConsultaMesmoNomeUnidadeTipoParameto from "../services/Estacao/ConsultaMesmoNomeUnidadeTipoParametro";
+import AtualizaEstacoesAtivas from "../services/Dashboard/AtualizaEstacoesAtivas";
 
 class EstacaoController extends AbstratoController{
     
@@ -56,6 +57,7 @@ class EstacaoController extends AbstratoController{
                     of(novaEstacao).
                     add(novoParametro);
             };
+            await AtualizaEstacoesAtivas.atualizar()
             res.status(200).send("Estação cadastrada com sucesso!");            
         } catch (error) {
             if (error.code == "23505")
@@ -196,6 +198,7 @@ class EstacaoController extends AbstratoController{
         estacao.statusEstacao = false
         try{
             await repositorioEstacao.save(estacao)
+            await AtualizaEstacoesAtivas.atualizar()
             res.status(200).send("Estacao deletada com sucesso")
         } catch(error){
             res.status(400).send(error)

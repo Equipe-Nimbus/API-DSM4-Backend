@@ -1,3 +1,29 @@
 export default interface DashboardGeral{
-    numeroTotalEstacoes:number
+    estacoes:{
+        numeroTotalEstacoes:number,
+        ativasPorMes:{
+            quantidades:number[],
+            meses:string[]
+        }
+    },
+    alertas:{
+        ultimoAlerta:{
+            nomeAlerta:string,
+            valorMedida:number,
+            unidadeTipoParametro:string,
+            dataMedida:string
+        },
+        alertasDoMes:{
+            totalAlertas:number,
+            relacaoTipoParametro:{
+                valorTipoParametro:number[],
+                tiposParametros:string[]
+            },
+            relacaoEstado:{
+                valorPorEstado:number[],
+                estados:string[]
+            }
+        }
+    }
+    
 }
