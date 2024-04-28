@@ -9,7 +9,7 @@ import TrataValoresFiltroEstacao from "../services/Estacao/TrataValoresFiltroEst
 import SelecaoPaginadaEstacao from "../services/Estacao/SelecaoPaginadaEstacao";
 import MontaObjetoTipoParametro from "../services/Estacao/MontaObjetoTipoParametro";
 import MontaObjetoEstacao from "../services/Estacao/MontaObjetoEstacao";
-import ConsultaMesmoNomeUnidadeTipoParameto from "../services/Estacao/ConsultaTipoParametroEstacao";
+import ConsultaMesmoNomeUnidadeTipoParameto from "../services/Estacao/ConsultaMesmoNomeUnidadeTipoParametro";
 
 class EstacaoController extends AbstratoController{
     

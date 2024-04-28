@@ -2,7 +2,6 @@ import EstacaoController from "../../../../src/controllers/EstacaoController";
 import { Estacao } from "../../../../src/entities/Estacao"
 import { Parametro } from "../../../../src/entities/Parametro";
 import { TipoParametro } from "../../../../src/entities/TipoParametro";
-import ConsultaMesmoNomeUnidadeTipoParametro from "../../../../src/services/Estacao/ConsultaTipoParametroEstacao";
 import MockResponse from "../MockResponse";
 import MockEstacaoControllerCadastro from "./MockEstacaoControllerCadastro";
 
