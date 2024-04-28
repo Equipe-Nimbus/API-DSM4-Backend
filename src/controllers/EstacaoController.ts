@@ -9,6 +9,7 @@ import TrataValoresFiltroEstacao from "../services/Estacao/TrataValoresFiltroEst
 import SelecaoPaginadaEstacao from "../services/Estacao/SelecaoPaginadaEstacao";
 import MontaObjetoTipoParametro from "../services/Estacao/MontaObjetoTipoParametro";
 import MontaObjetoEstacao from "../services/Estacao/MontaObjetoEstacao";
+import ConsultaMesmoNomeUnidadeTipoParameto from "../services/Estacao/ConsultaMesmoNomeUnidadeTipoParametro";
 import AtualizaEstacoesAtivas from "../services/Dashboard/AtualizaEstacoesAtivas";
 
 class EstacaoController extends AbstratoController{
@@ -17,6 +18,7 @@ class EstacaoController extends AbstratoController{
     async cadastrar(req: Request, res: Response) {
         const repositorioEstacao = PgDataSource.getRepository(Estacao);
         const consultaCordenadaEstacao = await ConsultaCoordenadaGeograficaEstacao.consulta(req.body);
+        const consultaMesmoNomeUnidadeTipoParametro = await ConsultaMesmoNomeUnidadeTipoParameto.consulta(req.body.tipoParametros);
         let contador: number = 0;
         const listaAtributosEstacao = ["nomeEstacao", "ruaAvenidaEstacao", "numeroEnderecoEstacao", "bairroEstacao", "cidadeEstacao", "estadoEstacao", "cepEstacao", "latitudeEstacao", "longitudeEstacao"];
         
@@ -36,6 +38,10 @@ class EstacaoController extends AbstratoController{
         }
         if (Array.isArray(req.body.tipoParametros) && req.body.tipoParametros.length == undefined){
             res.status(400).send("É necessário pelo menos um tipo parâmetro!");
+            return;
+        }
+        if (consultaMesmoNomeUnidadeTipoParametro) {
+            res.status(400).send("Não é possível cadastrar mais de uma tipo parâmetro com o mesmo nome e unidade!");
             return;
         }
 
