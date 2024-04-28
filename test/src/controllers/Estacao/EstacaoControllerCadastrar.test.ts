@@ -11,6 +11,13 @@ let listaParametro: Parametro[] = [];
 let parametroEscolhido = new Parametro();
 let respostaConsultaMesmoNomeUnidadeTipoParametro = new Boolean();
 
+jest.mock("../../../../src/services/Dashboard/AtualizaEstacoesAtivas", () => {
+    return{
+        atualizar:jest.fn()
+    }
+})
+
+
 jest.mock("../../../../src/data-source.ts", () => {
 
     const mockRepositorioEstacao = {
