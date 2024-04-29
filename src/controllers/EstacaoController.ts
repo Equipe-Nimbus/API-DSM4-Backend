@@ -9,6 +9,8 @@ import TrataValoresFiltroEstacao from "../services/Estacao/TrataValoresFiltroEst
 import SelecaoPaginadaEstacao from "../services/Estacao/SelecaoPaginadaEstacao";
 import MontaObjetoTipoParametro from "../services/Estacao/MontaObjetoTipoParametro";
 import MontaObjetoEstacao from "../services/Estacao/MontaObjetoEstacao";
+import ConsultaMesmoNomeUnidadeTipoParameto from "../services/Estacao/ConsultaMesmoNomeUnidadeTipoParametro";
+import AtualizaEstacoesAtivas from "../services/Dashboard/AtualizaEstacoesAtivas";
 
 class EstacaoController extends AbstratoController {
     async listarEstacoesAtivas(req: Request, res: Response) {
@@ -42,6 +44,7 @@ class EstacaoController extends AbstratoController {
     async cadastrar(req: Request, res: Response) {
         const repositorioEstacao = PgDataSource.getRepository(Estacao);
         const consultaCordenadaEstacao = await ConsultaCoordenadaGeograficaEstacao.consulta(req.body);
+        const consultaMesmoNomeUnidadeTipoParametro = await ConsultaMesmoNomeUnidadeTipoParameto.consulta(req.body.tipoParametros);
         let contador: number = 0;
         const listaAtributosEstacao = ["nomeEstacao", "ruaAvenidaEstacao", "numeroEnderecoEstacao", "bairroEstacao", "cidadeEstacao", "estadoEstacao", "cepEstacao", "latitudeEstacao", "longitudeEstacao"];
 
@@ -63,6 +66,10 @@ class EstacaoController extends AbstratoController {
             res.status(400).send("É necessário pelo menos um tipo parâmetro!");
             return;
         }
+        if (consultaMesmoNomeUnidadeTipoParametro) {
+            res.status(400).send("Não é possível cadastrar mais de uma tipo parâmetro com o mesmo nome e unidade!");
+            return;
+        }
 
         let novaEstacao = new Estacao();
         novaEstacao = InsereAtributosEstacao.inserir(novaEstacao, req.body);
@@ -76,7 +83,9 @@ class EstacaoController extends AbstratoController {
                     of(novaEstacao).
                     add(novoParametro);
             };
-            res.status(200).send("Estação cadastrada com sucesso!");
+
+            await AtualizaEstacoesAtivas.atualizar()
+            res.status(200).send("Estação cadastrada com sucesso!");            
         } catch (error) {
             if (error.code == "23505")
                 res.status(400).send("Nome ou código de identificação da estação já cadastrado!");
@@ -216,6 +225,7 @@ class EstacaoController extends AbstratoController {
         estacao.statusEstacao = false
         try {
             await repositorioEstacao.save(estacao)
+            await AtualizaEstacoesAtivas.atualizar()
             res.status(200).send("Estacao deletada com sucesso")
         } catch (error) {
             res.status(400).send(error)
