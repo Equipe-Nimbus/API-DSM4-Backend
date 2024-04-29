@@ -136,6 +136,7 @@ describe ("Teste da classe EstacaoController método listarEstacoesAtivas", () =
         listaEstacao = [];
         
         await EstacaoController.listarEstacoesAtivas(req, MockResponse.resSemLocals);
+        
         expect(mockResponse.mock.calls[0][0]).toHaveLength(6);
     });
     
