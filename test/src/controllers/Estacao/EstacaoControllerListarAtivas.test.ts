@@ -128,7 +128,6 @@ describe ("Teste da classe EstacaoController método listarEstacoesAtivas", () =
               
         ];
     });
-    
 
     test ("Deve estar certo ao buscar estações ativas", async () => {
         const req = {} as unknown as Request;
