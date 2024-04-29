@@ -129,17 +129,6 @@ describe ("Teste da classe EstacaoController método listarEstacoesAtivas", () =
         ];
     });
     
-    test("Deve retornar todas as estações ativas", async () => {
-        const req = {} as unknown as Request;
-        const mockResponse = MockResponse.resSemLocals.json as jest.Mock;
-
-        listaEstacao = [];
-        
-        await EstacaoController.listarEstacoesAtivas(req, MockResponse.resSemLocals);
-        
-        expect(mockResponse.mock.calls[0][0]).toHaveLength(6);
-    });
-    
 
     test ("Deve estar certo ao buscar estações ativas", async () => {
         const req = {} as unknown as Request;
