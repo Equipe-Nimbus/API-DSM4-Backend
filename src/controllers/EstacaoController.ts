@@ -11,6 +11,7 @@ import MontaObjetoTipoParametro from "../services/Estacao/MontaObjetoTipoParamet
 import MontaObjetoEstacao from "../services/Estacao/MontaObjetoEstacao";
 import ConsultaMesmoNomeUnidadeTipoParameto from "../services/Estacao/ConsultaMesmoNomeUnidadeTipoParametro";
 import AtualizaEstacoesAtivas from "../services/Dashboard/AtualizaEstacoesAtivas";
+import GeraUnixTime from "../services/Estacao/GeraUnixTime";
 
 class EstacaoController extends AbstratoController {
     async listarEstacoesAtivas(req: Request, res: Response) {
@@ -73,6 +74,7 @@ class EstacaoController extends AbstratoController {
 
         let novaEstacao = new Estacao();
         novaEstacao = InsereAtributosEstacao.inserir(novaEstacao, req.body);
+        novaEstacao.unixtimeBateriaEstacao = GeraUnixTime.gerar()
 
         try {
             await repositorioEstacao.save(novaEstacao);
@@ -157,6 +159,8 @@ class EstacaoController extends AbstratoController {
     async atualizar(req: Request, res: Response) {
         const repositorioEstacao = PgDataSource.getRepository(Estacao);
         const consultaEstacaoMesmaCoordenada = await ConsultaCoordenadaGeograficaEstacao.consulta(req.body);
+        const consultaMesmoNomeUnidadeTipoParametro = await ConsultaMesmoNomeUnidadeTipoParameto.consulta(req.body.tipoParametros);
+
         let contador: number = 0;
         const listaAtributosEstacao = ["nomeEstacao", "ruaAvenidaEstacao", "numeroEnderecoEstacao", "bairroEstacao", "cidadeEstacao", "estadoEstacao", "cepEstacao", "latitudeEstacao", "longitudeEstacao"];
 
@@ -185,25 +189,30 @@ class EstacaoController extends AbstratoController {
             return;
         };
 
+        if (consultaMesmoNomeUnidadeTipoParametro) {
+            res.status(400).send("Não é possível cadastrar mais de uma tipo parâmetro com o mesmo nome e unidade!");
+            return;
+        }
+
         let novaEstacao = new Estacao();
         novaEstacao = InsereAtributosEstacao.inserir(novaEstacao, req.body);
         const estacaoAntiga = await repositorioEstacao.findOne({
             where: {
                 idEstacao: req.body.idEstacao
             }
-        });
-
+        }); 
+      
         try {
             await repositorioEstacao.createQueryBuilder().
                 update(Estacao).
                 set(novaEstacao).
-                where(`idEstacao = ${req.body.idEstacao}`).
+                where("idEstacao = :id", {id: req.body.idEstacao}).
                 execute();
             const listaNovosParametros = await ManipulaObjetoParametro.consultaTipoParametroEmParametro(listaIdTipoParametro, estacaoAntiga.idEstacao);
             for (const novoParametro of listaNovosParametros) {
                 await repositorioEstacao.createQueryBuilder().
                     relation(Estacao, "parametros").
-                    of(estacaoAntiga).
+                    of(novaEstacao).
                     add(novoParametro);
             };
             res.status(200).send("Estação atualizada com sucesso");

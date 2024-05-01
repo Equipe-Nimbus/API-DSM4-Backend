@@ -38,7 +38,7 @@ jest.mock("../../../../src/data-source.ts", () => {
         createQueryBuilder: jest.fn().mockReturnValue({
             relation: jest.fn().mockReturnValue({
                 of: jest.fn().mockReturnValue({
-                    add: jest.fn().mockReturnValue(
+                    add: jest.fn().mockImplementation(
                         (parametroEscolhido: Parametro) => {
                             const objetoEstacao = new Estacao();
                             for (const parametro of listaParametro) {
