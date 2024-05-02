@@ -9,8 +9,8 @@ routesEstacao.post("/cadastrar", VerificadorToken.verificar, EstacaoController.c
 routesEstacao.get("/listarGeral/paginada", VerificadorToken.verificar, EstacaoController.listarPaginada);
 routesEstacao.get("/listarEspecifico/:id", VerificadorToken.verificar, EstacaoController.listarEspecifico);
 routesEstacao.get("/listarParaSelecao", VerificadorToken.verificar, EstacaoController.listarParaSelecao);
+routesEstacao.get("/listarAtivas/filtro", EstacaoController.listarEstacoesAtivas);
 routesEstacao.get("/listarAtivas", EstacaoController.listarEstacoesAtivas);
-routesEstacao.get("/listarAtivas/paginada", EstacaoController.listarPaginada);
 routesEstacao.delete("/deletar/:idEstacao", VerificadorToken.verificar, EstacaoController.deletar);
 routesEstacao.put("/atualizar", VerificadorToken.verificar, EstacaoController.atualizar);
 

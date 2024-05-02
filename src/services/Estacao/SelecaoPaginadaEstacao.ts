@@ -7,7 +7,7 @@ class SelecaoPaginadaEstacao extends SelecaoPaginada<Estacao> {
     async selecionar(repositorio: Repository<Estacao>, pagina: number, tamanhoPagina: number, filtro: InterfaceFiltroSelecao): Promise<Estacao[]> {
         const listaEstacao = await repositorio
             .createQueryBuilder("estacao")
-            .select(["estacao.idEstacao", "estacao.nomeEstacao", "estacao.ruaAvenidaEstacao", "estacao.numeroEnderecoEstacao", "estacao.bairroEstacao", "estacao.cidadeEstacao", "estacao.estadoEstacao", "estacao.cepEstacao", "estacao.latitudeEstacao", "estacao.longitudeEstacao"])
+            .select(["estacao.idEstacao", "estacao.nomeEstacao", "estacao.ruaAvenidaEstacao", "estacao.numeroEnderecoEstacao", "estacao.bairroEstacao", "estacao.cidadeEstacao", "estacao.estadoEstacao"])
             .where(filtro.query, filtro.valores)
             .orderBy("estacao.nomeEstacao", "ASC")
             .skip((pagina - 1) * tamanhoPagina)
