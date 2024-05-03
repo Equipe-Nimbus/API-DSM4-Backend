@@ -12,36 +12,21 @@ import MontaObjetoEstacao from "../services/Estacao/MontaObjetoEstacao";
 import ConsultaMesmoNomeUnidadeTipoParameto from "../services/Estacao/ConsultaMesmoNomeUnidadeTipoParametro";
 import AtualizaEstacoesAtivas from "../services/Dashboard/AtualizaEstacoesAtivas";
 import GeraUnixTime from "../services/Estacao/GeraUnixTime";
+import SelecaoFiltroEstacao from "../services/Estacao/SelecaoFiltroEstacao";
 
 class EstacaoController extends AbstratoController {
     async listarEstacoesAtivas(req: Request, res: Response) {
+        const repositorioEstacao = PgDataSource.getRepository(Estacao);
         try {
-            const repository = PgDataSource.getRepository(Estacao);
-            const estacoes = await repository.find({ where: { statusEstacao: true }, relations: ["parametros", "parametros.tiposParametro"] });
-
-            // Filtrando os atributos que não devem ser enviados no JSON
-            const filteredEstacoes = estacoes.map(estacao => {
-                return {
-                    idEstacao: estacao.idEstacao,
-                    nomeEstacao: estacao.nomeEstacao,
-                    ruaAvenidaEstacao: estacao.ruaAvenidaEstacao,
-                    numeroEnderecoEstacao: estacao.numeroEnderecoEstacao,
-                    bairroEstacao: estacao.bairroEstacao,
-                    cidadeEstacao: estacao.cidadeEstacao,
-                    estadoEstacao: estacao.estadoEstacao,
-                    cepEstacao: estacao.cepEstacao,
-                    latitudeEstacao: estacao.latitudeEstacao,
-                    longitudeEstacao: estacao.longitudeEstacao,
-                    unixtimeBateriaEstacao: estacao.unixtimeBateriaEstacao,
-                };
-            });
-
-            res.status(200).json(filteredEstacoes);
+            const filtroSelecao = TrataValoresFiltroEstacao.tratarSelect(req);
+            const estacoesResgatadas = await SelecaoFiltroEstacao.aplicarFiltro(repositorioEstacao, filtroSelecao);
+            
+            res.status(200).send(estacoesResgatadas);
         } catch (error) {
-            console.error("Erro ao buscar as estações ativas:", error);
-            res.status(500).send("Ocorreu um erro ao buscar as estações ativas.");
-        }
-    }
+            res.status(400).send(error);
+        };
+    };
+
     async cadastrar(req: Request, res: Response) {
         const repositorioEstacao = PgDataSource.getRepository(Estacao);
         const consultaCordenadaEstacao = await ConsultaCoordenadaGeograficaEstacao.consulta(req.body);
@@ -130,7 +115,7 @@ class EstacaoController extends AbstratoController {
                 res.status(400).send(error);
         };
 
-    }
+    };
 
     async listarEspecifico(req: Request, res: Response) {
         const repositorioEstacao = PgDataSource.getRepository(Estacao);
