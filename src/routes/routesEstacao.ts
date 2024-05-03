@@ -10,7 +10,6 @@ routesEstacao.get("/listarGeral/paginada", VerificadorToken.verificar, EstacaoCo
 routesEstacao.get("/listarEspecifico/:id", VerificadorToken.verificar, EstacaoController.listarEspecifico);
 routesEstacao.get("/listarParaSelecao", VerificadorToken.verificar, EstacaoController.listarParaSelecao);
 routesEstacao.get("/listarAtivas/filtro", EstacaoController.listarEstacoesAtivas);
-routesEstacao.get("/listarAtivas", EstacaoController.listarEstacoesAtivas);
 routesEstacao.delete("/deletar/:idEstacao", VerificadorToken.verificar, EstacaoController.deletar);
 routesEstacao.put("/atualizar", VerificadorToken.verificar, EstacaoController.atualizar);
 
