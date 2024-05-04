@@ -25,7 +25,7 @@ class DashboardController{
         try{
             let lista = await GeraDashboardEspecifico.gerar(idEstacao)
             if(lista.parametros.length == 0)
-                throw new Error("idEstacao não existente ou estação sem medições")
+                return res.status(200).send("Estação sem medições hoje")
             res.status(200).send(lista)
         } catch(error){
             res.status(400).send(error.message)
