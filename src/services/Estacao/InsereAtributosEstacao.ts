@@ -12,7 +12,6 @@ class InsereAtributosEstacao {
         novaEstacao.cepEstacao = corpoRequisicao.cepEstacao;
         novaEstacao.latitudeEstacao = corpoRequisicao.latitudeEstacao;
         novaEstacao.longitudeEstacao = corpoRequisicao.longitudeEstacao;
-        novaEstacao.unixtimeBateriaEstacao = GeraUnixTime.gerar();
         return novaEstacao;
     };
 };

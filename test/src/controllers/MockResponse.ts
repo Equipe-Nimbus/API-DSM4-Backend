@@ -1,5 +1,8 @@
 import { Request, Response } from "express"
 class MockResponse{
+    status(status: any) {
+        throw new Error("Method not implemented.");
+    }
 
     resSemLocals = {
         send: jest.fn(),
