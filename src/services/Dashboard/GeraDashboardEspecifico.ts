@@ -1,3 +1,4 @@
+import { Estacao } from "../../entities/Estacao";
 import ConsultaMedicoesDeHoje from "./ConsultaMedicoesDeHoje";
 import FormataMedicoesDeHoje from "./FormataMedicoesDeHoje";
 

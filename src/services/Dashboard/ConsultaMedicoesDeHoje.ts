@@ -10,7 +10,8 @@ class ConsultaMedicoesDeHoje{
     async consultar(idEstacao:string):Promise<Parametro[]>{
         const repositorioMedicao = PgDataSource.getRepository(Parametro);
         const unixtime = GeraPrimeiroUnixDia.gerar()
-        let listaMedicoesParametroDoDia = await repositorioMedicao
+        try{
+            let listaMedicoesParametroDoDia = await repositorioMedicao
             .createQueryBuilder("parametro")
             .leftJoinAndSelect("parametro.medicoes", "medicao")
             .leftJoinAndSelect("parametro.tiposParametro", "tipo_parametro")
@@ -18,7 +19,13 @@ class ConsultaMedicoesDeHoje{
             .andWhere(`parametro.statusParametro = :status`, {status:true})
             .select(["medicao", "parametro", "tipo_parametro.nomeTipoParametro", "tipo_parametro.unidadeTipoParametro", "tipo_parametro.offsetTipoParametro", "tipo_parametro.fatorTipoParametro"])
             .getMany();
-        return listaMedicoesParametroDoDia
+            console.log(listaMedicoesParametroDoDia)
+            return listaMedicoesParametroDoDia
+        } catch(erro){
+            throw new Error("idEstacao inválido")
+        }
+        
+        
     }
 
 }
