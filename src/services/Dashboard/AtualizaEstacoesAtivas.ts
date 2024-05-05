@@ -6,7 +6,6 @@ class AtualizaEstacoesAtivas{
     async atualizar(incremento?:number){
         let estacaoMesAtivaAtual = await PegaEstacaoPorMesAtiva.pegarAtual()
         console.log(incremento, estacaoMesAtivaAtual, incremento == null && estacaoMesAtivaAtual._id)
-        if (incremento == null && estacaoMesAtivaAtual._id){console.log("Foii"); return;}
         await MongoDB.connect()
         const colecao = MongoDB.db("BackNimbusNaoRelacional").collection("EstacoesAtivasMes")
         if(estacaoMesAtivaAtual._id != undefined && incremento != null)
