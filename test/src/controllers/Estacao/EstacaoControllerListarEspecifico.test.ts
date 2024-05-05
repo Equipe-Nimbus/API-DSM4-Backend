@@ -10,7 +10,7 @@ let listaEstacao: Estacao[] = [];
 jest.mock("../../../../src/data-source.ts", () => {
 
     const mockRepositorioEstacao = {
-        findOne: (idObjeto: { where: { idEstacao: number }}) => {
+        findOne: (idObjeto: { where: { idEstacao: string }}) => {
             let estacaoRecuperada: Estacao;
             for(const estacao of listaEstacao) {
                 if (estacao.idEstacao === idObjeto.where.idEstacao) {

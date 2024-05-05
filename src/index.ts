@@ -5,6 +5,8 @@ import routesUsuario from "./routes/routesUsuario";
 import routesEstacao from "./routes/routesEstacao";
 import routesTipoParametro from "./routes/routesTipoParametro";
 import routesAlerta from "./routes/routesAlerta";
+import routesDashboard from "./routes/routesDashboard";
+
 
 config();
 const app = express();
@@ -20,6 +22,8 @@ app.use("/usuario", routesUsuario);
 app.use("/estacao", routesEstacao)
 app.use("/tipoParametro", routesTipoParametro);
 app.use("/alerta", routesAlerta);
+app.use("/dashboard", routesDashboard);
+
 
 
 const PORT = process.env.PORT;

@@ -7,6 +7,14 @@ import MockEstacaoControllerCadastro from "./MockEstacaoControllerCadastro";
 
 let listaEstacao: Estacao[] = [];
 let listaParametro: Parametro[] = [];
+let respostaConsultaMesmoNomeUnidadeTipoParametro = new Boolean();
+
+jest.mock("../../../../src/services/Dashboard/AtualizaEstacoesAtivas", () => {
+    return{
+        atualizar:jest.fn()
+    }
+})
+
 
 jest.mock("../../../../src/data-source.ts", () => {
 
@@ -27,6 +35,22 @@ jest.mock("../../../../src/data-source.ts", () => {
             });
             listaEstacao.push(estacao);
         },
+        createQueryBuilder: jest.fn().mockReturnValue({
+            relation: jest.fn().mockReturnValue({
+                of: jest.fn().mockReturnValue({
+                    add: jest.fn().mockImplementation(
+                        (parametroEscolhido: Parametro) => {
+                            const objetoEstacao = new Estacao();
+                            for (const parametro of listaParametro) {
+                                if (parametro.idParametro == parametroEscolhido.idParametro) {
+                                    parametro.estacoes = objetoEstacao;
+                                };
+                            };
+                        }
+                    )
+                })
+            })
+        }),
     };
 
     const mockGetRepository = jest.fn(() => mockRepositorioEstacao);
@@ -80,7 +104,7 @@ jest.mock("../../../../src/services/Estacao/ManipulaObjetoParametro.ts", () => {
                 "estacoes": null,
                 "medicoes": null,
                 "statusParametro": true,
-                alertas: []
+                "alertas": []
             };
             listaParametro.push(objetoParametro);
         }
@@ -92,21 +116,37 @@ jest.mock("../../../../src/services/Estacao/ManipulaObjetoParametro.ts", () => {
     };
 });
 
+jest.mock("../../../../src/services/Estacao/ConsultaMesmoNomeUnidadeTipoParametro", () => {
+    const mockConultaNomeUnidadeTipoParametro = (listaIdTipoParametro) => {
+        if(respostaConsultaMesmoNomeUnidadeTipoParametro === true)
+            return true;
+        return false;
+    };
+
+    const mockConsultaMesmoNomeUnidadeTipoParametro = jest.fn(mockConultaNomeUnidadeTipoParametro);
+    return {
+        consulta: mockConsultaMesmoNomeUnidadeTipoParametro,
+    }
+});
+
 describe("Teste da classe EstacaoController método cadastrar", () => {
 
     beforeEach(() => {
-        listaEstacao = [];        
+        listaEstacao = [];
+        respostaConsultaMesmoNomeUnidadeTipoParametro = new Boolean();       
     });
 
-    /* test("Cadastrar estação com sucesso", async () => {
+    test("Cadastrar estação com sucesso", async () => {
+        respostaConsultaMesmoNomeUnidadeTipoParametro = false;
         await EstacaoController.cadastrar(MockEstacaoControllerCadastro.reqEstacaoInicial, MockResponse.resSemLocals);
         const mockStatus = MockResponse.resSemLocals.status(200).send as jest.Mock;
         expect(mockStatus.mock.calls[0][0]).toBe("Estação cadastrada com sucesso!");
         mockStatus.mockClear();
-    }); */
+    });
 
     test("Cadastrar estação nome duplicado", async () => {
         try {
+            respostaConsultaMesmoNomeUnidadeTipoParametro = false;
             await EstacaoController.cadastrar(MockEstacaoControllerCadastro.reqEstacaoInicial, MockResponse.resSemLocals);
             await EstacaoController.cadastrar(MockEstacaoControllerCadastro.reqEstacaoNomeRepetido, MockResponse.resSemLocals);
         } catch (error) {
@@ -118,6 +158,7 @@ describe("Teste da classe EstacaoController método cadastrar", () => {
 
     test("Cadastrar estação com a mesma coordenada geografica", async () => {
         try {
+            respostaConsultaMesmoNomeUnidadeTipoParametro = false;
             await EstacaoController.cadastrar(MockEstacaoControllerCadastro.reqEstacaoInicial, MockResponse.resSemLocals);
             await EstacaoController.cadastrar(MockEstacaoControllerCadastro.reqEstacaoCoordenadaGeografica, MockResponse.resSemLocals);
         } catch (error) {
@@ -129,6 +170,7 @@ describe("Teste da classe EstacaoController método cadastrar", () => {
 
     test("Cadastrar estação com propriedade nula", async () => {
         try{
+            respostaConsultaMesmoNomeUnidadeTipoParametro = false;
             await EstacaoController.cadastrar(MockEstacaoControllerCadastro.reqEstacaoPropriedadeNula, MockResponse.resSemLocals);
         } catch (error) {
             const mockStatus = MockResponse.resSemLocals.status(400).send as jest.Mock;
@@ -139,10 +181,22 @@ describe("Teste da classe EstacaoController método cadastrar", () => {
 
     test("Cadastrar estação sem tipoParametro", async () => {
         try{
+            respostaConsultaMesmoNomeUnidadeTipoParametro = false;
             await EstacaoController.cadastrar(MockEstacaoControllerCadastro.reqEstacaoSemTipoParametro, MockResponse.resSemLocals);
         } catch (error) {
             const mockStatus = MockResponse.resSemLocals.status(400).send as jest.Mock;
             expect(mockStatus.mock.calls[0][0]).toBe("É necessário pelo menos um tipo parâmetro!");
+            mockStatus.mockClear();
+        };
+    });
+
+    test("Cadastrar estação com tipos parâmetros com mesmo nome e unidade iguais", async () => {
+        try{
+            respostaConsultaMesmoNomeUnidadeTipoParametro = true;
+            await EstacaoController.cadastrar(MockEstacaoControllerCadastro.reqEstacaoSemTipoParametro, MockResponse.resSemLocals);
+        } catch (error) {
+            const mockStatus = MockResponse.resSemLocals.status(400).send as jest.Mock;
+            expect(mockStatus.mock.calls[0][0]).toBe("Não é possível cadastrar mais de uma tipo parâmetro com o mesmo nome e unidade!");
             mockStatus.mockClear();
         };
     });

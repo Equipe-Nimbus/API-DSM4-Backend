@@ -4,8 +4,8 @@ import { Parametro } from './Parametro';
 
 @Entity()
 export class Estacao {
-  @PrimaryGeneratedColumn()
-  idEstacao: number;
+  @PrimaryGeneratedColumn("uuid")
+  idEstacao: string;
 
   @Column({nullable:false, unique:true})
   nomeEstacao: string;
@@ -36,6 +36,12 @@ export class Estacao {
 
   @Column({nullable:false, default:true})
   statusEstacao: boolean;
+
+  @Column({nullable: false, type: 'integer', default: 100})
+  bateriaEstacao: number;
+
+  @Column({nullable: true, type: 'integer'})
+  unixtimeBateriaEstacao: number;
 
   @ManyToMany(()=>TipoParametro, tipoParametros=>tipoParametros.estacoes)
   tipoParametros:TipoParametro[]
