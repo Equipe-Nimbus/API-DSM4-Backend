@@ -1,19 +1,21 @@
 import MongoDB from "../../BackMongDB";
-import PgDataSource from "../../data-source";
-import { Estacao } from "../../entities/Estacao";
 import PegaEstacaoPorMesAtiva from "./PegaEstacaoPorMesAtiva";
 
 class AtualizaEstacoesAtivas{
 
-    async atualizar(){
-        const repositorioEstacao = PgDataSource.getRepository(Estacao)
+    async atualizar(incremento?:number){
         let estacaoMesAtivaAtual = await PegaEstacaoPorMesAtiva.pegarAtual()
-        estacaoMesAtivaAtual.ativas = await repositorioEstacao.count({where:{statusEstacao:true}})
+        console.log(incremento, estacaoMesAtivaAtual, incremento == null && estacaoMesAtivaAtual._id)
+        if (incremento == null && estacaoMesAtivaAtual._id){console.log("Foii"); return;}
         await MongoDB.connect()
         const colecao = MongoDB.db("BackNimbusNaoRelacional").collection("EstacoesAtivasMes")
-        await colecao.replaceOne({_id:estacaoMesAtivaAtual._id}, estacaoMesAtivaAtual, {upsert:true})
+        if(estacaoMesAtivaAtual._id != undefined && incremento != null)
+            await colecao.updateOne({_id:estacaoMesAtivaAtual._id}, { $inc: { ativas: incremento } }, {upsert:true})
+        else
+            await colecao.insertOne(estacaoMesAtivaAtual)
         await MongoDB.close()
     }
+
 }
 
 export default new AtualizaEstacoesAtivas()
