@@ -1,5 +1,4 @@
 import { Estacao } from "../../entities/Estacao";
-import GeraUnixTime from "./GeraUnixTime";
 
 class InsereAtributosEstacao {
     inserir(novaEstacao: Estacao, corpoRequisicao): Estacao {
@@ -14,6 +13,6 @@ class InsereAtributosEstacao {
         novaEstacao.longitudeEstacao = corpoRequisicao.longitudeEstacao;
         return novaEstacao;
     };
-};
+}
 
 export default new InsereAtributosEstacao();

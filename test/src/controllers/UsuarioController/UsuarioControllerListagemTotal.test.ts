@@ -3,7 +3,6 @@ import UsuarioController from "../../../../src/controllers/UsuarioController"
 import MockResponse from "../MockResponse"
 import { Usuario } from "../../../../src/entities/Usuario";
 
-
 let usuariosCadastrados:Usuario[] = [];
 let skip:number
 let take:number

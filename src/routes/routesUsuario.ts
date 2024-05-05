@@ -11,5 +11,4 @@ routesUsuario.delete("/deletar/:id", VerificadorToken.verificar, UsuarioControll
 routesUsuario.put("/atualizar", VerificadorToken.verificar, UsuarioController.atualizar);
 routesUsuario.post("/login", UsuarioController.logar)
 
-
 export default routesUsuario;

@@ -10,8 +10,7 @@ import AtualizaAtrifutoTipoParametro from "../services/TipoParametro/AtualizaAtr
 import DelecaoCascataParametro from "../services/Parametro/DelecaoCascataParametro";
 
 
-class TipoParametroController extends AbstratoController {
-    
+class TipoParametroController extends AbstratoController {    
 
     async cadastrar(req: Request, res: Response){
         const repositorioTipoParametro = PgDataSource.getRepository(TipoParametro)

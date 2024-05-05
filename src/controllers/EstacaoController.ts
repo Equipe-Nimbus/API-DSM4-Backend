@@ -88,21 +88,20 @@ class EstacaoController extends AbstratoController {
             .select(["estacao.idEstacao", "estacao.nomeEstacao", "estacao.cidadeEstacao"])
             .where("estacao.statusEstacao = :status", { status: true })
             .getMany();
-
         res.status(200).send(listagemParaSelecao)
     }
 
     async listarPaginada(req: Request, res: Response) {
         const repositorioEstacao = PgDataSource.getRepository(Estacao);
         const pagina = req.query.pagina ? parseInt(req.query.pagina as string) : 1;
-        const tamanhoPagina = req.query.tamanhoPagina ? parseInt(req.query.tamanhoPagina as string) : 10;
+        const tamanhoPagina = req.query.tamanhoPagina ? parseInt(req.query.tamanhoPagina as string): 10;
         const quantidadeLinhas = await repositorioEstacao.count(TrataValoresFiltroEstacao.tratarContagem(req));
-        const quantidadePaginas = Math.ceil(quantidadeLinhas / tamanhoPagina);
+        const quantidadePaginas = Math.ceil(quantidadeLinhas/tamanhoPagina);
         try {
             const filtroSelecao = TrataValoresFiltroEstacao.tratarSelect(req);
             const estacoesResgatadas = await SelecaoPaginadaEstacao.selecionar(repositorioEstacao, pagina, tamanhoPagina, filtroSelecao);
             const resposta = {
-                estacoes: estacoesResgatadas,
+                estacoes: estacoesResgatadas, 
                 pagina: pagina,
                 tamanhoPagina: tamanhoPagina,
                 quantidadePaginas: quantidadePaginas
@@ -127,18 +126,18 @@ class EstacaoController extends AbstratoController {
         });
         if (estacaoRecuperada == undefined)
             return res.status(400).send("Objeto estação não encontrado!");
-
+    
         const listaTipoParametro = [];
-        for (const parametro of estacaoRecuperada.parametros) {
-            if (parametro.statusParametro === true) {
+        for(const parametro of estacaoRecuperada.parametros) {
+            if(parametro.statusParametro === true) {
                 const tipoParametroRuperado = await parametro.tiposParametro;
                 const tipoParametroMontado = MontaObjetoTipoParametro.criaTipoParametro(tipoParametroRuperado);
-                listaTipoParametro.push(tipoParametroMontado);
-            }
+                listaTipoParametro.push(tipoParametroMontado); 
+            }                          
         };
         estacaoRecuperada.tipoParametros = listaTipoParametro;
         const resposta = MontaObjetoEstacao.criaEstacao(estacaoRecuperada);
-        return res.status(200).send(resposta);
+        return res.status(200).send(resposta);                     
     };
 
     async atualizar(req: Request, res: Response) {

@@ -4,7 +4,6 @@ import { Estacao } from "./Estacao";
 import { Medicao } from "./Medicao";
 import { Alerta } from "./Alerta";
 
-
 @Entity()
 export class Parametro {
 

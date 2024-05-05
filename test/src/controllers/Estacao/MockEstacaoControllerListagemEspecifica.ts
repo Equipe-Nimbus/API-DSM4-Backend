@@ -29,7 +29,11 @@ class MocksEstacaoControllerListagemEspecifica {
     } as unknown as Estacao;
 
     estacaoResposta = {
+<<<<<<< HEAD
         idEstacao: "1",
+=======
+        idEstacao: 1,
+>>>>>>> main
         nomeEstacao: "Estação Norte",
         ruaAvenidaEstacao: "Rua das Flores",
         numeroEnderecoEstacao: "123",
