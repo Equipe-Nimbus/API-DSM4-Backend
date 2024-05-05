@@ -2,6 +2,7 @@ import MongoDB from "../../BackMongDB";
 import PgDataSource from "../../data-source";
 import { Estacao } from "../../entities/Estacao";
 import EstacaoAtivaMesInterface from "../../interfaces/EstacaoAtivaMesInterface";
+import CriaMesNovo from "./CriaMesNovo";
 import FormataEstacoesAtivasPorMes from "./FormataEstacoesAtivasPorMes";
 import FormatandoDatas from "./FormatandoDatas";
 
@@ -33,9 +34,16 @@ class PegaEstacaoPorMesAtiva{
         const colecaoEstacoesMes = MongoDB.db("BackNimbusNaoRelacional").collection("EstacoesAtivasMes")
         const estacoesAtivasPorMes = await colecaoEstacoesMes.find().limit(12).toArray() as EstacaoAtivaMesInterface[]
         await MongoDB.close()
+        const mesAtual = FormatandoDatas.numeroMesParaString(new Date().getMonth())
+        const anoAtual = new Date().getFullYear().toString()
+        if(estacoesAtivasPorMes[estacoesAtivasPorMes.length-1].mes == mesAtual && estacoesAtivasPorMes[estacoesAtivasPorMes.length-1].ano == anoAtual)
+            return FormataEstacoesAtivasPorMes.formatar(estacoesAtivasPorMes)
+        const novaEstacao = await CriaMesNovo.criarMesNovo(mesAtual, anoAtual)
+        estacoesAtivasPorMes.push(novaEstacao)
         return FormataEstacoesAtivasPorMes.formatar(estacoesAtivasPorMes)
     }
 
+    
 }
 
 export default new PegaEstacaoPorMesAtiva()
