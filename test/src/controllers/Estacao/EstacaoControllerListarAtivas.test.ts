@@ -60,6 +60,7 @@ describe ("Teste da classe EstacaoController método listarEstacoesAtivas", () =
         listaEstacaoArmazenadas = [            
                 {
                     idEstacao: "85130000-6bf3-47d9-b6f3-dfbcc62080fe",
+                    idPlacaEstacao: "abc-123",
                     nomeEstacao: "Norte5",
                     ruaAvenidaEstacao: "Rua das Flores",
                     numeroEnderecoEstacao: "123",
@@ -77,6 +78,7 @@ describe ("Teste da classe EstacaoController método listarEstacoesAtivas", () =
                 },
                 {
                     idEstacao: "0887b5b3-a3ec-4f79-8cb7-6ad6a8a1c935",
+                    idPlacaEstacao: "abc-123",
                     nomeEstacao: "Norte",
                     ruaAvenidaEstacao: "Rua das Flores",
                     numeroEnderecoEstacao: "123",
@@ -95,6 +97,7 @@ describe ("Teste da classe EstacaoController método listarEstacoesAtivas", () =
                 {
                     idEstacao: "293c0d74-ef6e-480e-b8bd-9393650c623d",
                     nomeEstacao: "Norte6",
+                    idPlacaEstacao: "abc-123",
                     ruaAvenidaEstacao: "Rua das Flores",
                     numeroEnderecoEstacao: "123",
                     bairroEstacao: "Centro",
@@ -111,6 +114,7 @@ describe ("Teste da classe EstacaoController método listarEstacoesAtivas", () =
                 },
                 {
                     idEstacao: "a4603e64-9dd5-45a5-bd08-6e6d63f5e1e3",
+                    idPlacaEstacao: "abc-123",
                     nomeEstacao: "Norte2",
                     ruaAvenidaEstacao: "Rua das Flores",
                     numeroEnderecoEstacao: "123",
@@ -128,6 +132,7 @@ describe ("Teste da classe EstacaoController método listarEstacoesAtivas", () =
                 },
                 {
                     idEstacao: "d75db9ce-88b9-42e9-9f01-3dd0d893392b",
+                    idPlacaEstacao: "abc-123",
                     nomeEstacao: "Norte4",
                     ruaAvenidaEstacao: "Rua das Flores",
                     numeroEnderecoEstacao: "123",
@@ -145,6 +150,7 @@ describe ("Teste da classe EstacaoController método listarEstacoesAtivas", () =
                 },
                 {
                     idEstacao: "6415a2d7-a832-4cff-9ef1-5762aa3cdb06",
+                    idPlacaEstacao: "abc-123",
                     nomeEstacao: "Norte3",
                     ruaAvenidaEstacao: "Rua das Flores",
                     numeroEnderecoEstacao: "123",
@@ -178,6 +184,7 @@ describe ("Teste da classe EstacaoController método listarEstacoesAtivas", () =
         const listaRetornoEstacao: Estacao[] = [
             {
                 "idEstacao": "6415a2d7-a832-4cff-9ef1-5762aa3cdb06",
+                "idPlacaEstacao": "abc-123",
                 "nomeEstacao": "Norte3",
                 "ruaAvenidaEstacao": "Rua das Flores",
                 "numeroEnderecoEstacao": "123",
