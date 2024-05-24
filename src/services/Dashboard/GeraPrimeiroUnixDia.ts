@@ -6,6 +6,7 @@ class GeraPrimeiroUnixDia{
         return Math.floor(agora.getTime()/1000)
     }
 
+
 }
 
 export default new GeraPrimeiroUnixDia()
