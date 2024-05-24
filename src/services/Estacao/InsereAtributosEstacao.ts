@@ -3,6 +3,7 @@ import GeraUnixTime from "./GeraUnixTime";
 
 class InsereAtributosEstacao {
     inserir(novaEstacao: Estacao, corpoRequisicao): Estacao {
+        novaEstacao.idPlacaEstacao = corpoRequisicao.idPlacaEstacao;
         novaEstacao.nomeEstacao = corpoRequisicao.nomeEstacao;
         novaEstacao.ruaAvenidaEstacao = corpoRequisicao.ruaAvenidaEstacao;
         novaEstacao.numeroEnderecoEstacao = corpoRequisicao.numeroEnderecoEstacao;
