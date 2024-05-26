@@ -6,6 +6,12 @@ class TrataData{
         return dataNova/1000
     }
 
+    tratarDataFinal(data:string) {
+        const [ano, mes, dia] = data.split("-").map(Number);
+        const dataNova = new Date(ano, mes - 1, dia, 23, 59, 59).getTime();
+        return dataNova/1000;
+    };
+
 }
 
 export default new TrataData()
