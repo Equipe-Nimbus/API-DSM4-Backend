@@ -6,10 +6,7 @@ class MockEstacaoControllerCadastro {
   reqEstacaoInicial = {
     body: {
       nomeEstacao: "Estação Central",
-<<<<<<< HEAD
       idPlacaEstacao: "abc-123",
-=======
->>>>>>> main
       ruaAvenidaEstacao: "Rua das Flores",
       numeroEnderecoEstacao: "123",
       bairroEstacao: "Centro",
