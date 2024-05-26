@@ -20,9 +20,12 @@ class GeraRelatorioQuantidadeAlerta {
         .filter(medicao => medicao.nomeEstacao === estacaoNome)
         .map(medicao => ({
           nomeAlerta: medicao.nomeAlerta,
-          medicao: medicao.medicao,
-          data: medicao.data,
-          nomeTipoParametro: medicao.nomeTipoParametro
+          valorMedida: medicao.medicao,
+          dataMedida: medicao.data,
+          nomeTipoParametro: medicao.nomeTipoParametro,
+          unidadeTipoParametro: medicao.unidadeMedicao,
+          cidadeAlerta: medicao.cidadeAlerta,
+          estadoAlerta: medicao.estadoAlerta
         }));
     };
 

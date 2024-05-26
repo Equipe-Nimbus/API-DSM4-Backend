@@ -28,7 +28,10 @@ class FiltraData {
       medicao: alerta.medicao,
       nomeEstacao: alerta.nomeEstacao,
       data: `${alerta.ano}-${alerta.mes}-${alerta.dia}`,
-      nomeTipoParametro: alerta.nomeTipoParametro
+      nomeTipoParametro: alerta.nomeTipoParametro,
+      cidadeAlerta: alerta.cidadeEstacao,
+      estadoAlerta: alerta.estadoEstacao,
+      unidadeMedicao: alerta.unidadeMedicao
     }));
   }
 }
