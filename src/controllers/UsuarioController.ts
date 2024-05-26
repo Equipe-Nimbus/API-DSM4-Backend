@@ -13,8 +13,6 @@ import HashServico from "../services/HashServico";
 
 
 class UsuarioController extends AbstratoController{
-    
-    
     async cadastrar(req: Request, res: Response){
         const repositorioUsuario = PgDataSource.getRepository(Usuario)
         try{

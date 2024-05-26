@@ -52,10 +52,8 @@ describe("Teste da Conferencia de Igualdade de linhas tipo parâmetro", ()=>{
         let resultado = await ConfereIgualdade.conferir(MockConfereIgualdade.tipoParametroTodos1)
         expect(resultado).toBe(false)
     })
-
     test("Conferindo um objeto não cadastrado", async()=>{
         let resultado = await ConfereIgualdade.conferir(MockConfereIgualdade.tipoParametroDiferente)
         expect(resultado).toBe(true)
     })
-
 })
