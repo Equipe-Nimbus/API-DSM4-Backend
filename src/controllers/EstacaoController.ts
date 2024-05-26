@@ -32,7 +32,7 @@ class EstacaoController extends AbstratoController {
         const consultaCordenadaEstacao = await ConsultaCoordenadaGeograficaEstacao.consulta(req.body);
         const consultaMesmoNomeUnidadeTipoParametro = await ConsultaMesmoNomeUnidadeTipoParameto.consulta(req.body.tipoParametros);
         let contador: number = 0;
-        const listaAtributosEstacao = ["nomeEstacao", "ruaAvenidaEstacao", "numeroEnderecoEstacao", "bairroEstacao", "cidadeEstacao", "estadoEstacao", "cepEstacao", "latitudeEstacao", "longitudeEstacao"];
+        const listaAtributosEstacao = ["idPlacaEstacao", "nomeEstacao", "ruaAvenidaEstacao", "numeroEnderecoEstacao", "bairroEstacao", "cidadeEstacao", "estadoEstacao", "cepEstacao", "latitudeEstacao", "longitudeEstacao"];
 
         listaAtributosEstacao.forEach(atributoEstacao => {
             if (req.body[atributoEstacao] == "" || req.body[atributoEstacao] == null)
@@ -75,7 +75,7 @@ class EstacaoController extends AbstratoController {
             console.log("foi")            
         } catch (error) {
             if (error.code == "23505")
-                res.status(400).send("Nome ou código de identificação da estação já cadastrado!");
+                res.status(400).send("Nome ou código de identificação da placa da estação já cadastrado!");
             else
                 res.status(400).send(error);
         };
@@ -146,7 +146,7 @@ class EstacaoController extends AbstratoController {
         const consultaMesmoNomeUnidadeTipoParametro = await ConsultaMesmoNomeUnidadeTipoParameto.consulta(req.body.tipoParametros);
 
         let contador: number = 0;
-        const listaAtributosEstacao = ["nomeEstacao", "ruaAvenidaEstacao", "numeroEnderecoEstacao", "bairroEstacao", "cidadeEstacao", "estadoEstacao", "cepEstacao", "latitudeEstacao", "longitudeEstacao"];
+        const listaAtributosEstacao = ["idPlacaEstacao", "nomeEstacao", "ruaAvenidaEstacao", "numeroEnderecoEstacao", "bairroEstacao", "cidadeEstacao", "estadoEstacao", "cepEstacao", "latitudeEstacao", "longitudeEstacao"];
 
         listaAtributosEstacao.forEach(atributoEstacao => {
             if (req.body[atributoEstacao] == "" || req.body[atributoEstacao] == null)
@@ -202,7 +202,7 @@ class EstacaoController extends AbstratoController {
             res.status(200).send("Estação atualizada com sucesso");
         } catch (error) {
             if (error.code == "23505")
-                res.status(400).send("Nome de estação já cadastrado!");
+                res.status(400).send("Nome ou código de identificação da placa da estação já cadastrado!");
             else {
                 res.status(400).send(error);
             }

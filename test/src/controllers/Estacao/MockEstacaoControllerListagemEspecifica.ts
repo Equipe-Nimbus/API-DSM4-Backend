@@ -30,6 +30,7 @@ class MocksEstacaoControllerListagemEspecifica {
 
     estacaoResposta = {
         idEstacao: "1",
+        idPlacaEstacao: undefined,
         nomeEstacao: "Estação Norte",
         ruaAvenidaEstacao: "Rua das Flores",
         numeroEnderecoEstacao: "123",

@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  db:
+    container_name: postgres-container
+    image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=nimbusDB
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  pgadmin:
+    container_name: pgadmin-container
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=pedrohsalmeida2004@gmail.com
+      - PGADMIN_DEFAULT_PASSWORD=postgres
+    ports:
+      - 5050:80
+
+
+volumes:
+  postgres-data:
