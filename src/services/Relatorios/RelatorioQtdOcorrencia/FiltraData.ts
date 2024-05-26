@@ -1,4 +1,4 @@
-import MongoDB from "../../BackMongDB";
+import MongoDB from "../../../BackMongDB";
 
 class FiltraData {
   async filtra(estacoesNomes: string[], dataInicio: string, dataFim: string) {

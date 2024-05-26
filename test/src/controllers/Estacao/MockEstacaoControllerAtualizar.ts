@@ -4,6 +4,7 @@ import { Estacao } from "../../../../src/entities/Estacao";
 class MockEstacaoControllerAtualizar {
     estacaoInicial = {
         idEstacao: "abcd-1234",
+        idPlacaEstacao: "abcd-1234",
         nomeEstacao: "Estação Central",
         ruaAvenidaEstacao: "Rua das Flores",
         numeroEnderecoEstacao: "123",
@@ -23,6 +24,7 @@ class MockEstacaoControllerAtualizar {
     reqEstacaoAtualizar = {
         body: {
             idEstacao: "abcd-1234",
+            idPlacaEstacao: "abcd-1234",
             nomeEstacao: "Estação Norte",
             ruaAvenidaEstacao: "Norte",
             numeroEnderecoEstacao: "123",

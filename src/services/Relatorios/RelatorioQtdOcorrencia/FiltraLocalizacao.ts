@@ -1,4 +1,4 @@
-import MongoDB from "../../BackMongDB";
+import MongoDB from "../../../BackMongDB";
 
 class FiltraLocalizacao {
   async filtra(cidade: string, estado: string) {

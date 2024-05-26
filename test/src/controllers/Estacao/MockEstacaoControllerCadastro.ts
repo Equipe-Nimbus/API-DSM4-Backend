@@ -6,6 +6,7 @@ class MockEstacaoControllerCadastro {
   reqEstacaoInicial = {
     body: {
       nomeEstacao: "Estação Central",
+      idPlacaEstacao: "abc-123",
       ruaAvenidaEstacao: "Rua das Flores",
       numeroEnderecoEstacao: "123",
       bairroEstacao: "Centro",
@@ -25,6 +26,7 @@ class MockEstacaoControllerCadastro {
   reqEstacaoNomeRepetido = {
     body: {
       nomeEstacao: "Estação Central",
+      idPlacaEstacao: "abc-123",
       ruaAvenidaEstacao: "Avenida dos Bandeirantes",
       numeroEnderecoEstacao: "789",
       bairroEstacao: "Bairro Novo",
@@ -44,6 +46,7 @@ class MockEstacaoControllerCadastro {
   reqEstacaoCoordenadaGeografica = {
     body: {
       nomeEstacao: "Estação Sul",
+      idPlacaEstacao: "abc-123",
       ruaAvenidaEstacao: "Avenida dos Bandeirantes",
       numeroEnderecoEstacao: "789",
       bairroEstacao: "Bairro Novo",
@@ -63,6 +66,7 @@ class MockEstacaoControllerCadastro {
   reqEstacaoPropriedadeNula = {
     body: {
       nomeEstacao: "Estação Sul",
+      idPlacaEstacao: "abc-123",
       ruaAvenidaEstacao: "Avenida dos Bandeirantes",
       numeroEnderecoEstacao: "",
       bairroEstacao: "Bairro Novo",
@@ -82,6 +86,7 @@ class MockEstacaoControllerCadastro {
   reqEstacaoSemTipoParametro = {
     body: {
       nomeEstacao: "Estação Sul",
+      idPlacaEstacao: "abc-123",
       ruaAvenidaEstacao: "Avenida dos Bandeirantes",
       numeroEnderecoEstacao: "",
       bairroEstacao: "Bairro Novo",

@@ -1,5 +1,6 @@
-import GeraRelatorioQuantidadeAlerta from "../services/Relatorio/GeraRelatorioQuantidadeAlerta";
+import GeraRelatorioQuantidadeAlerta from "../services/Relatorios/RelatorioQtdOcorrencia/GeraRelatorioQuantidadeAlerta";
 import { Request, Response } from "express";
+import RelatorioMedicao from "../services/Relatorios/RelatorioMinMax/RelatorioMedicao";
 
 class RelatorioController {
     async geraRelatorioQuantidadeAlerta(req: Request, res: Response) {
@@ -14,6 +15,16 @@ class RelatorioController {
             console.error(error.message);
         }
     }
+
+    async geraRelatorioMedicao(req: Request, res: Response){
+        try{
+            const {inicio, fim, idEstacao} = req.params
+            const relatorio = await RelatorioMedicao.gerarRelatorio(inicio, fim, idEstacao)
+            res.send(relatorio)
+        } catch(err){
+            res.status(500).send(err.mensage)
+        }   
+    }
 }
 
-export default new RelatorioController();
+export default new RelatorioController()

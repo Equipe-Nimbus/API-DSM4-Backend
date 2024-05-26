@@ -7,6 +7,7 @@ import routesTipoParametro from "./routes/routesTipoParametro";
 import routesAlerta from "./routes/routesAlerta";
 import routesDashboard from "./routes/routesDashboard";
 import routesRelatorios from "./routes/routesRelatorios";
+import routesOcorrenciaAlerta from "./routes/routesOcorrenciaAlerta";
 
 
 config();
@@ -25,6 +26,7 @@ app.use("/tipoParametro", routesTipoParametro);
 app.use("/alerta", routesAlerta);
 app.use("/dashboard", routesDashboard);
 app.use("/relatorio", routesRelatorios);
+app.use("/ocorrenciaAlerta", routesOcorrenciaAlerta);
 
 
 
