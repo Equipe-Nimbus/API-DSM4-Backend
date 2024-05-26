@@ -1,5 +1,5 @@
-import PgDataSource from "../../data-source";
-import { Medicao } from "../../entities/Medicao";
+import PgDataSource from "../../../data-source";
+import { Medicao } from "../../../entities/Medicao";
 
 class PegaMedicoesRelatorio{
 

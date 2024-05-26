@@ -1,5 +1,5 @@
-import PegaIdParametro from "../Parametro/PegaIdParametro";
-import TrataData from "../TrataData";
+import PegaIdParametro from "../../Parametro/PegaIdParametro";
+import TrataData from "../../TrataData";
 import PegaMedicoesRelatorio from "./PegaMedicoesRelatorio";
 
 class RelatorioMedicao{

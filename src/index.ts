@@ -6,7 +6,7 @@ import routesEstacao from "./routes/routesEstacao";
 import routesTipoParametro from "./routes/routesTipoParametro";
 import routesAlerta from "./routes/routesAlerta";
 import routesDashboard from "./routes/routesDashboard";
-import routesRelatorio from "./routes/routesRelatorio";
+import routesRelatorios from "./routes/routesRelatorios";
 import routesOcorrenciaAlerta from "./routes/routesOcorrenciaAlerta";
 
 
@@ -25,7 +25,7 @@ app.use("/estacao", routesEstacao)
 app.use("/tipoParametro", routesTipoParametro);
 app.use("/alerta", routesAlerta);
 app.use("/dashboard", routesDashboard);
-app.use("/relatorio", routesRelatorio);
+app.use("/relatorio", routesRelatorios);
 app.use("/ocorrenciaAlerta", routesOcorrenciaAlerta);
 
 
