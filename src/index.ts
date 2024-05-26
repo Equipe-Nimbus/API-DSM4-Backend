@@ -7,6 +7,7 @@ import routesTipoParametro from "./routes/routesTipoParametro";
 import routesAlerta from "./routes/routesAlerta";
 import routesDashboard from "./routes/routesDashboard";
 import routesRelatorio from "./routes/routesRelatorio";
+import routesOcorrenciaAlerta from "./routes/routesOcorrenciaAlerta";
 
 
 config();
@@ -24,7 +25,9 @@ app.use("/estacao", routesEstacao)
 app.use("/tipoParametro", routesTipoParametro);
 app.use("/alerta", routesAlerta);
 app.use("/dashboard", routesDashboard);
-app.use("/relatorio", routesRelatorio)
+app.use("/relatorio", routesRelatorio);
+app.use("/ocorrenciaAlerta", routesOcorrenciaAlerta);
+
 
 
 const PORT = process.env.PORT;
