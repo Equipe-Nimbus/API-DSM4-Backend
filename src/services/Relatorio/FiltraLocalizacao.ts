@@ -9,6 +9,10 @@ class FiltraLocalizacao {
       const estacoes = await colecaoEstacoes.find({ cidadeEstacao: cidade }).toArray();
       await MongoDB.close();
 
+      if (estacoes.length === 0) {
+        throw new Error(`Não há estações cadastradas na cidade ${cidade}`);
+      }
+
       const estacoesUnicas = Array.from(new Set(estacoes.map(estacao => estacao.nomeEstacao)));
 
       return {
@@ -20,6 +24,10 @@ class FiltraLocalizacao {
     if (estado) {
       const estacoes = await colecaoEstacoes.find({ estadoEstacao: estado }).toArray();
       await MongoDB.close();
+
+      if (estacoes.length === 0) {
+        throw new Error(`Não há estações cadastradas no estado ${estado}`);
+      }
 
       const cidades = estacoes.reduce((acc, estacao) => {
         const cidadeIndex = acc.findIndex(cidadeObj => cidadeObj.nome === estacao.cidadeEstacao);
