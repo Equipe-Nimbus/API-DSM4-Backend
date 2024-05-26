@@ -5,6 +5,7 @@ class MontaObjetoEstacao {
     criaEstacao (estacao: Estacao) {
         const objetoEstacaoMontado = {
             idEstacao: estacao.idEstacao,
+            idPlacaEstacao: estacao.idPlacaEstacao,
             nomeEstacao: estacao.nomeEstacao,
             ruaAvenidaEstacao: estacao.ruaAvenidaEstacao,
             numeroEnderecoEstacao: estacao.numeroEnderecoEstacao,
