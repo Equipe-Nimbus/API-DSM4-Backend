@@ -6,8 +6,7 @@ class ContarOcorrenciaAlerta {
     async contar(dataInicio: string, dataFinal: string): Promise<number> {
         let quantidadeOcorrenciaAlerta: number;
         const unixtimeInicio = TrataData.tratar(dataInicio);
-        /* const unixtimeFinal = TrataData.tratarDataFinal(dataFinal); */
-        const unixtimeFinal = 1716673586;
+        const unixtimeFinal = TrataData.tratarDataFinal(dataFinal);
         
         const filtro = {
             "unixtime": {

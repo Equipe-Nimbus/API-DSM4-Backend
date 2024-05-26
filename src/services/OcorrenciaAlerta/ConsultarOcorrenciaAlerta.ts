@@ -5,8 +5,7 @@ import TrataData from "../TrataData";
 class ConsultarOcorrenciaAlerta {
     async consultar(dataInicio: string, dataFinal: string, pagina: number, tamanhoPagina: number): Promise<OcorrenciaAlertaMongo[]> {
         const unixtimeInicio = TrataData.tratar(dataInicio);
-        /* const unixtimeFinal = TrataData.tratarDataFinal(dataFinal); */
-        const unixtimeFinal = 1716673586;
+        const unixtimeFinal = TrataData.tratarDataFinal(dataFinal);
         let listaOcorrenciaAlerta = [];
 
         const filtro = {
