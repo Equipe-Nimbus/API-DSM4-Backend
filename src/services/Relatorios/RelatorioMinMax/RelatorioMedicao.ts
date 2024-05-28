@@ -7,7 +7,8 @@ class RelatorioMedicao{
     async gerarRelatorio(dataInicio:string, dataFim:string, idEstacao:string){
         const unixInicio = TrataData.tratar(dataInicio)
         const unixFim = TrataData.tratar(dataFim)
-        const resultado = await PegaMedicoesRelatorio.pegar(unixInicio, unixFim)
+        console.log("INICIO:", unixInicio, "FIM:", unixFim)
+        const resultado = await PegaMedicoesRelatorio.pegar(unixInicio, unixFim, idEstacao)
         return resultado
     }
 

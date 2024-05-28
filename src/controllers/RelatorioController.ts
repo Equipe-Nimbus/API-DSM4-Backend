@@ -19,6 +19,7 @@ class RelatorioController {
     async geraRelatorioMedicao(req: Request, res: Response){
         try{
             const {inicio, fim, idEstacao} = req.params
+            console.log("Inicio:", inicio, " Fim", fim, "IdEstacao:", idEstacao)
             const relatorio = await RelatorioMedicao.gerarRelatorio(inicio, fim, idEstacao)
             res.send(relatorio)
         } catch(err){
