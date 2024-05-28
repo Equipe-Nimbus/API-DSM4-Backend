@@ -77,7 +77,7 @@ class EstacaoController extends AbstratoController {
             if (error.code == "23505")
                 res.status(400).send("Nome ou código de identificação da placa da estação já cadastrado!");
             else
-                res.status(400).send(error);
+                res.status(500).send(error.message);
         };
     }
 
