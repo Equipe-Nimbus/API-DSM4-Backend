@@ -15,8 +15,9 @@ export class Medicao {
     @Column({nullable: false})
     unixTime:number
 
-    @Column({nullable:true})
-    tagTemporal:string
+    @Column({nullable:false})
+    tagTemporal:number
+
 
     @ManyToOne(()=>Parametro, parametro=>parametro.medicoes)
     parametro:Parametro
