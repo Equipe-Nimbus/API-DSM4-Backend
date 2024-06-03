@@ -11,6 +11,15 @@ class GeraMesAno{
         return `${mes} ${ano}`
     }
 
+    gerarMes():string{
+        const data = new Date();
+        const listaMeses = [
+            "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+            "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+        ];
+        return listaMeses[data.getMonth()]
+    }
+
 }
 
 export default new GeraMesAno()
