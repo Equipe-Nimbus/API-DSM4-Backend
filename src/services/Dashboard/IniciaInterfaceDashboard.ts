@@ -24,8 +24,7 @@ class IniciaInterfaceDashboard{
                         estados: []
                     }
                 }
-            },
-            ocorrencias: []
+            }
         }
         return dashboardGeral
     }

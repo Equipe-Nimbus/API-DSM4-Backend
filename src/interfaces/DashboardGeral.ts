@@ -1,5 +1,6 @@
+import OcorrenciaAlertaDashboard from "./OcorrenciaAlertaDashboard"
+
 export default interface DashboardGeral{
-    ocorrencias: any
     estacoes:{
         numeroTotalEstacoes:number,
         ativasPorMes:{
@@ -24,10 +25,3 @@ export default interface DashboardGeral{
     
 }
 
-
-interface OcorrenciaAlertaDashboard{
-    nomeAlerta:string,
-    valorMedida:number,
-    unidadeTipoParametro:string,
-    dataMedida:string
-}
