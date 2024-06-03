@@ -15,9 +15,7 @@ class GeraDashboardGeral{
         let dashboardGeral = IniciaInterfaceDashboard.iniciarGeral()
         dashboardGeral.estacoes.numeroTotalEstacoes = await PegaQuantidadeTotalEstacao.pegar()
         dashboardGeral.estacoes.ativasPorMes = await PegaEstacaoPorMesAtiva.pegaParaDashboard()
-        console.log("Antes: ", dashboardGeral)
         dashboardGeral = await GeraDashboardsAlertasGeral.gerar(dashboardGeral)
-        console.log("Depois: ", dashboardGeral)
         return dashboardGeral
     }
 
