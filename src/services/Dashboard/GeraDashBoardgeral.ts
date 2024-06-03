@@ -2,6 +2,7 @@ import PgDataSource from "../../data-source"
 import { Estacao } from "../../entities/Estacao"
 import EstacaoAtivaMesInterface from "../../interfaces/EstacaoAtivaMesInterface"
 import AtualizaEstacoesAtivas from "./AtualizaEstacoesAtivas"
+import ConsultaAlertaMes from "./ConsultaAlertaMes"
 import FormatandoDatas from "./FormatandoDatas"
 import IniciaInterfaceDashboard from "./IniciaInterfaceDashboard"
 import PegaEstacaoPorMesAtiva from "./PegaEstacaoPorMesAtiva"
@@ -13,6 +14,9 @@ class GeraDashboardGeral{
         let dashboardGeral = IniciaInterfaceDashboard.iniciarGeral()
         dashboardGeral.estacoes.numeroTotalEstacoes = await PegaQuantidadeTotalEstacao.pegar()
         dashboardGeral.estacoes.ativasPorMes = await PegaEstacaoPorMesAtiva.pegaParaDashboard()
+        let ocorrenciasMes = await ConsultaAlertaMes.consultar()
+        dashboardGeral.ocorrencias = ocorrenciasMes
+        console.log(ocorrenciasMes)
         return dashboardGeral
     }
 

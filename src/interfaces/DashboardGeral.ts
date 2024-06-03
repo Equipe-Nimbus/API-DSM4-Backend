@@ -1,4 +1,5 @@
 export default interface DashboardGeral{
+    ocorrencias: any
     estacoes:{
         numeroTotalEstacoes:number,
         ativasPorMes:{
@@ -7,12 +8,7 @@ export default interface DashboardGeral{
         }
     },
     alertas:{
-        ultimoAlerta:{
-            nomeAlerta:string,
-            valorMedida:number,
-            unidadeTipoParametro:string,
-            dataMedida:string
-        },
+        ultimosAlerta:OcorrenciaAlertaDashboard[],
         alertasDoMes:{
             totalAlertas:number,
             relacaoTipoParametro:{
@@ -26,4 +22,12 @@ export default interface DashboardGeral{
         }
     }
     
+}
+
+
+interface OcorrenciaAlertaDashboard{
+    nomeAlerta:string,
+    valorMedida:number,
+    unidadeTipoParametro:string,
+    dataMedida:string
 }
