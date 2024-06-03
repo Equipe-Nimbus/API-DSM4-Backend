@@ -23,7 +23,7 @@ class EstruturaRelatorioMinMax {
                 relatorio.nomeTipoParametro = minMax.tipoParametro_nomeTipoParametro
                 relatorio.unidadeTipoParametro = minMax.tipoParametro_unidadeTipoParametro
                 relatorio.minimosMaximos.maximos.push((parseFloat(minMax.maxvalor) * parseFloat(minMax.tipoParametro_fatorTipoParametro)) + parseFloat(minMax.tipoParametro_offsetTipoParametro))
-                relatorio.minimosMaximos.maximos.push((parseFloat(minMax.minvalor) * parseFloat(minMax.tipoParametro_fatorTipoParametro)) + parseFloat(minMax.tipoParametro_offsetTipoParametro))
+                relatorio.minimosMaximos.minimos.push((parseFloat(minMax.minvalor) * parseFloat(minMax.tipoParametro_fatorTipoParametro)) + parseFloat(minMax.tipoParametro_offsetTipoParametro))
                 relatorio.minimosMaximos.mesAno.push(GeraMesAno.gerar(minMax.medicao_tagTemporal))
             }
         });
