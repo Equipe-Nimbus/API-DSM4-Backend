@@ -2,25 +2,31 @@ import { DataSource } from "typeorm";
 import { config } from "dotenv";
 config();
 
+const DB_NAME = process.env.DB_NAME;
 const DB_URL = process.env.DB_URL;
+const DB_HOST = process.env.DB_HOST;
+const DB_USER = process.env.DB_USER;
+const DB_PORT = Number(process.env.DB_PORT);
+const POSTGRES_PASSWORD = process.env.POSTGRES_PASSWORD;
 
 const PgDataSource = new DataSource({
+
     //DB online elephantSQL
-    database: 'bqlvykqu',
-    url:DB_URL,
+    //database: 'bqlvykqu',
+    //url:DB_URL,
 
     //DB Local
-    // database: "nimbusDB",
-    // host: "localhost",
-    // username: "postgres",
-    // port: 5432,
-    // password: "SuaSenha",
+    database: DB_NAME,
+    host: DB_HOST,
+    username: DB_USER,
+    port: DB_PORT,
+    password: POSTGRES_PASSWORD,
 
-    type: "postgres", // se for SQLite, então use sqlite
+    type: "postgres",
     synchronize: true,
-    logging: false, // true indica que as consultas e erros serão exibidas no terminal
-    entities: ["src/entities/*.ts"], // entidades que serão convertidas em tabelas
-    migrations: ["src/migrations/*.ts"] // local onde estarão os arquivos de migração
+    logging: false,
+    entities: ["src/entities/*.ts"],
+    migrations: ["src/migrations/*.ts"]
 });
 
 PgDataSource.initialize()
