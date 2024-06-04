@@ -3,18 +3,23 @@ import { config } from "dotenv";
 config();
 
 const DB_URL = process.env.DB_URL;
+const DB_PASSWAORD = process.env.DB_PASSWORD; 
+let DB_NAME = process.env.DB_NAME;
 
+if (process.env.NODE_ENV === "test") {
+    DB_NAME = process.env.DB_NAME_TEST;
+}
 const PgDataSource = new DataSource({
     //DB online elephantSQL
-    database: 'bqlvykqu',
-    url:DB_URL,
+    // database: 'bqlvykqu',
+    // url:DB_URL,
 
     //DB Local
-    // database: "nimbusDB",
-    // host: "localhost",
-    // username: "postgres",
-    // port: 5432,
-    // password: "SuaSenha",
+    database: DB_NAME,
+    host: "localhost",
+    username: "postgres",
+    port: 5432,
+    password: DB_PASSWAORD,
 
     type: "postgres", // se for SQLite, então use sqlite
     synchronize: true,

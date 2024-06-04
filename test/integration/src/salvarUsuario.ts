@@ -1,8 +1,9 @@
-import PgDataSourceTest from "../../../src/dataSourceTest";
+import PgDataSource from "../../../src/data-source";
 import { Usuario } from "../../../src/entities/Usuario";
+import HashServico from "../../../src/services/HashServico";
 
 async function salvaUsuario(): Promise<void> {
-    const repositorioUsuario = await PgDataSourceTest.getRepository(Usuario);
+    const repositorioUsuario = await PgDataSource.getRepository(Usuario);
     let novoUsuario = new Usuario();
     
     novoUsuario.nomeUsuario = "João da Silva",
@@ -18,7 +19,8 @@ async function salvaUsuario(): Promise<void> {
     novoUsuario.numeroCasaUsuario = "1234",
     novoUsuario.cepUsuario = "01000-000"
 
-    await repositorioUsuario.save(novoUsuario);
+    const usuarioComSenhaEncriptada = HashServico.hashingSenhaUsuario(novoUsuario); 
+    await repositorioUsuario.save(usuarioComSenhaEncriptada);
 };
 
 export default salvaUsuario;
