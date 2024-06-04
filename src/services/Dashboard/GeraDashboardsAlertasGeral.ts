@@ -4,6 +4,7 @@ import ConsultaAlertaMes from "./ConsultaAlertaMes";
 import OcorrenciaAlertaDashboard from "../../interfaces/OcorrenciaAlertaDashboard";
 import OcorrenciaAlertaMongo from "../../interfaces/OcorrenciaAlerta";
 import EstruturaDashboardAlertaEstado from "./EstruturaDashboardAlertaEstado";
+import EstruturaDashboardAlertaTipoParametro from "./EstruturaDashboardAlertaTipoParametro";
 
 class GeraDashboardsAlertasGeral{
 
@@ -14,7 +15,7 @@ class GeraDashboardsAlertasGeral{
         }
         dashboardGeral.alertas.alertasDoMes.totalAlertas = ocorrenciasMes.length
         dashboardGeral.alertas.alertasDoMes.relacaoEstado = EstruturaDashboardAlertaEstado.estruturar(ocorrenciasMes)
-        dashboardGeral.alertas.alertasDoMes.relacaoEstado = EstruturaDashboardAlertaEstado.estruturar(ocorrenciasMes)
+        dashboardGeral.alertas.alertasDoMes.relacaoTipoParametro = EstruturaDashboardAlertaTipoParametro.estruturar(ocorrenciasMes)
         return dashboardGeral
     }
 

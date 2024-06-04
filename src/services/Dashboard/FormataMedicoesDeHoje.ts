@@ -6,7 +6,11 @@ class FormataMedicoesDeHoje{
 
     async formatar(parametros:Parametro[]){
         let dashboardEspecifico:DashboardEspecificoInterface = {
-            parametros:[]
+            parametros:[],
+            alertas:{
+                alertasNome: [],
+                alertasNumero: []
+            }
         }
         for(let parametro in parametros){
             let parametroDashboard = this.criarParametroDashboard()
@@ -37,11 +41,7 @@ class FormataMedicoesDeHoje{
             unidadeMedida: "",
             valorMaximo: 0,
             valorMinimo: 0,
-            medicoes: [],
-            alertas: {
-                valores: [],
-                alertasDia: []
-            }
+            medicoes: []
         }
         return parametro;
     }
