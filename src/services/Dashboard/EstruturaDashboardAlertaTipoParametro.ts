@@ -47,3 +47,4 @@ class EstruturaDashboardAlertaTipoParametro{
 }
 
 export default new EstruturaDashboardAlertaTipoParametro()
+
