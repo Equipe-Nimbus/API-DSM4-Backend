@@ -10,12 +10,14 @@ class GeraDashboardsAlertasGeral{
 
     async gerar(dashboardGeral:DashboardGeral):Promise<DashboardGeral>{
         let ocorrenciasMes = await ConsultaAlertaMes.consultar() as unknown as OcorrenciaAlertaMongo[]
-        for (let index = 0; index < 3; index++) {
-            dashboardGeral.alertas.ultimosAlerta.push(this.criarOcorrenciaDashboard(ocorrenciasMes[index]))
+        if(ocorrenciasMes.length > 0) {
+            for (let index = 0; index < Math.min(ocorrenciasMes.length, 3); index++) {
+                dashboardGeral.alertas.ultimosAlerta.push(this.criarOcorrenciaDashboard(ocorrenciasMes[index]))
+            }
+            dashboardGeral.alertas.alertasDoMes.totalAlertas = ocorrenciasMes.length
+            dashboardGeral.alertas.alertasDoMes.relacaoEstado = EstruturaDashboardAlertaEstado.estruturar(ocorrenciasMes)
+            dashboardGeral.alertas.alertasDoMes.relacaoTipoParametro = EstruturaDashboardAlertaTipoParametro.estruturar(ocorrenciasMes)
         }
-        dashboardGeral.alertas.alertasDoMes.totalAlertas = ocorrenciasMes.length
-        dashboardGeral.alertas.alertasDoMes.relacaoEstado = EstruturaDashboardAlertaEstado.estruturar(ocorrenciasMes)
-        dashboardGeral.alertas.alertasDoMes.relacaoTipoParametro = EstruturaDashboardAlertaTipoParametro.estruturar(ocorrenciasMes)
         return dashboardGeral
     }
 
