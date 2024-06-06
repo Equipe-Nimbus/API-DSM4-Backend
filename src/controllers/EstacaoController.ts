@@ -74,7 +74,7 @@ class EstacaoController extends AbstratoController {
             await AtualizaEstacoesAtivas.atualizar(1);
             await AtualizaLocalizacoesCadastradas.adicionarNovaLocalizacao(novaEstacao);
             res.status(200).send("Estação cadastrada com sucesso!");           
-        } catch (error) {
+            } catch (error) {
             if (error.code == "23505")
                 res.status(400).send("Nome ou código de identificação da placa da estação já cadastrado!");
             else
@@ -224,7 +224,6 @@ class EstacaoController extends AbstratoController {
             await AtualizaEstacoesAtivas.atualizar(-1)
             await AtualizaLocalizacoesCadastradas.removerLocalizacao(estacao)
             res.status(200).send("Estacao deletada com sucesso")
-            console.log("foi")
         } catch (error) {
             res.status(400).send(error)
         }

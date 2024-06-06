@@ -1,6 +1,7 @@
 import { Request } from "express";
 import MockResponse from "../MockResponse";
 import EstacaoController from "../../../../src/controllers/EstacaoController";
+import AtualizaLocalizacoesCadastradas from "../../../../src/services/Relatorios/RelatorioQtdOcorrencia/AtualizaLocalizacoesCadastradas";
 
 let listaEstacao = [
     {
@@ -73,6 +74,7 @@ describe("Testes de deleção de Esteção", ()=>{
         req.params.idEstacao = 1
         const requisicao = req as unknown as Request
         const mockRes = (MockResponse.resSemLocals.status(200).send as jest.Mock).mockClear()
+        jest.spyOn(AtualizaLocalizacoesCadastradas, "removerLocalizacao").mockImplementation(async () => {})
         await EstacaoController.deletar(requisicao, MockResponse.resSemLocals)
         expect(mockRes.mock.calls[0][0]).toBe("Estacao deletada com sucesso")
     })

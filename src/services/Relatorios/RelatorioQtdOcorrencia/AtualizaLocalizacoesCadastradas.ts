@@ -56,7 +56,7 @@ class AtualizaLocalizacoesCadastradas {
             const cidadeAntiga = documentoEstadoAntigo.cidades.find(documento => documento.cidade === estacaoAntiga.cidadeEstacao);
             cidadeAntiga.quantidade--;
 
-            const cidadeNova = documentoEstadoAntigo.cidades.find(documento => documento.cidade === estacaoNova.cidadeEstacao);
+            const cidadeNova = documentoEstadoAntigo?.cidades?.find(documento => documento.cidade === estacaoNova.cidadeEstacao);
             if (cidadeNova) {
                 cidadeNova.quantidade++;
             }
@@ -91,7 +91,7 @@ class AtualizaLocalizacoesCadastradas {
             }
 
             else {
-                const cidadeNova = documentoEstadoNovo.cidades.find(documento => documento.cidade === estacaoNova.cidadeEstacao);
+                const cidadeNova = documentoEstadoNovo?.cidades?.find(documento => documento.cidade === estacaoNova.cidadeEstacao);
                 if (cidadeNova) {
                     cidadeNova.quantidade++;
                 }
@@ -119,8 +119,10 @@ class AtualizaLocalizacoesCadastradas {
         const colecaoEstados = MongoDB.db("BackNimbusNaoRelacional").collection("LocalizacoesCadastradas");
 
         const documentoEstado = await this.buscarLocalizacaoPorEstado(estacao.estadoEstacao, colecaoEstados);
-        const cidade = documentoEstado.cidades.find(documento => documento.cidade === estacao.cidadeEstacao);
-        cidade.quantidade--;
+        const cidade = documentoEstado?.cidades?.find(documento => documento.cidade === estacao.cidadeEstacao);
+        if (cidade) {
+            cidade.quantidade--;
+        }
 
         await colecaoEstados.updateOne({ estado: estacao.estadoEstacao }, { $set: { cidades: documentoEstado.cidades } });
         await this.limparCidadesVazias(colecaoEstados);
