@@ -20,8 +20,8 @@ jobs:
 
     - name: Listar arquivos no container
       run: ls -la
-    - name: Verificar dependências instaladas
-      run: npm ls --depth=0
+    - name: Mostrar o conteúdo do package.json formatado
+      run: cat package.json | jq .
 
     - name: Log in no Docker Hub
       uses: docker/login-action@v2
