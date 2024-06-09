@@ -20,6 +20,10 @@ jobs:
 
     - name: Listar arquivos no container
       run: ls -la
+      
+    - name: Listar conteúdo da pasta de testes
+      run: ls path/to/test/folder
+      
     - name: Mostrar o conteúdo do package.json formatado
       run: cat package.json | jq .
 
@@ -58,6 +62,15 @@ jobs:
     
       - name: Instalando dempendencias
         run: npm install
+
+      - name: Listar arquivos no container
+        run: ls -la
+      
+      - name: Listar conteúdo da pasta de testes
+        run: ls path/to/test/folder
+        
+      - name: Mostrar o conteúdo do package.json formatado
+        run: cat package.json | jq .
     
       - name: rodando testes
         id: test
