@@ -28,7 +28,7 @@ jobs:
       id: build
       run: |
         docker build -t pedrohsalmeida/nimbus-backend:testeUnitario .
-        docker tag pedrohsalmeida/nimbus-backend:Dev-0.${{ github.event.number }} pedrohsalmeida/nimbus-backend:latest
+        docker tag pedrohsalmeida/nimbus-backend:testeUnitario pedrohsalmeida/nimbus-backend:latest
 
     - name: Listar Docker images
       run: docker images
