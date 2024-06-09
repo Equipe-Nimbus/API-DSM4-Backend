@@ -19,6 +19,13 @@
       "<rootDir>/test/**/*.test.ts"
     ]
   },
+  "jest/unit": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "testMatch": [
+      "<rootDir>/test/unit/**/*.test.ts"
+    ]
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
