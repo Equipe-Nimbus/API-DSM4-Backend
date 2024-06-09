@@ -1,5 +1,5 @@
 
-name: Teste unitário
+name: Develop
 
 on: 
   pull_request: 
@@ -16,6 +16,7 @@ jobs:
       env:
         PORT: ${{ secrets.PORT }}
         JWT_SECRET: ${{ secrets.JWT_SECRET }}
+        DB_URL_MONGO_BACK: ${{ secrets.DB_URL_MONGO_BACK }}
 
     steps:
     - name: Checkout code
@@ -64,6 +65,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Instalar Docker Compose
+        run: sudo apt-get install docker-compose
+
+      - name: Construir Imagem Docker
+        run: docker-compose build
+
+
       - name: Configurar Docker para autenticação
         uses: docker/login-action@v2
         with:
@@ -73,10 +81,10 @@ jobs:
       - name: Construir a imagem Docker
         run: |
           # Usando o número do pull request como parte da tag
-          docker build -t pedrohsalmeida/nimbus-backend:testCI-0.${{ github.event.number }} .
-          docker tag pedrohsalmeida/nimbus-backend:testCI-0.${{ github.event.number }} pedrohsalmeida/nimbus-backend:latest
+          docker build -t pedrohsalmeida/nimbus-backend:Dev-0.${{ github.event.number }}
+          docker tag pedrohsalmeida/nimbus-backend:Dev-0.${{ github.event.number }} pedrohsalmeida/nimbus-backend:latest
 
       - name: Push da imagem para o Docker Hub
         run: |
-          docker push pedrohsalmeida/nimbus-backend:testCI-0.${{ github.event.number }}
+          docker push pedrohsalmeida/nimbus-backend:Dev-0.${{ github.event.number }}
           docker push pedrohsalmeida/nimbus-backend:latest

@@ -1,0 +1,165 @@
+
+name: Produção
+
+on: 
+  pull_request: 
+    branches:
+      - realease
+    
+
+jobs:
+    TesteUnitario:
+        runs-on: ubuntu-latest
+
+        container:
+            image: pedrohsalmeida/nimbus-backend:test
+            options: --entrypoint /bin/sh # Usa '/bin/sh' para garantir que os comandos 'run' funcionem
+            env:
+              PORT: ${{ secrets.PORT }}
+              JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      
+        steps:
+        - name: Checkout code
+          uses: actions/checkout@v3
+      
+        - name: Instalando dempendencias
+          run: npm install
+      
+        - name: rodando testes
+          id: test
+          run: npm run test:unit
+    
+    TesteIntegracao:
+      needs: TesteUnitario
+      runs-on: ubuntu-latest
+      
+      services:
+        db:
+          image: postgres
+          env:
+            POSTGRES_USER: ${{secrets.POSTGRES_USER}}
+            POSTGRES_PASSWORD: ${{secrets.POSTGRES_PASSWORD}}
+            POSTGRES_DB: ${{secrets.POSTGRES_DB}}
+          ports:
+            - 5432:5432
+           
+        pgadmin:
+          image: dpage/pgadmin4
+          env:
+            PGADMIN_DEFAULT_EMAIL: ${{secrets.PGADMIN_DEFAULT_EMAIL}}
+            PGADMIN_DEFAULT_PASSWORD: ${{secrets.PGADMIN_DEFAULT_PASSWORD}}
+          ports:
+            - 5050:80
+
+        backend:
+          image: pedrohsalmeida/nimbus-backend:test
+          env:
+            PORT: ${{secrets.PORT}}
+            JWT_SECRET: ${{secrets.JWT_SECRET}}
+            DB_URL_MONGO_BACK: ${{secrets.DB_URL_MONGO_BACK}}
+            DB_NAME: ${{secrets.DB_NAME}}
+            DB_HOST: db
+            DB_USER: ${{secrets.DB_USER}}
+            DB_PORT: ${{secrets.DB_PORT}}
+            DB_PASSWORD: ${{secrets.DB_PASSWORD}}
+          ports:
+            - 8000:8000
+
+        frontend:
+            image: pedrohsalmeida/nimbus-frontend:test
+            env:
+              NODE_ENV: production
+              NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: ${{secrets.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}}
+            ports:
+              - 3000:3000
+
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v2
+
+        - name: Esperando servicos estarem prontos
+          run: |
+              while ! docker exec ${{ job.services.db.id }} pg_isready -U postgres; do
+                echo "Waiting for PostgreSQL to be ready..."
+                sleep 5
+              done
+              while ! docker exec ${{ job.services.pgadmin.id }} curl --fail http://localhost:5050; do
+                echo "Waiting for pgAdmin to be ready..."
+                sleep 5
+              done
+              while ! docker exec ${{ job.services.backend.id }} curl --fail http://localhost:8000; do
+                echo "Waiting for backend to be ready..."
+                sleep 5
+              done
+              while ! docker exec ${{ job.services.frontend.id }} curl --fail http://localhost:3000; do
+                echo "Waiting for frontend to be ready..."
+                sleep 5
+              done
+
+        
+        - name: Rodar backend
+          run: |
+            docker exec ${{ job.services.backend.id }} npm i && npm start
+
+        - name: Rodar frontend
+          run: |
+            docker exec ${{ job.services.frontend.id }} npm i && npm build && npm start
+
+        - name: Rodar os testes do frontend
+          run: |
+            docker exec nimbus-frontend-container npm run cypress:run
+
+    AceitaRecusaPR:
+        runs-on: ubuntu-latest
+        needs: TesteIntegracao
+        steps:
+          - name: Checkout code
+            uses: actions/checkout@v3
+            
+          - name: Aprovando pull_request se os testes passarem
+            uses: juliangruber/approve-pull-request-action@v2 
+            with:
+                github-token: ${{ secrets.ADM_TOKEN }}
+                number: ${{ github.event.pull_request.number }}
+      
+          - name: Merge Pull Request
+            uses: juliangruber/merge-pull-request-action@v1
+            with:
+              github-token: ${{ secrets.ADM_TOKEN }}
+              number: ${{ github.event.pull_request.number }}
+              method: squash
+      
+          - run: echo "HEAD:${{github.event.pull_request.head.repo.name}}, BASE:${{github.event.pull_request.base.repo.name}}"
+          
+    PushDokerHub:
+        runs-on: ubuntu-latest
+      
+        needs: AceitaRecusaPR
+      
+        steps:
+          - name: Checkout code
+            uses: actions/checkout@v3
+      
+          - name: Instalar Docker Compose
+            run: sudo apt-get install docker-compose
+      
+          - name: Construir Imagem Docker
+            run: docker-compose build
+      
+      
+          - name: Configurar Docker para autenticação
+            uses: docker/login-action@v2
+            with:
+              username: ${{ secrets.DOCKER_USERNAME }}
+              password: ${{ secrets.DOCKER_TOKEN }}
+      
+          - name: Construir a imagem Docker
+            run: |
+              # Usando o número do pull request como parte da tag
+              docker build -t pedrohsalmeida/nimbus-backend:Main-${{ github.event.number }}
+              docker tag pedrohsalmeida/nimbus-backend:Main-${{ github.event.number }} pedrohsalmeida/nimbus-backend:latest
+      
+          - name: Push da imagem para o Docker Hub
+            run: |
+              docker push pedrohsalmeida/nimbus-backend:Main-${{ github.event.number }}
+              docker push pedrohsalmeida/nimbus-backend:latest
