@@ -7,6 +7,7 @@
     "start": "ts-node ./src",
     "dev": "ts-node-dev ./src",
     "test": "jest",
+    "test:unit": "jest/unit",
     "migration:generate": "typeorm-ts-node-commonjs -d ./src/data-source.ts migration:generate ./src/migrations/default",
     "migration:run": "typeorm-ts-node-commonjs -d ./src/data-source.ts migration:run",
     "migration:revert": "typeorm-ts-node-commonjs -d ./src/data-source.ts migration:revert"
