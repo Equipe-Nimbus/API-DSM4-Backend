@@ -18,6 +18,11 @@ jobs:
     - name: Configurando Docker Buildx
       uses: docker/setup-buildx-action@v2
 
+    - name: Listar arquivos no container
+      run: ls -la
+    - name: Verificar dependências instaladas
+      run: npm ls --depth=0
+
     - name: Log in no Docker Hub
       uses: docker/login-action@v2
       with:
@@ -30,6 +35,7 @@ jobs:
         docker build -t pedrohsalmeida/nimbus-backend:TesteUnitario .
         docker tag pedrohsalmeida/nimbus-backend:TesteUnitario pedrohsalmeida/nimbus-backend:latest
 
+    
     - name: Push da imagem para o Docker Hub
       run: |
         docker push pedrohsalmeida/nimbus-backend:TesteUnitario
@@ -57,13 +63,7 @@ jobs:
         id: test
         run: npm run test:unit
 
-      - name: guardando resultado sucesso
-        if: steps.test.outcome == 'success'
-        run: echo "::set-output name=resultado_teste::sucesso"
 
-      - name: guardando resultado sucesso
-        if: steps.test.outcome == 'false'
-        run: echo "::set-output name=resultado_teste::false"
 
   AceitaRecusaPR:
     runs-on: ubuntu-latest
@@ -124,6 +124,7 @@ jobs:
     steps:
       - name: Remove Docker image from Docker Hub
         run: |
+          # Substitua 'owner' pelo seu nome de usuário ou organização no Docker Hub
           curl -s -X DELETE -u ${{ secrets.DOCKER_USERNAME }}:${{ secrets.DOCKER_TOKEN }} \
           "https://hub.docker.com/v2/repositories/pedrohsalmeida/nimbus-backend/tags/pedrohsalmeida/nimbus-backend:TesteUnitario/"
 
