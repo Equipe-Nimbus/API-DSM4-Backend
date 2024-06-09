@@ -22,7 +22,7 @@ jobs:
       run: ls -la
       
     - name: Listar conteúdo da pasta de testes
-      run: ls path/to/test/folder
+      run: ls ./test
       
     - name: Mostrar o conteúdo do package.json formatado
       run: cat package.json | jq .
