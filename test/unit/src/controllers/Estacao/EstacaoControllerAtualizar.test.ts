@@ -4,6 +4,7 @@ import { Parametro } from "../../../../../src/entities/Parametro";
 import { TipoParametro } from "../../../../../src/entities/TipoParametro";
 import MockResponse from "../MockResponse";
 import MockEstacaoControllerAtualizar from "./MockEstacaoControllerAtualizar";
+import AtualizaLocalizacoesCadastradas from "../../../../../src/services/Relatorios/RelatorioQtdOcorrencia/AtualizaLocalizacoesCadastradas";
 
 let listaEstacoesArmazenadas: Estacao[] = [];
 let estacaoAlteracao = new Estacao();
@@ -104,6 +105,7 @@ describe("Teste da classe estacaoController método atualizar", () => {
         idEstacaoFindOne = "abcd-1234"
         reapostaConsultaCoordenadaGeografica = false;
         respostaConsultaMesmoNomeUnidadeTipoParametro = false;
+        jest.spyOn(AtualizaLocalizacoesCadastradas, "atualizarLocalizacao").mockImplementation(async () => {})
         await EstacaoController.atualizar(MockEstacaoControllerAtualizar.reqEstacaoAtualizar, MockResponse.resSemLocals);
         const mockStatus = MockResponse.resSemLocals.status(200).send as jest.Mock;
         expect(mockStatus.mock.calls[0][0]).toBe("Estação atualizada com sucesso");

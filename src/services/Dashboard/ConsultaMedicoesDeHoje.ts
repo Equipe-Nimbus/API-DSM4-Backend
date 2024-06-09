@@ -19,7 +19,6 @@ class ConsultaMedicoesDeHoje{
             .andWhere(`parametro.statusParametro = :status`, {status:true})
             .select(["medicao", "parametro", "tipo_parametro.nomeTipoParametro", "tipo_parametro.unidadeTipoParametro", "tipo_parametro.offsetTipoParametro", "tipo_parametro.fatorTipoParametro"])
             .getMany();
-            console.log(listaMedicoesParametroDoDia)
             return listaMedicoesParametroDoDia
         } catch(erro){
             throw new Error("idEstacao inválido")
