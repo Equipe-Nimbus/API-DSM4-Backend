@@ -8,7 +8,7 @@
     "dev": "ts-node-dev ./src",
     "test": "jest",
     "test:cypress": "cross-env NODE_ENV=test ts-node-dev ./src",
-    "test:unit": "jest",
+    "test:unit": "jest --roots ./test/unit",
     "test:integration": "jest/integration",
     "migration:generate": "typeorm-ts-node-commonjs -d ./src/data-source.ts migration:generate ./src/migrations/default",
     "migration:run": "typeorm-ts-node-commonjs -d ./src/data-source.ts migration:run",
@@ -18,7 +18,7 @@
     "preset": "ts-jest",
     "testEnvironment": "node",
     "testMatch": [
-      "<rootDir>/test/unit/**/*.test.ts"
+      "<rootDir>/test/**/*.test.ts"
     ]
   },
   "jest/unit": {
@@ -28,7 +28,7 @@
       "<rootDir>/test/unit/**/*.test.ts"
     ]
   },
-  "jest/integration": {
+  "jest-integration": {
     "preset": "ts-jest",
     "testEnvironment": "node",
     "testMatch": [
