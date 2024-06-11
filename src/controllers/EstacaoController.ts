@@ -198,7 +198,7 @@ class EstacaoController extends AbstratoController {
             for (const novoParametro of listaNovosParametros) {
                 await repositorioEstacao.createQueryBuilder().
                     relation(Estacao, "parametros").
-                    of(novaEstacao).
+                    of(estacaoAntiga).
                     add(novoParametro);
             };
             await AtualizaLocalizacoesCadastradas.atualizarLocalizacao(estacaoAntiga, novaEstacao);
