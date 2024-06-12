@@ -3,7 +3,8 @@ import { config } from "dotenv";
 config();
 
 const DB_URL = process.env.DB_URL;
-const DB_PASSWAORD = process.env.DB_PASSWORD; 
+const DB_PASSWORD = process.env.DB_PASSWORD; 
+const DB_HOST = process.env.DB_HOST; 
 let DB_NAME = process.env.DB_NAME;
 
 if (process.env.NODE_ENV === "test") {
@@ -16,10 +17,10 @@ const PgDataSource = new DataSource({
 
     //DB Local
     database: DB_NAME,
-    host: "localhost",
+    host: DB_HOST,
     username: "postgres",
     port: 5432,
-    password: DB_PASSWAORD,
+    password: DB_PASSWORD,
 
     type: "postgres", // se for SQLite, então use sqlite
     synchronize: true,
@@ -30,9 +31,11 @@ const PgDataSource = new DataSource({
 
 PgDataSource.initialize()
     .then(() => {
+        
         console.log("Data Source inicializado!")
     })
     .catch((e) => {
+        console.log("DB_PASSWORD", DB_PASSWORD, "DB_NAME", DB_NAME)
         console.error("Erro na inicialização do Data Source:", e)
     });
 
