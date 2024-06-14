@@ -1,5 +1,7 @@
 import { DataSource } from "typeorm";
 import { config } from "dotenv";
+import salvaUsuario from "../test/integration/src/salvarUsuario";
+import { Usuario } from "./entities/Usuario";
 config();
 
 const DB_URL = process.env.DB_URL;
@@ -30,9 +32,17 @@ const PgDataSource = new DataSource({
 });
 
 PgDataSource.initialize()
-    .then(() => {
+    .then(async () => {
+        console.log("Data Source inicializado!");
+
+        const repositorioUsuario = PgDataSource.getRepository(Usuario);
+
+        const usuarioRecuperado = await repositorioUsuario.findOne({where:{emailUsuario: "testeintegracao@teste.com"}});
+
+        if(!usuarioRecuperado) {
+            await salvaUsuario();
+        }
         
-        console.log("Data Source inicializado!")
     })
     .catch((e) => {
         console.log("DB_PASSWORD", DB_PASSWORD, "DB_NAME", DB_NAME)
