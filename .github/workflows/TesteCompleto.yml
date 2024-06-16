@@ -121,6 +121,9 @@ jobs:
           env:
             CYPRESS_host: http://localhost:3000
 
+        - name: Debug
+          if: always()
+          run: docker logs ${{job.services.backend.id}}
     
     AceitaRecusaPR:
       runs-on: ubuntu-latest
