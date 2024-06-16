@@ -89,7 +89,7 @@ jobs:
         frontend:
           image: pedrohsalmeida/nimbus-frontend:Dev-latest
           env:
-            BACK_HOST: backend
+            NEXT_PUBLIC_BACK_HOST: backend
           ports:
             - 3000:3000
           
