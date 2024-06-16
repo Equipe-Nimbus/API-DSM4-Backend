@@ -25,7 +25,7 @@ jobs:
           - name: Construir a imagem Docker
             run: |
               # Usando o número do pull request como parte da tag
-              docker build -t pedrohsalmeida/nimbus-backend:Main-${{ github.event.number }}
+              docker build -t pedrohsalmeida/nimbus-backend:Main-${{ github.event.number }} .
               docker tag pedrohsalmeida/nimbus-backend:Main-${{ github.event.number }} pedrohsalmeida/nimbus-backend:Main-latest
       
           - name: Push da imagem para o Docker Hub
