@@ -76,7 +76,6 @@ jobs:
           env:
             PORT: ${{secrets.PORT}}
             JWT_SECRET: dsvsvdsv
-            DB_URL_MONGO_BACK: ${{secrets.DB_URL_MONGO_BACK}}
             DB_NAME: ${{secrets.DB_NAME_TEST}}
             DB_HOST: db
             DB_USER: ${{secrets.DB_USER}}
@@ -89,7 +88,7 @@ jobs:
         frontend:
           image: pedrohsalmeida/nimbus-frontend:Dev-latest
           env:
-            BACK_HOST: backend
+            NEXT_PUBLIC_BACK_HOST: backend
           ports:
             - 3000:3000
           
