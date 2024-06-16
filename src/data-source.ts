@@ -37,11 +37,18 @@ PgDataSource.initialize()
 
         const repositorioUsuario = PgDataSource.getRepository(Usuario);
   
-        const usuarioRecuperado = await repositorioUsuario.count({where:{emailUsuario: "testeintegracao@teste.com"}});
+        const usuarioRecuperado = await repositorioUsuario.findOne({where:{emailUsuario: "testeintegracao@teste.com"}});
         
         if(!usuarioRecuperado) {
             await salvaUsuario();
         }
+
+        console.log("USUARIO ANTES DO SALVAMENTO: ", usuarioRecuperado, "COMPARACAO: ", !usuarioRecuperado)
+
+        const usuarioRecuperadoDepois = await repositorioUsuario.findOne({where:{emailUsuario: "testeintegracao@teste.com"}});
+
+        console.log("USUARIO DEPOIS DO SALVAMENTO: ", usuarioRecuperadoDepois, "COMPARACAO: ", !usuarioRecuperadoDepois)
+
     })
     .catch((e) => {
         console.log("DB_PASSWORD", DB_PASSWORD, "DB_NAME", DB_NAME)
