@@ -12,7 +12,7 @@ let DB_NAME = process.env.DB_NAME;
 if (process.env.NODE_ENV === "test") {
     DB_NAME = process.env.DB_NAME_TEST;
 }
-const PgDataSource = new DataSource({
+const PgDataSourceMigration = new DataSource({
     //DB online elephantSQL
     database: 'bqlvykqu',
     url:DB_URL,
@@ -31,20 +31,14 @@ const PgDataSource = new DataSource({
     migrations: ["src/migrations/*.ts"] // local onde estarão os arquivos de migração
 });
 
-PgDataSource.initialize()
+PgDataSourceMigration.initialize()
     .then(async () => {
         console.log("Data Source inicializado!");
-        const repositorioUsuario = PgDataSource.getRepository(Usuario);
-  
-        const usuarioRecuperado = await repositorioUsuario.count({where:{emailUsuario: "testeintegracao@teste.com"}});
-        
-        if(!usuarioRecuperado) {
-            await salvaUsuario();
-        }
+
     })
     .catch((e) => {
         console.log("DB_PASSWORD", DB_PASSWORD, "DB_NAME", DB_NAME)
         console.error("Erro na inicialização do Data Source:", e)
     });
 
-export default PgDataSource;
+export default PgDataSourceMigration;

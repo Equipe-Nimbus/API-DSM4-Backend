@@ -21,21 +21,6 @@ const corsOptions = {
   optionsSuccessStatus: 200 
 };
 
-async function CriaUsuarioTesteIntegracao() {
-  
-}
-
-(async () => {
-  if(process.env.NODE_ENV === "test"){
-    const repositorioUsuario = PgDataSource.getRepository(Usuario);
-  
-    const usuarioRecuperado = await repositorioUsuario.findOne({where:{emailUsuario: "testeintegracao@teste.com"}});
-  
-    if(!usuarioRecuperado) {
-        await salvaUsuario();
-    }
-  }
-})();
 
 
 app.use(cors(corsOptions));
