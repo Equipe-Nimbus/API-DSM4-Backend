@@ -34,6 +34,7 @@ const PgDataSource = new DataSource({
 PgDataSource.initialize()
     .then(async () => {
         console.log("Data Source inicializado!");
+
         const repositorioUsuario = PgDataSource.getRepository(Usuario);
   
         const usuarioRecuperado = await repositorioUsuario.count({where:{emailUsuario: "testeintegracao@teste.com"}});
