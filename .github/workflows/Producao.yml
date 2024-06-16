@@ -113,7 +113,6 @@ jobs:
           env:
             CYPRESS_host: http://localhost:3000
 
-
     AvisaResultado:
       runs-on: ubuntu-latest
 
@@ -139,7 +138,7 @@ jobs:
               Pull request de ${{github.event.pull_request.user.login}} foi um SUCESSO 
               Da ${{ github.event.pull_request.head.ref }} para ${{ github.event.pull_request.base.ref }}
               PR(${{ github.event.pull_request.number }}): ${{ github.event.pull_request.title }}
-              ${{ github.event.pull_request.html_url }} '
+              ${{ github.event.pull_request.html_url }}
 
 
         - name: Notificacao de falha
