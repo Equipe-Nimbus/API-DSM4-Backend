@@ -7,7 +7,7 @@ export class Estacao {
   @PrimaryGeneratedColumn("uuid")
   idEstacao: string;
 
-  @Column({nullable: false, unique:true, type: 'varchar'})
+  @Column({nullable: true, unique:true, type: 'varchar'})
   idPlacaEstacao: string;
 
   @Column({nullable:false, unique:true})

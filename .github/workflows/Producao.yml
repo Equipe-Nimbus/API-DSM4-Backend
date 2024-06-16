@@ -1,0 +1,155 @@
+
+name: Produção
+
+on: 
+  pull_request: 
+    branches:
+      - realease
+    
+
+jobs:
+    
+    PushDokerHub:
+        runs-on: ubuntu-latest
+      
+        steps:
+          - name: Checkout code
+            uses: actions/checkout@v3
+
+          - name: Configurar Docker para autenticação
+            uses: docker/login-action@v2
+            with:
+              username: ${{ secrets.DOCKER_USERNAME }}
+              password: ${{ secrets.DOCKER_TOKEN }}
+      
+          - name: Construir a imagem Docker
+            run: |
+              # Usando o número do pull request como parte da tag
+              docker build -t pedrohsalmeida/nimbus-backend:Main-${{ github.event.number }}
+              docker tag pedrohsalmeida/nimbus-backend:Main-${{ github.event.number }} pedrohsalmeida/nimbus-backend:Main-latest
+      
+          - name: Push da imagem para o Docker Hub
+            run: |
+              docker push pedrohsalmeida/nimbus-backend:Main-${{ github.event.number }}
+              docker push pedrohsalmeida/nimbus-backend:Main-latest
+    
+    AceitaRecusaPR:
+        runs-on: ubuntu-latest
+        needs: PushDokerHub
+        steps:
+          - name: Checkout code
+            uses: actions/checkout@v3
+            
+          - name: Aprovando pull_request se os testes passarem
+            uses: juliangruber/approve-pull-request-action@v2 
+            with:
+                github-token: ${{ secrets.ADM_TOKEN }}
+                number: ${{ github.event.pull_request.number }}
+      
+          - name: Merge Pull Request
+            uses: juliangruber/merge-pull-request-action@v1
+            with:
+              github-token: ${{ secrets.ADM_TOKEN }}
+              number: ${{ github.event.pull_request.number }}
+              method: squash
+      
+          - run: echo "HEAD:${{github.event.pull_request.head.repo.name}}, BASE:${{github.event.pull_request.base.repo.name}}"
+          
+
+
+    TesteIntegracao:
+      needs: AceitaRecusaPR
+      runs-on: ubuntu-latest
+
+      services:
+        db:
+          image: postgres
+          env:
+            POSTGRES_USER: ${{secrets.POSTGRES_USER}}
+            POSTGRES_PASSWORD: ${{secrets.POSTGRES_PASSWORD}}
+            POSTGRES_DB: ${{ secrets.DB_NAME_TEST }}
+          ports:
+            - 5432:5432
+
+        backend:
+          image: pedrohsalmeida/nimbus-backend:integracao
+          env:
+            PORT: ${{secrets.PORT}}
+            JWT_SECRET: dsvsvdsv
+            DB_URL_MONGO_BACK: ${{secrets.DB_URL_MONGO_BACK}}
+            DB_NAME: ${{secrets.DB_NAME_TEST}}
+            DB_HOST: db
+            DB_USER: ${{secrets.DB_USER}}
+            DB_PORT: ${{secrets.DB_PORT}}
+            DB_PASSWORD: ${{secrets.DB_PASSWORD}}
+            DB_NAME_TEST: ${{secrets.DB_NAME_TEST}}
+          ports:
+            - 8000:8000
+
+        frontend:
+          image: pedrohsalmeida/nimbus-frontend:Dev-latest
+          env:
+            NEXT_PUBLIC_BACK_HOST: backend
+          ports:
+            - 3000:3000
+          
+      steps:
+
+        - name: Checkout code
+          uses: actions/checkout@v3
+          with:
+            repository: Equipe-Nimbus/API-DSM4-Frontend
+            ref: develop
+      
+
+        - name: List Docker images
+          run: | 
+            docker image ls -a
+            docker ps
+        
+        - uses: cypress-io/github-action@v6
+          with:
+            browser: chrome
+          env:
+            CYPRESS_host: http://localhost:3000
+
+    AvisaResultado:
+      runs-on: ubuntu-latest
+
+      needs: 
+        - TesteIntegracao
+        - AceitaRecusaPR
+        - PushDokerHub
+      if: always()
+
+      steps:
+
+        - run: echo AceitaRecusaPR ${{ needs.AceitaRecusaPR.result}} 
+        - run: echo PushDokerHub ${{ needs.PushDokerHub.result}}
+        - run: echo TesteIntegracao ${{ needs.PushDokerHub.result}}
+
+        - name: Notificacao de sucesso
+          if: ${{  needs.TesteIntegracao.result == 'success' && needs.AceitaRecusaPR.result == 'success' && needs.PushDokerHub.result == 'success' }}
+          env:
+            DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          uses: Ilshidur/action-discord@master
+          with:
+            args: |
+              Pull request de ${{github.event.pull_request.user.login}} foi um SUCESSO 
+              Da ${{ github.event.pull_request.head.ref }} para ${{ github.event.pull_request.base.ref }}
+              PR(${{ github.event.pull_request.number }}): ${{ github.event.pull_request.title }}
+              ${{ github.event.pull_request.html_url }}
+
+
+
+        - name: Notificacao de falha
+          if: ${{  needs.TesteIntegracao.result != 'success' || needs.AceitaRecusaPR.result != 'success' || needs.PushDokerHub.result != 'success' }}
+          env:
+            DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          uses: Ilshidur/action-discord@master
+          with:
+            args: |
+              Pull request de ${{github.event.pull_request.user.login}} FALHOU
+              Da ${{ github.event.pull_request.head.ref }} para ${{ github.event.pull_request.base.ref }}
+              PR(${{ github.event.pull_request.number }}): ${{ github.event.pull_request.title }}
+              ${{ github.event.pull_request.html_url }}

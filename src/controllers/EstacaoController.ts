@@ -13,6 +13,7 @@ import ConsultaMesmoNomeUnidadeTipoParameto from "../services/Estacao/ConsultaMe
 import AtualizaEstacoesAtivas from "../services/Dashboard/AtualizaEstacoesAtivas";
 import GeraUnixTime from "../services/Estacao/GeraUnixTime";
 import SelecaoFiltroEstacao from "../services/Estacao/SelecaoFiltroEstacao";
+import AtualizaLocalizacoesCadastradas from "../services/Relatorios/RelatorioQtdOcorrencia/AtualizaLocalizacoesCadastradas";
 
 class EstacaoController extends AbstratoController {
     async listarEstacoesAtivas(req: Request, res: Response) {
@@ -70,10 +71,10 @@ class EstacaoController extends AbstratoController {
                     of(novaEstacao).
                     add(novoParametro);
             };
-            res.status(200).send("Estação cadastrada com sucesso!");
             await AtualizaEstacoesAtivas.atualizar(1);
-            console.log("foi")            
-        } catch (error) {
+            await AtualizaLocalizacoesCadastradas.adicionarNovaLocalizacao(novaEstacao);
+            res.status(200).send("Estação cadastrada com sucesso!");           
+            } catch (error) {
             if (error.code == "23505")
                 res.status(400).send("Nome ou código de identificação da placa da estação já cadastrado!");
             else
@@ -197,9 +198,10 @@ class EstacaoController extends AbstratoController {
             for (const novoParametro of listaNovosParametros) {
                 await repositorioEstacao.createQueryBuilder().
                     relation(Estacao, "parametros").
-                    of(novaEstacao).
+                    of(estacaoAntiga).
                     add(novoParametro);
             };
+            await AtualizaLocalizacoesCadastradas.atualizarLocalizacao(estacaoAntiga, novaEstacao);
             res.status(200).send("Estação atualizada com sucesso");
         } catch (error) {
             if (error.code == "23505")
@@ -219,9 +221,9 @@ class EstacaoController extends AbstratoController {
         estacao.statusEstacao = false
         try {
             await repositorioEstacao.save(estacao)
-            res.status(200).send("Estacao deletada com sucesso")
             await AtualizaEstacoesAtivas.atualizar(-1)
-            console.log("foi")
+            await AtualizaLocalizacoesCadastradas.removerLocalizacao(estacao)
+            res.status(200).send("Estacao deletada com sucesso")
         } catch (error) {
             res.status(400).send(error)
         }
