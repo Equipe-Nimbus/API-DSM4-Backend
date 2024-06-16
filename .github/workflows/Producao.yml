@@ -89,7 +89,7 @@ jobs:
         frontend:
           image: pedrohsalmeida/nimbus-frontend:Dev-latest
           env:
-            BACK_HOST: backend
+            NEXT_PUBLIC_BACK_HOST: backend
           ports:
             - 3000:3000
           
@@ -98,7 +98,7 @@ jobs:
         - name: Checkout code
           uses: actions/checkout@v3
           with:
-            repository: brunodenardo/API-DSM4-Frontend-CI
+            repository: Equipe-Nimbus/API-DSM4-Frontend
             ref: develop
       
 
@@ -112,7 +112,6 @@ jobs:
             browser: chrome
           env:
             CYPRESS_host: http://localhost:3000
-
 
     AvisaResultado:
       runs-on: ubuntu-latest
@@ -139,7 +138,8 @@ jobs:
               Pull request de ${{github.event.pull_request.user.login}} foi um SUCESSO 
               Da ${{ github.event.pull_request.head.ref }} para ${{ github.event.pull_request.base.ref }}
               PR(${{ github.event.pull_request.number }}): ${{ github.event.pull_request.title }}
-              ${{ github.event.pull_request.html_url }} '
+              ${{ github.event.pull_request.html_url }}
+
 
 
         - name: Notificacao de falha
@@ -153,4 +153,3 @@ jobs:
               Da ${{ github.event.pull_request.head.ref }} para ${{ github.event.pull_request.base.ref }}
               PR(${{ github.event.pull_request.number }}): ${{ github.event.pull_request.title }}
               ${{ github.event.pull_request.html_url }}
-

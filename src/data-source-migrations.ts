@@ -12,10 +12,8 @@ let DB_NAME = process.env.DB_NAME;
 if (process.env.NODE_ENV === "test") {
     DB_NAME = process.env.DB_NAME_TEST;
 }
-const PgDataSource = new DataSource({
+const PgDataSourceMigration = new DataSource({
     //DB online elephantSQL
-    /* database: 'bqlvykqu',
-    url:DB_URL, */
 
     //DB Local
     database: DB_NAME,
@@ -24,6 +22,7 @@ const PgDataSource = new DataSource({
     port: 5432,
     password: DB_PASSWORD,
 
+
     type: "postgres", // se for SQLite, então use sqlite
     synchronize: true,
     logging: false, // true indica que as consultas e erros serão exibidas no terminal
@@ -31,23 +30,9 @@ const PgDataSource = new DataSource({
     migrations: ["src/migrations/*.ts"] // local onde estarão os arquivos de migração
 });
 
-PgDataSource.initialize()
+PgDataSourceMigration.initialize()
     .then(async () => {
         console.log("Data Source inicializado!");
-
-        const repositorioUsuario = PgDataSource.getRepository(Usuario);
-  
-        const usuarioRecuperado = await repositorioUsuario.findOne({where:{emailUsuario: "testeintegracao@teste.com"}});
-        
-        if(!usuarioRecuperado) {
-            await salvaUsuario();
-        }
-
-        console.log("USUARIO ANTES DO SALVAMENTO: ", usuarioRecuperado, "COMPARACAO: ", !usuarioRecuperado)
-
-        const usuarioRecuperadoDepois = await repositorioUsuario.findOne({where:{emailUsuario: "testeintegracao@teste.com"}});
-
-        console.log("USUARIO DEPOIS DO SALVAMENTO: ", usuarioRecuperadoDepois, "COMPARACAO: ", !usuarioRecuperadoDepois)
 
     })
     .catch((e) => {
@@ -55,4 +40,4 @@ PgDataSource.initialize()
         console.error("Erro na inicialização do Data Source:", e)
     });
 
-export default PgDataSource;
+export default PgDataSourceMigration;
