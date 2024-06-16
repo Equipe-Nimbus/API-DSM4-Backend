@@ -76,6 +76,7 @@ jobs:
           env:
             PORT: ${{secrets.PORT}}
             JWT_SECRET: dsvsvdsv
+            DB_URL_MONGO_BACK: ${{secrets.DB_URL_MONGO_BACK}}
             DB_NAME: ${{secrets.DB_NAME_TEST}}
             DB_HOST: db
             DB_USER: ${{secrets.DB_USER}}
@@ -138,6 +139,7 @@ jobs:
               Da ${{ github.event.pull_request.head.ref }} para ${{ github.event.pull_request.base.ref }}
               PR(${{ github.event.pull_request.number }}): ${{ github.event.pull_request.title }}
               ${{ github.event.pull_request.html_url }}
+
 
 
         - name: Notificacao de falha

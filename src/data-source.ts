@@ -1,4 +1,4 @@
-import { DataSource } from "typeorm";
+import { DataSource, Migration } from "typeorm";
 import { config } from "dotenv";
 import salvaUsuario from "../test/integration/src/salvarUsuario";
 import { Usuario } from "./entities/Usuario";
@@ -14,15 +14,15 @@ if (process.env.NODE_ENV === "test") {
 }
 const PgDataSource = new DataSource({
     //DB online elephantSQL
-    // database: 'bqlvykqu',
-    // url:DB_URL,
+    database: 'bqlvykqu',
+    url:DB_URL,
 
     //DB Local
-    database: DB_NAME,
+    /* database: DB_NAME,
     host: DB_HOST,
     username: "postgres",
     port: 5432,
-    password: DB_PASSWORD,
+    password: DB_PASSWORD, */
 
     type: "postgres", // se for SQLite, então use sqlite
     synchronize: true,
@@ -34,14 +34,18 @@ const PgDataSource = new DataSource({
 PgDataSource.initialize()
     .then(async () => {
         console.log("Data Source inicializado!");
+        try {
+            const repositorioUsuario = PgDataSource.getRepository(Usuario);
 
-        const repositorioUsuario = PgDataSource.getRepository(Usuario);
+            const usuarioRecuperado = await repositorioUsuario.findOne({where:{emailUsuario: "testeintegracao@teste.com"}});
 
-        const usuarioRecuperado = await repositorioUsuario.findOne({where:{emailUsuario: "testeintegracao@teste.com"}});
-
-        if(!usuarioRecuperado) {
-            await salvaUsuario();
+            if(!usuarioRecuperado) {
+                await salvaUsuario();
+            }
+        } catch (error) {
+            console.log("migration rodando")
         }
+        
         
     })
     .catch((e) => {
