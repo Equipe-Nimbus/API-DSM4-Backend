@@ -206,7 +206,6 @@ jobs:
 
 
 
-
         - name: Notificacao de falha
           if: ${{ needs.TesteUnitario.result != 'success' || needs.CriandoImagemTeste.result != 'success' || needs.TesteIntegracao.result != 'success' || needs.AceitaRecusaPR.result != 'success' || needs.PushDokerHub.result != 'success' }}
           env:
