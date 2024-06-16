@@ -14,15 +14,15 @@ if (process.env.NODE_ENV === "test") {
 }
 const PgDataSource = new DataSource({
     //DB online elephantSQL
-    database: 'bqlvykqu',
-    url:DB_URL,
+    /* database: 'bqlvykqu',
+    url:DB_URL, */
 
     //DB Local
-    /* database: DB_NAME,
+    database: DB_NAME,
     host: DB_HOST,
     username: "postgres",
     port: 5432,
-    password: DB_PASSWORD, */
+    password: DB_PASSWORD,
 
     type: "postgres", // se for SQLite, então use sqlite
     synchronize: true,
@@ -34,7 +34,7 @@ const PgDataSource = new DataSource({
 PgDataSource.initialize()
     .then(async () => {
         console.log("Data Source inicializado!");
-  
+
         const repositorioUsuario = PgDataSource.getRepository(Usuario);
   
         const usuarioRecuperado = await repositorioUsuario.count({where:{emailUsuario: "testeintegracao@teste.com"}});

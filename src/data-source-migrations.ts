@@ -14,15 +14,14 @@ if (process.env.NODE_ENV === "test") {
 }
 const PgDataSourceMigration = new DataSource({
     //DB online elephantSQL
-    database: 'bqlvykqu',
-    url:DB_URL,
 
     //DB Local
-    /* database: DB_NAME,
+    database: DB_NAME,
     host: DB_HOST,
     username: "postgres",
     port: 5432,
-    password: DB_PASSWORD, */
+    password: DB_PASSWORD,
+
 
     type: "postgres", // se for SQLite, então use sqlite
     synchronize: true,
