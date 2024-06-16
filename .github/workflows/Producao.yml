@@ -83,6 +83,7 @@ jobs:
             DB_PORT: ${{secrets.DB_PORT}}
             DB_PASSWORD: ${{secrets.DB_PASSWORD}}
             DB_NAME_TEST: ${{secrets.DB_NAME_TEST}}
+            NODE_ENV: test
           ports:
             - 8000:8000
 
@@ -153,3 +154,4 @@ jobs:
               Da ${{ github.event.pull_request.head.ref }} para ${{ github.event.pull_request.base.ref }}
               PR(${{ github.event.pull_request.number }}): ${{ github.event.pull_request.title }}
               ${{ github.event.pull_request.html_url }}
+
