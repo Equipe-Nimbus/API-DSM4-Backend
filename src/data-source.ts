@@ -34,18 +34,6 @@ const PgDataSource = new DataSource({
 PgDataSource.initialize()
     .then(async () => {
         console.log("Data Source inicializado!");
-        try {
-            const repositorioUsuario = PgDataSource.getRepository(Usuario);
-
-            const usuarioRecuperado = await repositorioUsuario.findOne({where:{emailUsuario: "testeintegracao@teste.com"}});
-
-            if(!usuarioRecuperado) {
-                await salvaUsuario();
-            }
-        } catch (error) {
-            console.log("migration rodando")
-        }
-        
         
     })
     .catch((e) => {
