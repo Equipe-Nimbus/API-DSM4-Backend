@@ -35,6 +35,7 @@ PgDataSource.initialize()
     .then(async () => {
         console.log("Data Source inicializado!");
         
+        
     })
     .catch((e) => {
         console.log("DB_PASSWORD", DB_PASSWORD, "DB_NAME", DB_NAME)
