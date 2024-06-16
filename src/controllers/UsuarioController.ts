@@ -103,6 +103,9 @@ class UsuarioController extends AbstratoController{
     }
 
     async logar(req:Request, res:Response){
+
+        console.log("RODOUUUUU")
+        console.log(req.body)
         const repositorioUsuario = PgDataSource.getRepository(Usuario)
         const email = req.body.email;
         const senha = req.body.senha;
