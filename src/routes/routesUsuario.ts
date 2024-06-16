@@ -4,7 +4,7 @@ import VerificadorToken from "../middlewares/VerificadorToken";
 
 const routesUsuario = Router();
 
-routesUsuario.post("/cadastrar", VerificadorToken.verificar, UsuarioController.cadastrar);
+routesUsuario.post("/cadastrar", UsuarioController.cadastrar);
 routesUsuario.get("/listarEspecifico/:id", VerificadorToken.verificar, UsuarioController.listarEspecifico);
 routesUsuario.get("/listarGeral/paginada", VerificadorToken.verificar, UsuarioController.listarPaginada);
 routesUsuario.delete("/deletar/:id", VerificadorToken.verificar, UsuarioController.deletar);

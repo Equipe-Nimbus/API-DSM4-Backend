@@ -78,11 +78,54 @@ jobs:
         run: |
           # Usando o número do pull request como parte da tag
           docker build -t pedrohsalmeida/nimbus-backend:Dev-0.${{ github.event.number }} .
-          docker tag pedrohsalmeida/nimbus-backend:Dev-0.${{ github.event.number }} pedrohsalmeida/nimbus-backend:latest
+          docker tag pedrohsalmeida/nimbus-backend:Dev-0.${{ github.event.number }} pedrohsalmeida/nimbus-backend:Dev-latest
 
       - name: Push da imagem para o Docker Hub
         run: |
           docker push pedrohsalmeida/nimbus-backend:Dev-0.${{ github.event.number }}
-          docker push pedrohsalmeida/nimbus-backend:latest
+          docker push pedrohsalmeida/nimbus-backend:Dev-latest
+  
+  
+  AvisaResultado:
+    runs-on: ubuntu-latest
+
+    needs: 
+      - TesteUnitario
+      - AceitaRecusaPR
+      - PushDokerHub
+    if: always()
+
+    steps:
+
+      - run: echo TesteUnitario ${{ needs.TesteUnitario.result}} 
+      - run: echo AceitaRecusaPR ${{ needs.AceitaRecusaPR.result}} 
+      - run: echo PushDokerHub ${{ needs.PushDokerHub.result}} 
+      
+      - name: Notificacao de sucesso
+        if: ${{ needs.TesteUnitario.result == 'success' && needs.AceitaRecusaPR.result == 'success' && needs.PushDokerHub.result == 'success' }}
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        uses: Ilshidur/action-discord@master
+        with:
+          args: |
+            Pull request de ${{github.event.pull_request.user.login}} foi um SUCESSO 
+            ${{ github.event.pull_request.head.ref }} ---> ${{ github.event.pull_request.base.ref }}
+            PR(${{ github.event.pull_request.number }}): ${{ github.event.pull_request.title }}
+            ${{ github.event.pull_request.html_url }} '
+
+
+      - name: Notificacao de falha
+        if: ${{ needs.TesteUnitario.result != 'success' || needs.AceitaRecusaPR.result != 'success' || needs.PushDokerHub.result != 'success' }}
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        uses: Ilshidur/action-discord@master
+        with:
+          args: |
+            Pull request de ${{github.event.pull_request.user.login}} FALHOU
+            ${{ github.event.pull_request.head.ref }} ---> ${{ github.event.pull_request.base.ref }}
+            PR(${{ github.event.pull_request.number }}): ${{ github.event.pull_request.title }}
+            ${{ github.event.pull_request.html_url }}
+
+
 
 
