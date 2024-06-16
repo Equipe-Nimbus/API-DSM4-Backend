@@ -8,6 +8,9 @@ import routesAlerta from "./routes/routesAlerta";
 import routesDashboard from "./routes/routesDashboard";
 import routesRelatorios from "./routes/routesRelatorios";
 import routesOcorrenciaAlerta from "./routes/routesOcorrenciaAlerta";
+import PgDataSource from "./data-source";
+import { Usuario } from "./entities/Usuario";
+import salvaUsuario from "../test/integration/src/salvarUsuario";
 
 
 config();
@@ -17,6 +20,23 @@ const corsOptions = {
   origin: ['http://localhost:3000'],
   optionsSuccessStatus: 200 
 };
+
+async function CriaUsuarioTesteIntegracao() {
+  
+}
+
+(async () => {
+  if(process.env.NODE_ENV === "test"){
+    const repositorioUsuario = PgDataSource.getRepository(Usuario);
+  
+    const usuarioRecuperado = await repositorioUsuario.findOne({where:{emailUsuario: "testeintegracao@teste.com"}});
+  
+    if(!usuarioRecuperado) {
+        await salvaUsuario();
+    }
+  }
+})();
+
 
 app.use(cors(corsOptions));
 
