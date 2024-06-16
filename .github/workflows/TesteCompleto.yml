@@ -89,7 +89,6 @@ jobs:
             DB_PORT: ${{secrets.DB_PORT}}
             DB_PASSWORD: ${{secrets.DB_PASSWORD}}
             DB_NAME_TEST: ${{secrets.DB_NAME_TEST}}
-            NODE_ENV: test
           ports:
             - 8000:8000
 
@@ -108,6 +107,7 @@ jobs:
             repository: Equipe-Nimbus/API-DSM4-Frontend
             ref: develop
       
+        - run: docker logs ${{job.services.backend.id}}
 
         - name: List Docker images
           run: | 
