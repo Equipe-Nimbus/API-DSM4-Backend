@@ -139,7 +139,8 @@ jobs:
               Pull request de ${{github.event.pull_request.user.login}} foi um SUCESSO 
               Da ${{ github.event.pull_request.head.ref }} para ${{ github.event.pull_request.base.ref }}
               PR(${{ github.event.pull_request.number }}): ${{ github.event.pull_request.title }}
-              ${{ github.event.pull_request.html_url }} '
+              ${{ github.event.pull_request.html_url }}
+
 
 
         - name: Notificacao de falha
@@ -153,3 +154,4 @@ jobs:
               Da ${{ github.event.pull_request.head.ref }} para ${{ github.event.pull_request.base.ref }}
               PR(${{ github.event.pull_request.number }}): ${{ github.event.pull_request.title }}
               ${{ github.event.pull_request.html_url }}
+
