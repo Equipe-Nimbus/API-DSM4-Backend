@@ -41,7 +41,15 @@ class FormataMedicoesDeHoje{
             unidadeMedida: "",
             valorMaximo: 0,
             valorMinimo: 0,
+<<<<<<< HEAD
             medicoes: []
+=======
+            medicoes: [],
+            alertas: {
+                valores: [],
+                alertasDia: []
+            }
+>>>>>>> main
         }
         return parametro;
     }

@@ -89,7 +89,6 @@ class EstacaoController extends AbstratoController {
             .select(["estacao.idEstacao", "estacao.nomeEstacao", "estacao.cidadeEstacao"])
             .where("estacao.statusEstacao = :status", { status: true })
             .getMany();
-
         res.status(200).send(listagemParaSelecao)
     }
 

@@ -8,9 +8,7 @@ import routesAlerta from "./routes/routesAlerta";
 import routesDashboard from "./routes/routesDashboard";
 import routesRelatorios from "./routes/routesRelatorios";
 import routesOcorrenciaAlerta from "./routes/routesOcorrenciaAlerta";
-import PgDataSource from "./data-source";
-import { Usuario } from "./entities/Usuario";
-import salvaUsuario from "../test/integration/src/salvarUsuario";
+
 
 
 config();

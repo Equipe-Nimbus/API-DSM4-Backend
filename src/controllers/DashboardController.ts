@@ -28,7 +28,6 @@ class DashboardController{
                 return res.status(200).send("Estação sem medições hoje")
             res.status(200).send(lista)
         } catch(error){
-            console.log(error)
             res.status(400).send(error.message)
         }
     }

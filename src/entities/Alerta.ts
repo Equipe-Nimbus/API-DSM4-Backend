@@ -22,5 +22,4 @@ export class Alerta {
 
     @ManyToOne(()=>Parametro, parametro=>parametro.alertas)
     parametro:Parametro
-
 }
