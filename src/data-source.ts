@@ -4,8 +4,8 @@ import salvaUsuario from "../test/integration/src/salvarUsuario";
 import { Usuario } from "./entities/Usuario";
 config();
 
-const DB_NAME = process.env.DB_NAME;
-const DB_URL = process.env.DB_URL;
+let DB_NAME = process.env.DB_NAME;
+const DB_PASSWORD = process.env.DB_PASSWORD;
 
 if (process.env.NODE_ENV === "test") {
     DB_NAME = process.env.DB_NAME_TEST;
@@ -17,11 +17,11 @@ const PgDataSource = new DataSource({
     //url:DB_URL,
 
     //DB Local
-    database: "nimbusDB",
-    host: "localhost",
+    database: DB_NAME,
+    host: "db",
     username: "postgres",
     port: 5432,
-    password: "SuaSenha",
+    password: DB_PASSWORD,
 
     type: "postgres",
     synchronize: true,
