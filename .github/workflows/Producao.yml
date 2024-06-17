@@ -1,10 +1,9 @@
-
 name: Produção
 
 on: 
   pull_request: 
     branches:
-      - realease
+      - main
     
 
 jobs:
@@ -25,7 +24,7 @@ jobs:
           - name: Construir a imagem Docker
             run: |
               # Usando o número do pull request como parte da tag
-              docker build -t pedrohsalmeida/nimbus-backend:Main-${{ github.event.number }}
+              docker build -t pedrohsalmeida/nimbus-backend:Main-${{ github.event.number }} .
               docker tag pedrohsalmeida/nimbus-backend:Main-${{ github.event.number }} pedrohsalmeida/nimbus-backend:Main-latest
       
           - name: Push da imagem para o Docker Hub
@@ -87,7 +86,7 @@ jobs:
             - 8000:8000
 
         frontend:
-          image: pedrohsalmeida/nimbus-frontend:Dev-latest
+          image: pedrohsalmeida/nimbus-frontend:Rel-latest
           env:
             NEXT_PUBLIC_BACK_HOST: backend
           ports:
