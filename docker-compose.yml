@@ -1,12 +1,13 @@
 version: '3.8'
+
 services:
   db:
     container_name: postgres-container
     image: postgres
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=nimbusDB
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
     ports:
       - 5432:5432
     volumes:
@@ -16,11 +17,57 @@ services:
     container_name: pgadmin-container
     image: dpage/pgadmin4
     environment:
-      - PGADMIN_DEFAULT_EMAIL=pedrohsalmeida2004@gmail.com
-      - PGADMIN_DEFAULT_PASSWORD=postgres
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
     ports:
       - 5050:80
 
+  backend:
+    container_name: nimbus-backend-container
+    image: bakktest2:latest
+    environment:
+      - PORT=${PORT}
+      - JWT_SECRET=${JWT_SECRET}
+      - DB_URL_MONGO_BACK=${DB_URL_MONGO_BACK}
+      - DB_NAME=${DB_NAME}
+      - DB_HOST=db
+      - DB_USER=${DB_USER}
+      - DB_PORT=${DB_PORT}
+      - DB_PASSWORD=${DB_PASSWORD}
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+    command: sh -c "npm run dev"
+
+  recepcao:
+    container_name: nimbus-recepcao-container
+    image: recepcao1:latest
+    environment:
+      - DB_URL_MONGO_BACK=${DB_URL_MONGO_BACK}
+    ports:
+      - 8001:8001
+    depends_on:
+      - db
+    command: sh -c "npm run dev"
+
+  frontend:
+    container_name: nimbus-frontend-container
+    image: front1:latest
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=${NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
+    ports:
+      - 3000:3000
+
+  tratamento:
+    container_name: nimbus-tratamento-container
+    image: tratamento1:latest
+    environment:
+      - DB_URL_MONGO_BACK=${DB_URL_MONGO_BACK}
+    ports:
+      - 8002:8002
+    command: sh -c "npm run dev"
 
 volumes:
   postgres-data:

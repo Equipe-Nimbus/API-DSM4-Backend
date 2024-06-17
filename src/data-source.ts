@@ -4,31 +4,30 @@ import salvaUsuario from "../test/integration/src/salvarUsuario";
 import { Usuario } from "./entities/Usuario";
 config();
 
-const DB_URL = process.env.DB_URL;
-const DB_PASSWORD = process.env.DB_PASSWORD; 
-const DB_HOST = process.env.DB_HOST; 
 let DB_NAME = process.env.DB_NAME;
+const DB_PASSWORD = process.env.DB_PASSWORD;
 
 if (process.env.NODE_ENV === "test") {
     DB_NAME = process.env.DB_NAME_TEST;
 }
 const PgDataSource = new DataSource({
+
     //DB online elephantSQL
-    /* database: 'bqlvykqu',
-    url:DB_URL, */
+    //database: 'bqlvykqu',
+    //url:DB_URL,
 
     //DB Local
     database: DB_NAME,
-    host: DB_HOST,
+    host: "db",
     username: "postgres",
     port: 5432,
     password: DB_PASSWORD,
 
-    type: "postgres", // se for SQLite, então use sqlite
+    type: "postgres",
     synchronize: true,
-    logging: false, // true indica que as consultas e erros serão exibidas no terminal
-    entities: ["src/entities/*.ts"], // entidades que serão convertidas em tabelas
-    migrations: ["src/migrations/*.ts"] // local onde estarão os arquivos de migração
+    logging: false,
+    entities: ["src/entities/*.ts"],
+    migrations: ["src/migrations/*.ts"]
 });
 
 PgDataSource.initialize()
