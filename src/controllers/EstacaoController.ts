@@ -13,6 +13,7 @@ import ConsultaMesmoNomeUnidadeTipoParameto from "../services/Estacao/ConsultaMe
 import AtualizaEstacoesAtivas from "../services/Dashboard/AtualizaEstacoesAtivas";
 import GeraUnixTime from "../services/Estacao/GeraUnixTime";
 import SelecaoFiltroEstacao from "../services/Estacao/SelecaoFiltroEstacao";
+import AtualizaLocalizacoesCadastradas from "../services/Relatorios/RelatorioQtdOcorrencia/AtualizaLocalizacoesCadastradas";
 
 class EstacaoController extends AbstratoController {
     async listarEstacoesAtivas(req: Request, res: Response) {
@@ -70,14 +71,14 @@ class EstacaoController extends AbstratoController {
                     of(novaEstacao).
                     add(novoParametro);
             };
-            res.status(200).send("Estação cadastrada com sucesso!");
             await AtualizaEstacoesAtivas.atualizar(1);
-            console.log("foi")            
-        } catch (error) {
+            await AtualizaLocalizacoesCadastradas.adicionarNovaLocalizacao(novaEstacao);
+            res.status(200).send("Estação cadastrada com sucesso!");           
+            } catch (error) {
             if (error.code == "23505")
                 res.status(400).send("Nome ou código de identificação da placa da estação já cadastrado!");
             else
-                res.status(400).send(error);
+                res.status(500).send(error.message);
         };
     }
 
@@ -94,14 +95,14 @@ class EstacaoController extends AbstratoController {
     async listarPaginada(req: Request, res: Response) {
         const repositorioEstacao = PgDataSource.getRepository(Estacao);
         const pagina = req.query.pagina ? parseInt(req.query.pagina as string) : 1;
-        const tamanhoPagina = req.query.tamanhoPagina ? parseInt(req.query.tamanhoPagina as string): 10;
+        const tamanhoPagina = req.query.tamanhoPagina ? parseInt(req.query.tamanhoPagina as string) : 10;
         const quantidadeLinhas = await repositorioEstacao.count(TrataValoresFiltroEstacao.tratarContagem(req));
-        const quantidadePaginas = Math.ceil(quantidadeLinhas/tamanhoPagina);
+        const quantidadePaginas = Math.ceil(quantidadeLinhas / tamanhoPagina);
         try {
             const filtroSelecao = TrataValoresFiltroEstacao.tratarSelect(req);
             const estacoesResgatadas = await SelecaoPaginadaEstacao.selecionar(repositorioEstacao, pagina, tamanhoPagina, filtroSelecao);
             const resposta = {
-                estacoes: estacoesResgatadas, 
+                estacoes: estacoesResgatadas,
                 pagina: pagina,
                 tamanhoPagina: tamanhoPagina,
                 quantidadePaginas: quantidadePaginas
@@ -126,18 +127,18 @@ class EstacaoController extends AbstratoController {
         });
         if (estacaoRecuperada == undefined)
             return res.status(400).send("Objeto estação não encontrado!");
-    
+
         const listaTipoParametro = [];
-        for(const parametro of estacaoRecuperada.parametros) {
-            if(parametro.statusParametro === true) {
+        for (const parametro of estacaoRecuperada.parametros) {
+            if (parametro.statusParametro === true) {
                 const tipoParametroRuperado = await parametro.tiposParametro;
                 const tipoParametroMontado = MontaObjetoTipoParametro.criaTipoParametro(tipoParametroRuperado);
-                listaTipoParametro.push(tipoParametroMontado); 
-            }                          
+                listaTipoParametro.push(tipoParametroMontado);
+            }
         };
         estacaoRecuperada.tipoParametros = listaTipoParametro;
         const resposta = MontaObjetoEstacao.criaEstacao(estacaoRecuperada);
-        return res.status(200).send(resposta);                     
+        return res.status(200).send(resposta);
     };
 
     async atualizar(req: Request, res: Response) {
@@ -196,9 +197,10 @@ class EstacaoController extends AbstratoController {
             for (const novoParametro of listaNovosParametros) {
                 await repositorioEstacao.createQueryBuilder().
                     relation(Estacao, "parametros").
-                    of(novaEstacao).
+                    of(estacaoAntiga).
                     add(novoParametro);
             };
+            await AtualizaLocalizacoesCadastradas.atualizarLocalizacao(estacaoAntiga, novaEstacao);
             res.status(200).send("Estação atualizada com sucesso");
         } catch (error) {
             if (error.code == "23505")
@@ -218,9 +220,9 @@ class EstacaoController extends AbstratoController {
         estacao.statusEstacao = false
         try {
             await repositorioEstacao.save(estacao)
-            res.status(200).send("Estacao deletada com sucesso")
             await AtualizaEstacoesAtivas.atualizar(-1)
-            console.log("foi")
+            await AtualizaLocalizacoesCadastradas.removerLocalizacao(estacao)
+            res.status(200).send("Estacao deletada com sucesso")
         } catch (error) {
             res.status(400).send(error)
         }

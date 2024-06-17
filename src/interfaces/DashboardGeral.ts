@@ -1,3 +1,5 @@
+import OcorrenciaAlertaDashboard from "./OcorrenciaAlertaDashboard"
+
 export default interface DashboardGeral{
     estacoes:{
         numeroTotalEstacoes:number,
@@ -7,12 +9,7 @@ export default interface DashboardGeral{
         }
     },
     alertas:{
-        ultimoAlerta:{
-            nomeAlerta:string,
-            valorMedida:number,
-            unidadeTipoParametro:string,
-            dataMedida:string
-        },
+        ultimosAlerta:OcorrenciaAlertaDashboard[],
         alertasDoMes:{
             totalAlertas:number,
             relacaoTipoParametro:{

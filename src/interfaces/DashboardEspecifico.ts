@@ -1,5 +1,9 @@
 export interface DashboardEspecificoInterface{
     parametros:ParametroDashboardInterface[]
+    alertas:{
+        alertasNome:string[],
+        alertasNumero:number[]
+    }
 }
 
 
@@ -9,10 +13,6 @@ export interface ParametroDashboardInterface{
     valorMaximo:number,
     valorMinimo:number,
     medicoes:MedicaoParametro[],
-    alertas:{
-        valores:number[],
-        alertasDia:string[]
-    }
 }
 
 export interface MedicaoParametro{

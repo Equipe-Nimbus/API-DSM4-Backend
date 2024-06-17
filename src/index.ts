@@ -6,11 +6,9 @@ import routesEstacao from "./routes/routesEstacao";
 import routesTipoParametro from "./routes/routesTipoParametro";
 import routesAlerta from "./routes/routesAlerta";
 import routesDashboard from "./routes/routesDashboard";
-<<<<<<< HEAD
 import routesRelatorios from "./routes/routesRelatorios";
 import routesOcorrenciaAlerta from "./routes/routesOcorrenciaAlerta";
-=======
->>>>>>> main
+
 
 
 config();
@@ -20,6 +18,8 @@ const corsOptions = {
   origin: ['http://localhost:3000'],
   optionsSuccessStatus: 200 
 };
+
+
 
 app.use(cors(corsOptions));
 
@@ -37,3 +37,5 @@ const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
 });
+
+export { app };

@@ -7,8 +7,11 @@
     "start": "ts-node ./src",
     "dev": "ts-node-dev ./src",
     "test": "jest",
+    "test:cypress": "cross-env NODE_ENV=test ts-node-dev ./src",
+    "test:unit": "jest --roots ./test/unit",
+    "test:integration": "jest/integration",
     "migration:generate": "typeorm-ts-node-commonjs -d ./src/data-source.ts migration:generate ./src/migrations/default",
-    "migration:run": "typeorm-ts-node-commonjs -d ./src/data-source.ts migration:run",
+    "migration:run": "typeorm-ts-node-commonjs -d ./src/data-source-migrations.ts migration:run",
     "migration:revert": "typeorm-ts-node-commonjs -d ./src/data-source.ts migration:revert"
   },
   "jest": {
@@ -16,6 +19,20 @@
     "testEnvironment": "node",
     "testMatch": [
       "<rootDir>/test/**/*.test.ts"
+    ]
+  },
+  "jest/unit": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "testMatch": [
+      "<rootDir>/test/unit/**/*.test.ts"
+    ]
+  },
+  "jest-integration": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "testMatch": [
+      "<rootDir>/test/integration/**/*.test.ts"
     ]
   },
   "keywords": [],
@@ -29,6 +46,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^5.9.2",
     "pg": "^8.11.3",
+    "supertest": "^7.0.0",
     "typeorm": "^0.3.20"
   },
   "devDependencies": {
@@ -39,6 +57,8 @@
     "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^20.12.12",
     "@types/pg": "^8.11.4",
+    "@types/supertest": "^6.0.2",
+    "cross-env": "^7.0.3",
     "jest": "^29.7.0",
     "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2",

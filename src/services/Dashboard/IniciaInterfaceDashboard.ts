@@ -12,12 +12,7 @@ class IniciaInterfaceDashboard{
                 }
             },
             alertas: {
-                ultimoAlerta: {
-                    nomeAlerta: "",
-                    valorMedida: 0,
-                    unidadeTipoParametro: "",
-                    dataMedida: ""
-                },
+                ultimosAlerta: [],
                 alertasDoMes: {
                     totalAlertas: 0,
                     relacaoTipoParametro: {
